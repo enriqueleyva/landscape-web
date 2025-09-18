@@ -1,0 +1,3642 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Landscape</title>
+		<!-- En <head> -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+
+		<!-- Tailwind CDN (prototipo). Compílalo en prod. -->
+		<script src="https://cdn.tailwindcss.com"></script>
+
+		<style>
+			:root {
+				--purple-1: #b424a7; /* oscuro */
+				--purple-2: #c344b8; /* medio */
+				--purple-3: #d76ece; /* claro */
+			}
+
+			/* ===========================
+     TOP STRIP (iconos)
+  ============================*/
+			.top-strip {
+				background: #fafafa;
+			}
+
+			/* ===========================
+     HEADER PURPLE RIBBON
+  ============================*/
+			.ribbon {
+				position: relative;
+				overflow: hidden;
+				background: radial-gradient(
+						180% 80% at 50% -20%,
+						rgba(255, 255, 255, 0.08),
+						transparent 60%
+					),
+					linear-gradient(180deg, var(--purple-3), var(--purple-1));
+			}
+			/* “curva” sutil arriba/abajo */
+			.ribbon::before,
+			.ribbon::after {
+				content: "";
+				position: absolute;
+				left: 0;
+				right: 0;
+				height: 120px;
+				background: radial-gradient(
+					140% 120% at 50% -20%,
+					rgba(255, 255, 255, 0.12),
+					transparent 60%
+				);
+				opacity: 0.4;
+				pointer-events: none;
+			}
+			.ribbon::before {
+				top: -70px;
+			}
+			.ribbon::after {
+				bottom: -70px;
+				transform: scaleY(-1);
+			}
+
+			/* ===========================
+     HERO STAGE
+  ============================*/
+			.stage {
+				position: relative;
+				min-height: 620px;
+				max-height: 820px;
+				height: 72vh;
+				background: radial-gradient(
+						1200px 800px at 50% 20%,
+						rgba(142, 109, 177, 0.15),
+						transparent 60%
+					),
+					radial-gradient(
+						1200px 800px at 50% 80%,
+						rgba(142, 109, 177, 0.12),
+						transparent 60%
+					),
+					linear-gradient(180deg, #0b0b0d 0%, #0b0b0d 35%, #070708 100%);
+				overflow: hidden;
+			}
+
+			/* Grano/lluvia */
+			.rain {
+				position: absolute;
+				inset: 0;
+				pointer-events: none;
+				background-image: radial-gradient(
+						rgba(255, 255, 255, 0.08) 1px,
+						transparent 1px
+					),
+					radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+				background-size: 3px 3px, 5px 5px;
+				background-position: 0 0, 10px 10px;
+				opacity: 0.7;
+				mix-blend-mode: overlay;
+			}
+
+			/* “X” luminoso, fiel a proporciones del screenshot */
+			.x-wrap {
+				position: absolute;
+				inset: -12% -8%;
+				z-index: 0;
+			}
+			.x-bar {
+				position: absolute;
+				inset: 0;
+				background: linear-gradient(
+					180deg,
+					rgba(255, 255, 255, 0.22),
+					rgba(255, 255, 255, 0.06)
+				);
+				-webkit-mask: linear-gradient(
+					transparent 36%,
+					black 36% 64%,
+					transparent 64%
+				);
+				mask: linear-gradient(transparent 36%, black 36% 64%, transparent 64%);
+				mix-blend-mode: screen;
+				filter: drop-shadow(0 50px 120px rgba(0, 0, 0, 0.6));
+			}
+			.x-a {
+				transform: rotate(45deg) scale(1.08);
+			}
+			.x-b {
+				transform: rotate(-45deg) scale(1.08);
+			}
+
+			/* Carrusel 100% ancho por slide */
+			#track {
+				display: grid;
+				grid-auto-flow: column;
+				grid-auto-columns: 100%;
+				transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+				will-change: transform;
+			}
+
+			/* Sombra de “pop” a llantas */
+			.tire-shadow {
+				filter: drop-shadow(0 35px 55px rgba(0, 0, 0, 0.8));
+			}
+
+			/* Etiquetas de llanta (condensado) */
+			.tag {
+				font-weight: 900;
+				letter-spacing: 0.12em;
+				text-transform: uppercase;
+				text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+			}
+
+			/* Dots */
+			.dot {
+				width: 10px;
+				height: 10px;
+				border-radius: 9999px;
+				border: 2px solid #fff;
+				opacity: 0.6;
+			}
+			.dot.active {
+				background: #fff;
+				opacity: 1;
+			}
+
+			/* Flechas */
+			.navbtn {
+				@apply grid place-items-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition;
+				backdrop-filter: blur(2px);
+			}
+
+			/* Tipos (simular condensadas) */
+			.condensed {
+				letter-spacing: 0.06em;
+				font-stretch: condensed;
+			}
+			.ultra-wide {
+				letter-spacing: 0.35em;
+			}
+		</style>
+
+		<!-- ===== THEME OVERRIDES · LIGHT MODE ===== -->
+		<style id="light-overrides">
+			:root {
+				--ink-1: #111827; /* texto principal (gris muy oscuro) */
+				--ink-2: #4b5563; /* texto secundario */
+				--ink-3: #6b7280; /* meta / captions */
+				--bg-1: #ffffff; /* base */
+				--bg-2: #f7f7f9; /* paneles / bloques */
+				--bg-3: #ededf0; /* secciones alternas */
+				--line: #e5e7eb; /* bordes claros */
+			}
+
+			/* ====== GENERAL ====== */
+			body.light,
+			body {
+				background: var(--bg-1);
+				color: var(--ink-1);
+			}
+			/* Borde global más claro */
+			.border-white\/10 {
+				border-color: var(--line) !important;
+			}
+			.border-black\/10 {
+				border-color: var(--line) !important;
+			}
+
+			/* Tipos claros (antes text-white…) */
+			.text-white {
+				color: var(--ink-1) !important;
+			}
+			.text-white\/85 {
+				color: color-mix(in srgb, var(--ink-1) 85%, transparent) !important;
+			}
+			.text-white\/80 {
+				color: color-mix(in srgb, var(--ink-1) 80%, transparent) !important;
+			}
+			.text-white\/70 {
+				color: var(--ink-2) !important;
+			}
+			.text-white\/60 {
+				color: var(--ink-3) !important;
+			}
+			.text-white\/50 {
+				color: #9ca3af !important;
+			}
+
+			/* Botones y chips sobre claro */
+			.bg-white\/10,
+			.bg-white\/5 {
+				background: #ffffff !important;
+			}
+			.hover\:bg-white\/15:hover {
+				background: #f3f4f6 !important;
+			}
+			.f-chip,
+			.chip,
+			.pill,
+			.spec,
+			.tl-chip {
+				background: #fff !important;
+				border-color: var(--line) !important;
+				color: var(--ink-2) !important;
+			}
+
+			/* Icon buttons (flechas del carrusel) */
+			.navbtn {
+				background: #e5e7eb !important; /* neutral-200 */
+				border: 1px solid #d1d5db !important;
+			}
+			.navbtn:hover {
+				background: #eaecef !important;
+			}
+
+			/* Dots del slider en claro */
+			.dot {
+				border-color: var(--ink-1) !important;
+				opacity: 0.5;
+			}
+			.dot.active {
+				background: var(--ink-1) !important;
+				opacity: 1;
+			}
+
+			/* ====== RIBBON (morado) se conserva; solo aclaramos brillos ====== */
+			.ribbon::before,
+			.ribbon::after {
+				background: radial-gradient(
+					140% 120% at 50% -20%,
+					rgba(255, 255, 255, 0.22),
+					transparent 60%
+				);
+				opacity: 0.6;
+			}
+
+			/* ====== HERO STAGE: pasar de negro a claros con overlay ====== */
+			.stage {
+				background: radial-gradient(
+						1200px 800px at 50% 20%,
+						rgba(17, 24, 39, 0.06),
+						transparent 60%
+					),
+					radial-gradient(
+						1200px 800px at 50% 80%,
+						rgba(17, 24, 39, 0.05),
+						transparent 60%
+					),
+					linear-gradient(
+						180deg,
+						var(--bg-1) 0%,
+						var(--bg-2) 60%,
+						var(--bg-3) 100%
+					) !important;
+			}
+			/* Si el slide es VIDEO/IMAGEN, ponemos velo blanco suave para que el texto oscuro se lea */
+			.stage::after {
+				content: "";
+				position: absolute;
+				inset: 0;
+				z-index: 1;
+				background: radial-gradient(
+					120% 80% at 50% 30%,
+					rgba(255, 255, 255, 0.65),
+					rgba(255, 255, 255, 0.35) 45%,
+					rgba(255, 255, 255, 0.2) 70%,
+					rgba(255, 255, 255, 0.1) 100%
+				);
+				pointer-events: none;
+			}
+			/* “Lluvia” más sutil en claro */
+			.rain {
+				background-image: radial-gradient(
+						rgba(0, 0, 0, 0.06) 1px,
+						transparent 1px
+					),
+					radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px) !important;
+				mix-blend-mode: multiply !important;
+				opacity: 0.6 !important;
+				z-index: 0;
+			}
+			/* X luminosa: degradé gris */
+			.x-bar {
+				background: linear-gradient(
+					180deg,
+					rgba(0, 0, 0, 0.12),
+					rgba(0, 0, 0, 0.04)
+				) !important;
+				filter: drop-shadow(0 30px 80px rgba(0, 0, 0, 0.12)) !important;
+			}
+			/* Títulos encima del velo */
+			.stage .relative.z-10,
+			.stage .relative.z-\[10\] {
+				position: relative;
+				z-index: 2;
+			}
+			.stage .ultra-wide,
+			.stage .condensed {
+				color: var(--ink-1) !important;
+			}
+
+			/* ====== SECCIONES OSCURAS -> CLARAS ====== */
+			/* Buscador de llantas */
+			#finderByVehicle,
+			#finderBySize,
+			#find-dealer .map-box,
+			#find-dealer .dealer-card,
+			#tire-lineup .tire-card,
+			#tire-lineup .compare-tray,
+			#corporate-news .news-card,
+			#why-landscape-strength .wl-card,
+			#recruitment .rec-card,
+			footer {
+				background: var(--bg-2) !important;
+				border-color: var(--line) !important;
+			}
+			/* Secciones con fondo degradado oscuro -> claro */
+			#find-dealer,
+			#tire-lineup,
+			#corporate-news,
+			#recruitment,
+			#why-landscape-strength,
+			footer {
+				background: linear-gradient(
+					180deg,
+					var(--bg-2),
+					var(--bg-1)
+				) !important;
+			}
+
+			/* Tarjetas de “tire-hero” (cabecera de cada card) */
+			.tire-hero {
+				background: radial-gradient(
+						100% 80% at 60% 20%,
+						rgba(17, 24, 39, 0.06),
+						transparent 60%
+					),
+					linear-gradient(180deg, #ffffff, #f7f7f9) !important;
+			}
+			.tire-img {
+				filter: drop-shadow(0 18px 28px rgba(17, 24, 39, 0.2)) !important;
+			}
+			.badge {
+				background: #ffffff !important;
+				color: var(--ink-2) !important;
+				border-color: var(--line) !important;
+			}
+
+			/* Map demo label */
+			#find-dealer .map-box .bg-black\/40 {
+				background: #ffffffcc !important;
+				color: var(--ink-1) !important;
+				border-color: var(--line) !important;
+			}
+
+			/* Modal fondos */
+			#newsModal .bg-black\/70,
+			#applyModal .bg-black\/70 {
+				background: rgba(0, 0, 0, 0.35) !important;
+			}
+			#newsModal .bg-neutral-900,
+			#applyModal .bg-neutral-900 {
+				background: var(--bg-2) !important;
+			}
+			#newsModal .text-white,
+			#applyModal .text-white {
+				color: var(--ink-1) !important;
+			}
+
+			/* Footer textos */
+			footer .text-white {
+				color: var(--ink-1) !important;
+			}
+			footer .text-white\/80 {
+				color: var(--ink-2) !important;
+			}
+			footer .text-white\/70 {
+				color: var(--ink-2) !important;
+			}
+			footer .text-white\/60 {
+				color: var(--ink-3) !important;
+			}
+
+			/* Flechitas, contadores, detalles */
+			.good {
+				color: var(--ink-1) !important;
+			}
+			.bad {
+				color: #b91c1c !important;
+			} /* rojo sobrio sobre claro */
+		</style>
+	</head>
+	<body class="bg-white text-neutral-900 antialiased">
+		<!-- TOP ICON STRIP -->
+		<!-- TOP ICON STRIP -->
+		<div class="top-strip">
+			<div class="max-w-7xl mx-auto px-4">
+				<div class="flex items-center justify-between h-12">
+					<!-- Selector de idioma -->
+					<div
+						class="inline-flex rounded-full border border-black/10 overflow-hidden"
+					>
+						<button
+							type="button"
+							data-lang="es"
+							class="flex items-center gap-2 px-3 py-1 text-sm font-medium hover:bg-black/5"
+							aria-pressed="false"
+							aria-label="Cambiar a Español (México)"
+						>
+							<img
+								src="https://upload.wikimedia.org/wikipedia/commons/f/fc/Flag_of_Mexico.svg"
+								alt=""
+								class="w-5 h-3"
+							/>
+							<span>ES</span>
+						</button>
+						<button
+							type="button"
+							data-lang="en"
+							class="flex items-center gap-2 px-3 py-1 text-sm font-medium hover:bg-black/5"
+							aria-pressed="false"
+							aria-label="Switch to English (USA)"
+						>
+							<img
+								src="https://upload.wikimedia.org/wikipedia/commons/a/a4/Flag_of_the_United_States.svg"
+								alt=""
+								class="w-5 h-5"
+							/>
+							<span>EN</span>
+						</button>
+					</div>
+
+					<!-- Tus iconos (ahora a la derecha) -->
+					<div class="flex items-center gap-5 text-[var(--purple-1)]">
+						<button aria-label="Buscar" class="hover:opacity-80">
+							<i class="fa-solid fa-magnifying-glass text-xl"></i>
+						</button>
+						<a href="#" aria-label="Facebook" class="hover:opacity-80"
+							><i class="fa-brands fa-facebook-f text-xl"></i
+						></a>
+						<a href="#" aria-label="Instagram" class="hover:opacity-80"
+							><i class="fa-brands fa-instagram text-xl"></i
+						></a>
+						<a href="#" aria-label="X/Twitter" class="hover:opacity-80"
+							><i class="fa-brands fa-x-twitter text-xl"></i
+						></a>
+						<a href="#" aria-label="YouTube" class="hover:opacity-80"
+							><i class="fa-brands fa-youtube text-xl"></i
+						></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- PURPLE RIBBON: logo centrado + menú -->
+		<header class="ribbon text-white">
+			<div class="max-w-7xl mx-auto px-4">
+				<div class="py-5 flex items-center justify-center">
+					<!-- Tu logotipo (centrado, proporción similar al screenshot) -->
+					<img
+						src="assets/img/logo.png"
+						alt="Brand"
+						class="h-12 md:h-14 w-auto"
+					/>
+				</div>
+				<nav
+					class="flex items-center justify-center gap-8 md:gap-10 font-semibold tracking-wide uppercase text-sm pb-4"
+				>
+					<a href="#" class="hover:opacity-80">Busca tu llanta perfecta</a>
+					<a href="#" class="hover:opacity-80">Encuentra un distribuidor</a>
+					<a href="#" class="hover:opacity-80">Nuestros modelos</a>
+					<a href="#" class="hover:opacity-80">¿Porque Landscape?</a>
+					<a href="#" class="hover:opacity-80">Noticias</a>
+					<a href="#" class="hover:opacity-80">¡Únete a nuestro equipo!</a>
+				</nav>
+			</div>
+		</header>
+
+		<!-- HERO -->
+		<section class="relative border-y border-black/10">
+			<!-- Flechas -->
+			<button
+				id="prev"
+				class="navbtn absolute left-4 top-1/2 -translate-y-1/2 z-30"
+				aria-label="Anterior"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="w-6 h-6 text-white"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M15 19l-7-7 7-7"
+					/>
+				</svg>
+			</button>
+			<button
+				id="next"
+				class="navbtn absolute right-4 top-1/2 -translate-y-1/2 z-30"
+				aria-label="Siguiente"
+			>
+				<svg
+					xmlns="http://www.w3.org/2000/svg"
+					class="w-6 h-6 text-white"
+					fill="none"
+					viewBox="0 0 24 24"
+					stroke="currentColor"
+				>
+					<path
+						stroke-linecap="round"
+						stroke-linejoin="round"
+						stroke-width="2"
+						d="M9 5l7 7-7 7"
+					/>
+				</svg>
+			</button>
+
+			<div id="viewport" class="overflow-hidden relative bg-black">
+				<div id="track">
+					<!-- SLIDE 1 — VIDEO -->
+					<div class="stage text-white">
+						<!-- Video de fondo -->
+						<video
+							class="absolute inset-0 w-full h-full object-cover z-[0]"
+							autoplay
+							muted
+							loop
+							playsinline
+							preload="none"
+							data-video
+						>
+							<source
+								src="assets/img/Scene_1_03s_202509171952.mp4"
+								type="video/mp4"
+							/>
+							<!-- <source src="videos/slide1.webm" type="video/webm"> -->
+						</video>
+
+						<!-- X + lluvia -->
+						<div class="x-wrap">
+							<div class="x-bar x-a"></div>
+							<div class="x-bar x-b"></div>
+						</div>
+						<div class="rain"></div>
+
+						<!-- Título -->
+						<div class="relative z-10 h-full max-w-7xl mx-auto">
+							<div
+								class="h-full px-6 flex items-center justify-center text-center"
+							>
+								<div class="select-none">
+									<p
+										class="ultra-wide text-white/85 font-extrabold text-base md:text-lg mb-3"
+									>
+										ALL-SEASON
+									</p>
+									<h1
+										class="condensed font-black tracking-tight text-4xl md:text-6xl lg:text-7xl"
+									>
+										PASSENGER TIRES
+									</h1>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dots -->
+						<div
+							class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20"
+							data-dots
+						></div>
+					</div>
+
+					<!-- SLIDE 2 — VIDEO -->
+					<div class="stage text-white">
+						<!-- Video de fondo -->
+						<video
+							class="absolute inset-0 w-full h-full object-cover z-[0]"
+							autoplay
+							muted
+							loop
+							playsinline
+							preload="none"
+							data-video
+						>
+							<source
+								src="assets/img/Scene_1_03s_202509171943.mp4"
+								type="video/mp4"
+							/>
+							<!-- <source src="videos/slide2.webm" type="video/webm"> -->
+						</video>
+
+						<!-- X + lluvia -->
+						<div class="x-wrap">
+							<div class="x-bar x-a"></div>
+							<div class="x-bar x-b"></div>
+						</div>
+						<div class="rain"></div>
+
+						<!-- Título -->
+						<div class="relative z-10 h-full max-w-7xl mx-auto">
+							<div
+								class="h-full px-6 flex items-center justify-center text-center"
+							>
+								<div class="select-none">
+									<p
+										class="ultra-wide text-white/85 font-extrabold text-base md:text-lg mb-3"
+									>
+										MUD-TERRAIN
+									</p>
+									<h2
+										class="condensed font-black tracking-tight text-4xl md:text-6xl lg:text-7xl"
+									>
+										TRUCK &amp; SUV
+									</h2>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dots -->
+						<div
+							class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20"
+							data-dots
+						></div>
+					</div>
+
+					<!-- SLIDE 3 — IMAGEN -->
+					<div class="stage text-white">
+						<!-- Imagen de fondo -->
+						<img
+							src="assets/img/touring.webp"
+							alt="Colección Passenger"
+							class="absolute inset-0 w-full h-full object-cover z-[0]"
+							loading="lazy"
+						/>
+
+						<!-- X + lluvia -->
+						<div class="x-wrap">
+							<div class="x-bar x-a"></div>
+							<div class="x-bar x-b"></div>
+						</div>
+						<div class="rain"></div>
+
+						<!-- Título -->
+						<div class="relative z-10 h-full max-w-7xl mx-auto">
+							<div
+								class="h-full px-6 flex items-center justify-center text-center"
+							>
+								<div class="select-none">
+									<p
+										class="ultra-wide text-white/85 font-extrabold text-base md:text-lg mb-3"
+									>
+										ALL-WEATHER
+									</p>
+									<h3
+										class="condensed font-black tracking-tight text-4xl md:text-6xl lg:text-7xl"
+									>
+										URBAN SERIES
+									</h3>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dots -->
+						<div
+							class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20"
+							data-dots
+						></div>
+					</div>
+
+					<div class="stage text-white">
+						<!-- Video de fondo -->
+						<video
+							class="absolute inset-0 w-full h-full object-cover z-[0]"
+							autoplay
+							muted
+							loop
+							playsinline
+							preload="none"
+							data-video
+						>
+							<source
+								src="assets/img/Scene_1_03s_202509172107.mp4"
+								type="video/mp4"
+							/>
+							<!-- <source src="videos/slide2.webm" type="video/webm"> -->
+						</video>
+
+						<!-- X + lluvia -->
+						<div class="x-wrap">
+							<div class="x-bar x-a"></div>
+							<div class="x-bar x-b"></div>
+						</div>
+						<div class="rain"></div>
+
+						<!-- Título -->
+						<div class="relative z-10 h-full max-w-7xl mx-auto">
+							<div
+								class="h-full px-6 flex items-center justify-center text-center"
+							>
+								<div class="select-none">
+									<p
+										class="ultra-wide text-white/85 font-extrabold text-base md:text-lg mb-3"
+									>
+										MUD-TERRAIN
+									</p>
+									<h2
+										class="condensed font-black tracking-tight text-4xl md:text-6xl lg:text-7xl"
+									>
+										TRUCK &amp; SUV
+									</h2>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dots -->
+						<div
+							class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20"
+							data-dots
+						></div>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<!-- ==================== BUSCADOR DE LLANTAS · ALT B ==================== -->
+		<section
+			class="relative py-10 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950"
+		>
+			<div class="max-w-7xl mx-auto px-4">
+				<div class="mb-6 flex items-center justify-between">
+					<h3 class="text-2xl font-black tracking-tight" style="color: white">
+						Encuentra tus llantas
+					</h3>
+					<div class="inline-flex rounded-full bg-white/10 p-1">
+						<button
+							id="tabByVehicle"
+							class="px-4 py-2 text-sm rounded-full font-semibold bg-[var(--brand)] text-white"
+						>
+							Por vehículo
+						</button>
+						<button
+							id="tabBySize"
+							class="px-4 py-2 text-sm rounded-full font-semibold text-white/80 hover:text-white"
+						>
+							Por medida
+						</button>
+					</div>
+				</div>
+
+				<div class="grid gap-6 md:grid-cols-3">
+					<!-- Card izquierda con tips -->
+					<div
+						class="md:col-span-1 rounded-2xl bg-white/5 border border-white/10 p-5"
+					>
+						<h4 class="text-white font-bold mb-2">Tips rápidos</h4>
+						<ul class="text-white/70 text-sm space-y-2">
+							<li>
+								• Revisa la etiqueta en el pilar de la puerta del conductor.
+							</li>
+							<li>• Para off-road, considera un índice de carga mayor.</li>
+							<li>• All-Season ≠ All-Weather: diferentes compuestos.</li>
+						</ul>
+						<div class="mt-4 text-xs text-white/50">
+							Soporte 24/7 · Garantía extendida
+						</div>
+					</div>
+
+					<!-- FORM · Por vehículo -->
+					<form
+						id="finderByVehicle"
+						class="md:col-span-2 rounded-2xl bg-white/5 border border-white/10 p-5"
+					>
+						<div class="grid md:grid-cols-4 gap-4">
+							<label class="text-xs text-white/70"
+								>*Año
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									required
+								>
+									<option value="">Selecciona</option>
+									<option>2024</option>
+									<option>2023</option>
+									<option>2022</option>
+								</select>
+							</label>
+							<label class="text-xs text-white/70"
+								>*Marca
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									required
+								>
+									<option value="">Selecciona</option>
+									<option>Ford</option>
+									<option>Toyota</option>
+									<option>Honda</option>
+								</select>
+							</label>
+							<label class="text-xs text-white/70"
+								>*Modelo
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									required
+								>
+									<option value="">Selecciona</option>
+									<option>F-150</option>
+									<option>RAV4</option>
+									<option>Civic</option>
+								</select>
+							</label>
+							<label class="text-xs text-white/70"
+								>Versión
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								>
+									<option value="">(Opcional)</option>
+									<option>Base</option>
+									<option>Sport</option>
+									<option>Limited</option>
+								</select>
+							</label>
+
+							<label class="text-xs text-white/70 md:col-span-2"
+								>Código postal
+								<input
+									type="text"
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									placeholder="Ej. 06100"
+								/>
+							</label>
+
+							<div class="md:col-span-2 flex items-center gap-4">
+								<!-- <label
+									class="inline-flex items-center gap-2 text-white/80 text-sm"
+								>
+									<input type="checkbox" class="" checked /> Incluir instalación
+								</label> -->
+								<!-- <label
+									class="inline-flex items-center gap-2 text-white/80 text-sm"
+								>
+									<input type="checkbox" class="" /> Mostrar solo en stock
+								</label> -->
+								<button
+									class="ml-auto inline-flex items-center gap-2 px-5 py-3 rounded-md font-extrabold text-black"
+									style="
+										background: var(--purple-2);
+										box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+									"
+								>
+									Buscar
+									<span
+										class="inline-grid place-items-center w-6 h-6 rounded-full border border-black/20"
+										>➜</span
+									>
+								</button>
+							</div>
+						</div>
+					</form>
+
+					<!-- FORM · Por medida (oculto inicialmente) -->
+					<form
+						id="finderBySize"
+						class="md:col-span-2 rounded-2xl bg-white/5 border border-white/10 p-5 hidden"
+					>
+						<div class="grid md:grid-cols-6 gap-4">
+							<label class="text-xs text-white/70 md:col-span-2"
+								>Ancho
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								>
+									<option>205</option>
+									<option>215</option>
+									<option>225</option>
+									<option>235</option>
+								</select>
+							</label>
+							<label class="text-xs text-white/70 md:col-span-2"
+								>Altura
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								>
+									<option>45</option>
+									<option>50</option>
+									<option>55</option>
+									<option>60</option>
+								</select>
+							</label>
+							<label class="text-xs text-white/70 md:col-span-2"
+								>Rin
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								>
+									<option>R16</option>
+									<option>R17</option>
+									<option>R18</option>
+									<option>R20</option>
+								</select>
+							</label>
+
+							<label class="text-xs text-white/70 md:col-span-3"
+								>Aplicación
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								>
+									<option>Pasajeros</option>
+									<option>Camioneta/SUV</option>
+									<option>Performance</option>
+									<option>Off-Road</option>
+								</select>
+							</label>
+							<label class="text-xs text-white/70 md:col-span-3"
+								>Temporada
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								>
+									<option>All-Season</option>
+									<option>All-Weather</option>
+									<option>Verano</option>
+									<option>Invierno</option>
+								</select>
+							</label>
+
+							<div class="md:col-span-6 flex items-center gap-4">
+								<label
+									class="inline-flex items-center gap-2 text-white/80 text-sm"
+								>
+									<input type="checkbox" checked /> Envío a domicilio
+								</label>
+								<label
+									class="inline-flex items-center gap-2 text-white/80 text-sm"
+								>
+									<input type="checkbox" /> Recoger en tienda
+								</label>
+								<button
+									class="ml-auto inline-flex items-center gap-2 px-5 py-3 rounded-md font-extrabold text-black"
+									style="
+										background: var(--purple-2);
+										box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+									"
+								>
+									Buscar
+									<span
+										class="inline-grid place-items-center w-6 h-6 rounded-full border border-black/20"
+										>➜</span
+									>
+								</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</section>
+
+		<script>
+			// Tabs simple
+			const tabVehicle = document.getElementById("tabByVehicle");
+			const tabSize = document.getElementById("tabBySize");
+			const formVeh = document.getElementById("finderByVehicle");
+			const formSize = document.getElementById("finderBySize");
+
+			tabVehicle.addEventListener("click", () => {
+				formVeh.classList.remove("hidden");
+				formSize.classList.add("hidden");
+				tabVehicle.classList.add("bg-[var(--brand)]", "text-white");
+				tabSize.classList.remove("bg-[var(--brand)]", "text-white");
+				tabSize.classList.add("text-white/80");
+			});
+			tabSize.addEventListener("click", () => {
+				formSize.classList.remove("hidden");
+				formVeh.classList.add("hidden");
+				tabSize.classList.add("bg-[var(--brand)]", "text-white");
+				tabVehicle.classList.remove("bg-[var(--brand)]", "text-white");
+				tabVehicle.classList.add("text-white/80");
+			});
+		</script>
+
+		<!-- ==================== FIND A DEALER ==================== -->
+		<section
+			id="find-dealer"
+			class="relative py-10 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950"
+		>
+			<style>
+				:root {
+					--brand: #b424a7; /* morado principal (ya definido arriba en tu sitio) */
+					--accent: #c344b8; /* dorado CTA */
+				}
+				.chip {
+					@apply rounded-full px-3 py-1.5 text-xs font-semibold bg-white/10 text-white/80 border border-white/10;
+				}
+				.chip[data-active="true"] {
+					background: color-mix(in srgb, var(--brand) 25%, transparent);
+					color: #fff;
+					border-color: color-mix(in srgb, var(--brand) 55%, #fff);
+				}
+				.dealer-card {
+					@apply rounded-2xl bg-white/5 border border-white/10 p-4 md:p-5;
+				}
+				.pin {
+					position: absolute;
+					transform: translate(-50%, -100%);
+					width: 18px;
+					height: 18px;
+					border-radius: 9999px;
+					background: var(--accent);
+					box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+				}
+				.pin::after {
+					content: "";
+					position: absolute;
+					left: 50%;
+					top: 100%;
+					transform: translateX(-50%);
+					width: 2px;
+					height: 10px;
+					background: var(--accent);
+				}
+				.map-box {
+					position: relative;
+					background: radial-gradient(
+							80% 60% at 50% 40%,
+							rgba(255, 255, 255, 0.04),
+							transparent 60%
+						),
+						linear-gradient(180deg, #0b0b0d, #070708);
+					border: 1px solid rgba(255, 255, 255, 0.1);
+					border-radius: 16px;
+					overflow: hidden;
+					min-height: 320px;
+				}
+				.map-grid {
+					position: absolute;
+					inset: 0;
+					background-image: linear-gradient(
+							rgba(255, 255, 255, 0.05) 1px,
+							transparent 1px
+						),
+						linear-gradient(
+							90deg,
+							rgba(255, 255, 255, 0.05) 1px,
+							transparent 1px
+						);
+					background-size: 40px 40px, 40px 40px;
+					pointer-events: none;
+				}
+			</style>
+
+			<div class="max-w-7xl mx-auto px-4">
+				<!-- Título + subtítulo -->
+				<div class="mb-6 md:mb-8 flex items-end justify-between gap-4">
+					<div>
+						<h3
+							class="text-white text-2xl md:text-3xl font-black tracking-tight"
+						>
+							Find a Dealer
+						</h3>
+						<p class="text-white/70 text-sm">
+							Localiza distribuidores cercanos para compra e instalación.
+						</p>
+					</div>
+					<a
+						href="#dealer-results"
+						class="hidden md:inline-flex items-center gap-2 text-sm text-[var(--accent)] hover:underline"
+					>
+						Jump to results ➜
+					</a>
+				</div>
+
+				<!-- FORM -->
+				<form
+					id="dealerForm"
+					class="rounded-2xl bg-white/5 border border-white/10 p-4 md:p-5"
+				>
+					<div
+						class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 items-end"
+					>
+						<!-- Ubicación -->
+						<label class="md:col-span-5 text-xs text-white/70">
+							*Location (City, ZIP, or “lat,lon”)
+							<input
+								id="dealerLocation"
+								type="text"
+								placeholder="Ej. 06100 · Houston · 25.67,-100.31"
+								class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								required
+							/>
+						</label>
+
+						<!-- Radio -->
+						<label class="md:col-span-3 text-xs text-white/70">
+							Radius (km)
+							<select
+								id="dealerRadius"
+								class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+							>
+								<option>10</option>
+								<option selected>25</option>
+								<option>50</option>
+								<option>100</option>
+								<option>200</option>
+							</select>
+						</label>
+
+						<!-- Filtros rápidos -->
+						<div class="md:col-span-4 flex flex-wrap items-center gap-2">
+							<button type="button" class="chip" data-filter="install">
+								Installation
+							</button>
+							<button type="button" class="chip" data-filter="open">
+								Open now
+							</button>
+							<button type="button" class="chip" data-filter="247">24/7</button>
+							<button
+								type="button"
+								id="geoBtn"
+								class="ml-auto inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+							>
+								📍 Use my location
+							</button>
+						</div>
+
+						<!-- CTA -->
+						<div class="md:col-span-12 flex justify-end">
+							<button
+								class="inline-flex items-center gap-2 px-5 py-3 rounded-md font-extrabold text-black"
+								style="
+									background: var(--accent);
+									box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+								"
+							>
+								Search Dealers
+								<span
+									class="inline-grid place-items-center w-6 h-6 rounded-full border border-black/20"
+									>➜</span
+								>
+							</button>
+						</div>
+					</div>
+				</form>
+
+				<!-- Layout mapa + lista -->
+				<div
+					class="mt-6 grid grid-cols-1 lg:grid-cols-5 gap-5"
+					id="dealer-results"
+				>
+					<!-- MAP -->
+					<div class="lg:col-span-2">
+						<div class="map-box" id="mapBox">
+							<!-- imagen de “mapa” ligera opcional -->
+							<div class="map-grid"></div>
+							<div
+								class="absolute left-4 top-4 text-white/70 text-xs bg-black/40 rounded px-2 py-1 border border-white/10"
+							>
+								Demo map (no tiles)
+							</div>
+						</div>
+					</div>
+
+					<!-- LISTA -->
+					<div class="lg:col-span-3">
+						<div class="flex items-center justify-between mb-3">
+							<h4 class="text-white font-bold">Results</h4>
+							<div class="text-white/70 text-sm">
+								<span id="resultCount">0</span> dealers
+							</div>
+						</div>
+						<div id="dealerList" class="space-y-3"></div>
+					</div>
+				</div>
+			</div>
+
+			<script>
+				// --- Datos demo (coordenadas reales de ciudades: CDMX, GDL, MTY, Houston, Dallas, LA) ---
+				const DEALERS = [
+					{
+						id: 1,
+						name: "Durable Tire Roma",
+						city: "CDMX",
+						lat: 19.416,
+						lng: -99.162,
+						phone: "+52 55 0000 0001",
+						address: "Col. Roma Norte, CDMX",
+						services: ["install", "balance"],
+						hours: "Mon-Sat 9–18",
+					},
+					{
+						id: 2,
+						name: "Durable Tire Reforma",
+						city: "CDMX",
+						lat: 19.427,
+						lng: -99.166,
+						phone: "+52 55 0000 0002",
+						address: "Paseo de la Reforma, CDMX",
+						services: ["install", "247"],
+						hours: "24/7",
+					},
+					{
+						id: 3,
+						name: "Durable Tire MTY",
+						city: "Monterrey",
+						lat: 25.667,
+						lng: -100.31,
+						phone: "+52 81 0000 0003",
+						address: "San Pedro, NL",
+						services: ["install"],
+						hours: "Mon-Sat 9–18",
+					},
+					{
+						id: 4,
+						name: "Durable Tire GDL",
+						city: "Guadalajara",
+						lat: 20.676,
+						lng: -103.347,
+						phone: "+52 33 0000 0004",
+						address: "Providencia, Jal.",
+						services: ["install", "balance"],
+						hours: "Mon-Fri 9–18",
+					},
+					{
+						id: 5,
+						name: "Durable Tire Houston",
+						city: "Houston",
+						lat: 29.76,
+						lng: -95.369,
+						phone: "+1 713 000 0005",
+						address: "Downtown, TX",
+						services: ["install", "247"],
+						hours: "24/7",
+					},
+					{
+						id: 6,
+						name: "Durable Tire Dallas",
+						city: "Dallas",
+						lat: 32.776,
+						lng: -96.797,
+						phone: "+1 214 000 0006",
+						address: "Design District, TX",
+						services: ["install"],
+						hours: "Mon-Sat 9–18",
+					},
+					{
+						id: 7,
+						name: "Durable Tire LA",
+						city: "Los Angeles",
+						lat: 34.052,
+						lng: -118.244,
+						phone: "+1 213 000 0007",
+						address: "Arts District, CA",
+						services: ["install", "balance"],
+						hours: "Mon-Sat 9–18",
+					},
+				];
+
+				// --- helpers ---
+				const rad = (d) => (d * Math.PI) / 180;
+				function haversine(a, b) {
+					const R = 6371; // km
+					const dLat = rad(b.lat - a.lat),
+						dLng = rad(b.lng - a.lng);
+					const s =
+						Math.sin(dLat / 2) ** 2 +
+						Math.cos(rad(a.lat)) *
+							Math.cos(rad(b.lat)) *
+							Math.sin(dLng / 2) ** 2;
+					return 2 * R * Math.asin(Math.sqrt(s));
+				}
+				function parseLocation(input) {
+					// "lat,lon" o texto suelto: mapeo rápido a ciudades demo
+					const direct = input.split(",").map((s) => s.trim());
+					if (
+						direct.length === 2 &&
+						!isNaN(parseFloat(direct[0])) &&
+						!isNaN(parseFloat(direct[1]))
+					) {
+						return { lat: parseFloat(direct[0]), lng: parseFloat(direct[1]) };
+					}
+					const t = input.toLowerCase();
+					if (t.includes("mty") || t.includes("monterrey"))
+						return { lat: 25.667, lng: -100.31 };
+					if (
+						t.includes("cdmx") ||
+						t.includes("méxico") ||
+						t.includes("mexico city") ||
+						t.includes("reforma") ||
+						t.includes("roma")
+					)
+						return { lat: 19.4326, lng: -99.1332 };
+					if (t.includes("guadalajara") || t.includes("gdl"))
+						return { lat: 20.676, lng: -103.347 };
+					if (t.includes("houston")) return { lat: 29.76, lng: -95.369 };
+					if (t.includes("dallas")) return { lat: 32.776, lng: -96.797 };
+					if (t.includes("los angeles") || t.includes("la,"))
+						return { lat: 34.052, lng: -118.244 };
+					return null; // si no, el usuario puede usar "lat,lon"
+				}
+
+				// --- UI state ---
+				const form = document.getElementById("dealerForm");
+				const inputLoc = document.getElementById("dealerLocation");
+				const radiusSel = document.getElementById("dealerRadius");
+				const listEl = document.getElementById("dealerList");
+				const countEl = document.getElementById("resultCount");
+				const mapBox = document.getElementById("mapBox");
+				const filtersActive = { install: false, open: false, 247: false };
+
+				// filtros chips
+				document.querySelectorAll(".chip[data-filter]").forEach((ch) => {
+					ch.addEventListener("click", () => {
+						const k = ch.getAttribute("data-filter");
+						filtersActive[k] = !filtersActive[k];
+						ch.setAttribute("data-active", String(filtersActive[k]));
+					});
+				});
+
+				// Geolocalización
+				document.getElementById("geoBtn").addEventListener("click", () => {
+					if (!navigator.geolocation) {
+						alert("Geolocation not supported");
+						return;
+					}
+					navigator.geolocation.getCurrentPosition(
+						(pos) => {
+							const { latitude: lat, longitude: lng } = pos.coords;
+							inputLoc.value = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+						},
+						() => alert("Could not get your location")
+					);
+				});
+
+				// Render
+				function renderDealers(origin, km) {
+					// calcula distancias
+					let items = DEALERS.map((d) => ({
+						...d,
+						distance: haversine(origin, d),
+					})).filter((d) => d.distance <= km);
+
+					// filtros
+					if (filtersActive.install)
+						items = items.filter((d) => d.services.includes("install"));
+					if (filtersActive["247"])
+						items = items.filter((d) => d.services.includes("247"));
+					if (filtersActive.open)
+						items = items.filter(
+							(d) => d.hours.includes("24") || d.hours.includes("9")
+						); // demo
+
+					// orden por distancia
+					items.sort((a, b) => a.distance - b.distance);
+
+					// Lista
+					countEl.textContent = items.length;
+					listEl.innerHTML =
+						items
+							.map(
+								(d) => `
+        <article class="dealer-card">
+          <div class="flex items-start gap-3">
+            <div class="shrink-0 w-10 h-10 rounded-full grid place-items-center"
+                 style="background: color-mix(in srgb, var(--brand) 30%, transparent); border:1px solid rgba(255,255,255,.15)">
+              🛞
+            </div>
+            <div class="min-w-0">
+              <h5 class="text-white font-bold">${d.name}</h5>
+              <p class="text-white/70 text-sm">${d.address}</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                ${d.services
+									.map(
+										(s) =>
+											`<span class="chip">${
+												s === "install"
+													? "Installation"
+													: s === "247"
+													? "24/7"
+													: "Balancing"
+											}</span>`
+									)
+									.join("")}
+              </div>
+              <div class="mt-3 flex items-center gap-3 text-sm">
+                <span class="text-white/70">${d.hours}</span>
+                <span class="text-white/40">•</span>
+                <span class="text-[var(--accent)] font-semibold">${d.distance.toFixed(
+									1
+								)} km</span>
+                <a class="ml-auto inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+                   href="tel:${d.phone.replace(
+											/[^+\d]/g,
+											""
+										)}" aria-label="Call ${d.name}">Call</a>
+                <a class="inline-flex items-center gap-2 px-3 py-2 rounded-md font-semibold text-black"
+                   style="background: var(--accent); box-shadow: 0 4px 0 rgba(0,0,0,.25);"
+                   target="_blank" rel="noopener"
+                   href="https://www.google.com/maps/dir/${origin.lat},${
+									origin.lng
+								}/${d.lat},${d.lng}">
+                  Directions
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      `
+							)
+							.join("") ||
+						`<div class="dealer-card text-white/70">No dealers found in ${km} km — try a larger radius.</div>`;
+
+					// Mapa (pins en un plano simple)
+					drawPins(origin, items);
+				}
+
+				function drawPins(origin, items) {
+					mapBox
+						.querySelectorAll(".pin, .youarehere")
+						.forEach((el) => el.remove());
+					// bounds aproximados con dealers + origin
+					const pts = items.concat([{ lat: origin.lat, lng: origin.lng }]);
+					const minLat = Math.min(...pts.map((p) => p.lat)) - 0.2;
+					const maxLat = Math.max(...pts.map((p) => p.lat)) + 0.2;
+					const minLng = Math.min(...pts.map((p) => p.lng)) - 0.2;
+					const maxLng = Math.max(...pts.map((p) => p.lng)) + 0.2;
+					const mapRect = mapBox.getBoundingClientRect();
+
+					function proj(lat, lng) {
+						// proyección lineal simple al contenedor
+						const x = (lng - minLng) / (maxLng - minLng);
+						const y = 1 - (lat - minLat) / (maxLat - minLat);
+						return { left: x * mapRect.width, top: y * mapRect.height };
+					}
+
+					// tú estás aquí
+					const you = document.createElement("div");
+					const p0 = proj(origin.lat, origin.lng);
+					you.className = "youarehere";
+					you.style.position = "absolute";
+					you.style.left = p0.left + "px";
+					you.style.top = p0.top + "px";
+					you.innerHTML = `<div class="pin" style="background: var(--brand)"></div>
+                       <div class="absolute left-1/2 -translate-x-1/2 translate-y-1.5 text-[10px] text-white/80">You</div>`;
+					mapBox.appendChild(you);
+
+					// pins de dealers
+					items.forEach((d) => {
+						const p = proj(d.lat, d.lng);
+						const pin = document.createElement("div");
+						pin.className = "pin";
+						pin.style.left = p.left + "px";
+						pin.style.top = p.top + "px";
+						pin.title = d.name;
+						mapBox.appendChild(pin);
+					});
+				}
+
+				// Submit
+				form.addEventListener("submit", (e) => {
+					e.preventDefault();
+					const km = parseFloat(radiusSel.value);
+					const parsed = parseLocation(inputLoc.value.trim());
+					if (!parsed) {
+						alert('Enter a city/ZIP from the demo list or use "lat,lon".');
+						return;
+					}
+					renderDealers(parsed, km);
+				});
+
+				// estado inicial (CDMX 25 km)
+				renderDealers({ lat: 19.4326, lng: -99.1332 }, 25);
+			</script>
+		</section>
+
+		<!-- ==================== TIRE LINEUP (FEATURED MODELS) ==================== -->
+		<section
+			id="tire-lineup"
+			class="relative py-12 md:py-16 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950"
+		>
+			<style>
+				:root {
+					--brand: #b424a7;
+					--accent: #c344b8;
+				}
+				.tl-chip {
+					@apply rounded-full px-3 py-1.5 text-xs font-semibold bg-white/10 text-white/80 border border-white/10 cursor-pointer;
+				}
+				.tl-chip[data-active="true"] {
+					background: color-mix(in srgb, var(--brand) 25%, transparent);
+					color: #fff;
+					border-color: color-mix(in srgb, var(--brand) 55%, #fff);
+				}
+				.tire-card {
+					@apply rounded-2xl bg-white/5 border border-white/10 overflow-hidden;
+					transform-style: preserve-3d;
+					transition: transform 0.2s ease, box-shadow 0.2s ease;
+				}
+				.tire-card:hover {
+					box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+				}
+				.tire-hero {
+					position: relative;
+					background: radial-gradient(
+							100% 80% at 60% 20%,
+							rgba(255, 255, 255, 0.06),
+							transparent 60%
+						),
+						linear-gradient(180deg, #0b0b0d, #070708);
+					min-height: 240px;
+				}
+				.tire-img {
+					position: absolute;
+					right: -10px;
+					bottom: -10px;
+					width: 220px;
+					height: 220px;
+					object-fit: contain;
+					filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.8));
+					transform: translateZ(35px) rotate(-6deg);
+				}
+				.tire-glow {
+					position: absolute;
+					inset: -20%;
+					background: radial-gradient(
+						45% 45% at 70% 60%,
+						color-mix(in srgb, var(--brand) 50%, transparent),
+						transparent 60%
+					);
+					mix-blend-mode: screen;
+					pointer-events: none;
+				}
+				.badge {
+					@apply absolute left-4 top-4 text-[10px] font-bold tracking-wide uppercase bg-black/60 text-white rounded-full px-2 py-1 border border-white/10;
+				}
+				.spec {
+					@apply text-[11px] px-2 py-1 rounded-full bg-white/10 text-white/80 border border-white/10;
+				}
+				.compare-tray {
+					@apply mt-8 rounded-2xl bg-white/5 border border-white/10 p-4 overflow-x-auto;
+				}
+				.pill {
+					@apply inline-flex items-center gap-2 text-xs px-2 py-1 rounded-full bg-white/10 border border-white/10 text-white/80;
+				}
+				.cta-gold {
+					background: var(--accent);
+					box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+				}
+			</style>
+
+			<div class="max-w-7xl mx-auto px-4">
+				<!-- Header + Tabs -->
+				<div
+					class="mb-6 md:mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+				>
+					<div>
+						<h3
+							class="text-white text-3xl md:text-4xl font-black tracking-tight"
+						>
+							Featured Tire Lineup
+						</h3>
+						<p class="text-white/70 mt-2 max-w-2xl">
+							Nuestros modelos insignia para pasajeros, camioneta/SUV, y terreno
+							lodoso.
+						</p>
+					</div>
+					<div class="flex flex-wrap items-center gap-2">
+						<button class="tl-chip" data-cat="all" data-active="true">
+							All
+						</button>
+						<button class="tl-chip" data-cat="passenger">Passenger</button>
+						<button class="tl-chip" data-cat="truck">Truck & SUV</button>
+						<button class="tl-chip" data-cat="mud">Mud-Terrain</button>
+						<button class="tl-chip" data-cat="uhp">UHP</button>
+					</div>
+				</div>
+
+				<!-- Grid de modelos -->
+				<div id="tireGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+					<!-- Card 1 -->
+					<article
+						class="tire-card"
+						data-cat="passenger"
+						data-model="ARIA H7"
+						data-tread="700"
+						data-traction="A"
+						data-noise="Low"
+						data-sizes="16–18”"
+					>
+						<div class="tire-hero">
+							<span class="badge">NEW</span>
+							<div class="tire-glow"></div>
+							<img
+								src="assets/img/terrain2.png"
+								alt="ARIA H7"
+								class="tire-img"
+								loading="lazy"
+							/>
+						</div>
+						<div class="p-5">
+							<div class="flex items-start gap-3">
+								<div
+									class="w-10 h-10 grid place-items-center rounded-xl text-white"
+									style="
+										background: color-mix(
+											in srgb,
+											var(--brand) 30%,
+											transparent
+										);
+										border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
+									"
+								>
+									🛞
+								</div>
+								<div class="min-w-0">
+									<h4 class="text-white font-bold text-lg leading-tight">
+										ARIA H7
+									</h4>
+									<p class="text-white/70 text-sm">Passenger · All-Season</p>
+								</div>
+								<span class="ml-auto pill">All-Weather</span>
+							</div>
+							<div class="mt-3 flex flex-wrap gap-2">
+								<span class="spec">Treadwear 700</span>
+								<span class="spec">Traction A</span>
+								<span class="spec">Low noise</span>
+								<span class="spec">16–18”</span>
+							</div>
+							<div class="mt-4 flex items-center gap-2">
+								<a
+									href="#"
+									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black cta-gold"
+									>Details <span>➜</span></a
+								>
+								<button
+									class="addCompare inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+								>
+									Add to compare
+								</button>
+							</div>
+						</div>
+					</article>
+
+					<!-- Card 2 -->
+					<article
+						class="tire-card"
+						data-cat="truck"
+						data-model="TrailGuard AT"
+						data-tread="580"
+						data-traction="A"
+						data-noise="Med"
+						data-sizes="17–20”"
+					>
+						<div class="tire-hero">
+							<span class="badge">TOP PICK</span>
+							<div class="tire-glow"></div>
+							<img
+								src="assets/img/terrain.png"
+								alt="TrailGuard AT"
+								class="tire-img"
+								loading="lazy"
+							/>
+						</div>
+						<div class="p-5">
+							<div class="flex items-start gap-3">
+								<div
+									class="w-10 h-10 grid place-items-center rounded-xl text-white"
+									style="
+										background: color-mix(
+											in srgb,
+											var(--brand) 30%,
+											transparent
+										);
+										border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
+									"
+								>
+									🚙
+								</div>
+								<div class="min-w-0">
+									<h4 class="text-white font-bold text-lg leading-tight">
+										TrailGuard AT
+									</h4>
+									<p class="text-white/70 text-sm">Truck & SUV · All-Terrain</p>
+								</div>
+								<span class="ml-auto pill">Snow Ready</span>
+							</div>
+							<div class="mt-3 flex flex-wrap gap-2">
+								<span class="spec">Treadwear 580</span>
+								<span class="spec">Traction A</span>
+								<span class="spec">Medium noise</span>
+								<span class="spec">17–20”</span>
+							</div>
+							<div class="mt-4 flex items-center gap-2">
+								<a
+									href="#"
+									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black cta-gold"
+									>Details <span>➜</span></a
+								>
+								<button
+									class="addCompare inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+								>
+									Add to compare
+								</button>
+							</div>
+						</div>
+					</article>
+
+					<!-- Card 3 -->
+					<article
+						class="tire-card"
+						data-cat="mud"
+						data-model="MudForce M/T"
+						data-tread="520"
+						data-traction="A"
+						data-noise="High"
+						data-sizes="17–22”"
+					>
+						<div class="tire-hero">
+							<span class="badge">MUD-TERRAIN</span>
+							<div class="tire-glow"></div>
+							<img
+								src="assets/img/terragrip.png"
+								alt="MudForce M/T"
+								class="tire-img"
+								loading="lazy"
+							/>
+						</div>
+						<div class="p-5">
+							<div class="flex items-start gap-3">
+								<div
+									class="w-10 h-10 grid place-items-center rounded-xl text-white"
+									style="
+										background: color-mix(
+											in srgb,
+											var(--brand) 30%,
+											transparent
+										);
+										border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
+									"
+								>
+									🗻
+								</div>
+								<div class="min-w-0">
+									<h4 class="text-white font-bold text-lg leading-tight">
+										MudForce M/T
+									</h4>
+									<p class="text-white/70 text-sm">Mud-Terrain · Off-Road</p>
+								</div>
+								<span class="ml-auto pill">Reinforced</span>
+							</div>
+							<div class="mt-3 flex flex-wrap gap-2">
+								<span class="spec">Treadwear 520</span>
+								<span class="spec">Traction A</span>
+								<span class="spec">High noise</span>
+								<span class="spec">17–22”</span>
+							</div>
+							<div class="mt-4 flex items-center gap-2">
+								<a
+									href="#"
+									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black cta-gold"
+									>Details <span>➜</span></a
+								>
+								<button
+									class="addCompare inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+								>
+									Add to compare
+								</button>
+							</div>
+						</div>
+					</article>
+
+					<!-- Card 4 -->
+					<article
+						class="tire-card"
+						data-cat="uhp"
+						data-model="Velocity UHP"
+						data-tread="380"
+						data-traction="AA"
+						data-noise="Low"
+						data-sizes="18–21”"
+					>
+						<div class="tire-hero">
+							<span class="badge">UHP</span>
+							<div class="tire-glow"></div>
+							<img
+								src="assets/img/ltraSport.png"
+								alt="Velocity UHP"
+								class="tire-img"
+								loading="lazy"
+							/>
+						</div>
+						<div class="p-5">
+							<div class="flex items-start gap-3">
+								<div
+									class="w-10 h-10 grid place-items-center rounded-xl text-white"
+									style="
+										background: color-mix(
+											in srgb,
+											var(--brand) 30%,
+											transparent
+										);
+										border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
+									"
+								>
+									⚡
+								</div>
+								<div class="min-w-0">
+									<h4 class="text-white font-bold text-lg leading-tight">
+										Velocity UHP
+									</h4>
+									<p class="text-white/70 text-sm">Ultra-High Performance</p>
+								</div>
+								<span class="ml-auto pill">Silica+</span>
+							</div>
+							<div class="mt-3 flex flex-wrap gap-2">
+								<span class="spec">Treadwear 380</span>
+								<span class="spec">Traction AA</span>
+								<span class="spec">Low noise</span>
+								<span class="spec">18–21”</span>
+							</div>
+							<div class="mt-4 flex items-center gap-2">
+								<a
+									href="#"
+									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black cta-gold"
+									>Details <span>➜</span></a
+								>
+								<button
+									class="addCompare inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+								>
+									Add to compare
+								</button>
+							</div>
+						</div>
+					</article>
+
+					<!-- Duplica más cards según necesites -->
+				</div>
+
+				<!-- Bandeja de comparación -->
+				<div id="compareTray" class="compare-tray hidden">
+					<div class="flex items-center justify-between mb-3">
+						<h4 class="text-white font-bold">Compare models</h4>
+						<button
+							id="clearCompare"
+							class="text-white/70 hover:text-white text-sm"
+						>
+							Clear
+						</button>
+					</div>
+					<div id="comparePills" class="flex flex-wrap gap-2 mb-3"></div>
+					<div class="overflow-x-auto">
+						<table class="min-w-[640px] w-full text-left text-white/80 text-sm">
+							<thead class="text-white/60">
+								<tr>
+									<th class="py-2 pr-4">Model</th>
+									<th class="py-2 pr-4">Treadwear</th>
+									<th class="py-2 pr-4">Traction</th>
+									<th class="py-2 pr-4">Noise</th>
+									<th class="py-2 pr-4">Sizes</th>
+								</tr>
+							</thead>
+							<tbody id="compareBody"></tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<!-- JS: filtros, tilt y comparación -->
+			<script>
+				(function () {
+					// --- Tabs de categoría ---
+					const chips = document.querySelectorAll("#tire-lineup .tl-chip");
+					const cards = document.querySelectorAll("#tireGrid .tire-card");
+					chips.forEach((ch) => {
+						ch.addEventListener("click", () => {
+							chips.forEach((c) => c.setAttribute("data-active", "false"));
+							ch.setAttribute("data-active", "true");
+							const cat = ch.getAttribute("data-cat");
+							cards.forEach((card) => {
+								const show = cat === "all" || card.dataset.cat === cat;
+								card.classList.toggle("hidden", !show);
+							});
+						});
+					});
+
+					// --- Tilt ligero (hover 3D) ---
+					cards.forEach((card) => {
+						const max = 10; // grados
+						function tilt(e) {
+							const r = card.getBoundingClientRect();
+							const x = (e.clientX - r.left) / r.width,
+								y = (e.clientY - r.top) / r.height;
+							const rx = (y - 0.5) * -2 * max;
+							const ry = (x - 0.5) * 2 * max;
+							card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+						}
+						card.addEventListener("mousemove", tilt);
+						card.addEventListener(
+							"mouseleave",
+							() => (card.style.transform = "")
+						);
+					});
+
+					// --- Compare tray ---
+					const tray = document.getElementById("compareTray");
+					const pills = document.getElementById("comparePills");
+					const body = document.getElementById("compareBody");
+					const btnClear = document.getElementById("clearCompare");
+					const selected = new Map(); // model -> data
+
+					function renderCompare() {
+						const arr = [...selected.values()];
+						tray.classList.toggle("hidden", arr.length === 0);
+						// pills
+						pills.innerHTML = arr
+							.map(
+								(d) => `
+          <span class="pill">
+            ${d.model}
+            <button class="remove" data-model="${d.model}" title="Remove">✕</button>
+          </span>
+        `
+							)
+							.join("");
+						// table
+						body.innerHTML = arr
+							.map(
+								(d) => `
+          <tr>
+            <td class="py-2 pr-4 text-white">${d.model}</td>
+            <td class="py-2 pr-4">${d.tread}</td>
+            <td class="py-2 pr-4">${d.traction}</td>
+            <td class="py-2 pr-4">${d.noise}</td>
+            <td class="py-2 pr-4">${d.sizes}</td>
+          </tr>
+        `
+							)
+							.join("");
+						// listeners remove
+						pills.querySelectorAll(".remove").forEach((b) => {
+							b.addEventListener("click", () => {
+								selected.delete(b.dataset.model);
+								renderCompare();
+							});
+						});
+					}
+
+					document.querySelectorAll("#tireGrid .addCompare").forEach((btn) => {
+						btn.addEventListener("click", () => {
+							const card = btn.closest(".tire-card");
+							const data = {
+								model: card.dataset.model,
+								tread: card.dataset.tread,
+								traction: card.dataset.traction,
+								noise: card.dataset.noise,
+								sizes: card.dataset.sizes,
+							};
+							if (selected.has(data.model)) {
+								selected.delete(data.model);
+							} else {
+								selected.set(data.model, data);
+							}
+							renderCompare();
+						});
+					});
+
+					btnClear.addEventListener("click", () => {
+						selected.clear();
+						renderCompare();
+					});
+				})();
+			</script>
+		</section>
+
+		<!-- ==================== WHY LANDSCAPE — BRAND DIFFERENTIATION & STRENGTH ==================== -->
+		<section
+			id="why-landscape-strength"
+			class="relative py-12 md:py-16 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950"
+		>
+			<style>
+				:root {
+					--brand: #b424a7;
+					--accent: #c344b8;
+				}
+				.wl-card {
+					@apply rounded-2xl bg-white/5 border border-white/10 p-5 h-full;
+				}
+				.wl-chip {
+					@apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-white/80 border border-white/10;
+				}
+				.wl-icon {
+					@apply w-12 h-12 grid place-items-center rounded-xl text-white;
+					background: color-mix(in srgb, var(--brand) 30%, transparent);
+					border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
+				}
+				.good {
+					color: var(--accent);
+				}
+				.bad {
+					color: #ff6b6b;
+				}
+			</style>
+
+			<div class="max-w-7xl mx-auto px-4">
+				<!-- Headline -->
+				<div class="mb-10 text-center">
+					<h3 class="text-white text-3xl md:text-4xl font-black tracking-tight">
+						Brand <span style="color: var(--brand)">Differentiation</span> &
+						<span style="color: var(--brand)">Strength</span>
+					</h3>
+					<p class="text-white/70 mt-2 max-w-2xl mx-auto">
+						Tecnología propia, resultados medibles y una red que respalda cada
+						kilómetro.
+					</p>
+				</div>
+
+				<!-- Bloque 1: Diferenciadores clave -->
+				<div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+					<article class="wl-card">
+						<div class="flex items-start gap-4">
+							<div class="wl-icon"><i class="fa-solid fa-flask"></i></div>
+							<div>
+								<h4 class="text-white font-bold">Compuestos propietarios</h4>
+								<p class="text-white/70 text-sm mt-1">
+									Mezclas “ColdFlex™ / DryGrip+™” para agarre consistente en
+									amplio rango térmico y menor desgaste.
+								</p>
+								<div class="mt-3 space-x-2">
+									<span class="wl-chip">+12% vida útil</span>
+									<span class="wl-chip">-8% resistencia al rodado</span>
+								</div>
+							</div>
+						</div>
+					</article>
+
+					<article class="wl-card">
+						<div class="flex items-start gap-4">
+							<div class="wl-icon">
+								<i class="fa-solid fa-diagram-project"></i>
+							</div>
+							<div>
+								<h4 class="text-white font-bold">Diseño multi-contorno</h4>
+								<p class="text-white/70 text-sm mt-1">
+									Huella optimizada con “MultiContour-X” para desgaste uniforme
+									y frenado más corto en mojado.
+								</p>
+								<div class="mt-3 space-x-2">
+									<span class="wl-chip">-2.1 m frenado mojado</span>
+									<span class="wl-chip">+7% área de contacto</span>
+								</div>
+							</div>
+						</div>
+					</article>
+
+					<article class="wl-card">
+						<div class="flex items-start gap-4">
+							<div class="wl-icon"><i class="fa-solid fa-fan"></i></div>
+							<div>
+								<h4 class="text-white font-bold">Bajo ruido real</h4>
+								<p class="text-white/70 text-sm mt-1">
+									Patrones asimétricos y cavidades “QuietWave” para viajes más
+									silenciosos a 80–120 km/h.
+								</p>
+								<div class="mt-3 space-x-2">
+									<span class="wl-chip">-2.8 dB cabina</span>
+									<span class="wl-chip">NVH optimizado</span>
+								</div>
+							</div>
+						</div>
+					</article>
+
+					<article class="wl-card">
+						<div class="flex items-start gap-4">
+							<div class="wl-icon">
+								<i class="fa-solid fa-shield-halved"></i>
+							</div>
+							<div>
+								<h4 class="text-white font-bold">Garantía que pesa</h4>
+								<p class="text-white/70 text-sm mt-1">
+									Garantía de kilometraje y daños de carretera en líneas
+									seleccionadas. Reemplazo proporcional claro.
+								</p>
+								<div class="mt-3 space-x-2">
+									<span class="wl-chip">hasta 80,000 km</span>
+									<span class="wl-chip">Road Hazard</span>
+								</div>
+							</div>
+						</div>
+					</article>
+
+					<article class="wl-card">
+						<div class="flex items-start gap-4">
+							<div class="wl-icon">
+								<i class="fa-solid fa-network-wired"></i>
+							</div>
+							<div>
+								<h4 class="text-white font-bold">Red certificada</h4>
+								<p class="text-white/70 text-sm mt-1">
+									Instalación y balanceo en una red que cubre MX & USA con SLA
+									de servicio.
+								</p>
+								<div class="mt-3 space-x-2">
+									<span class="wl-chip">2,500+ dealers</span>
+									<span class="wl-chip">SLA < 45 min</span>
+								</div>
+							</div>
+						</div>
+					</article>
+
+					<article class="wl-card">
+						<div class="flex items-start gap-4">
+							<div class="wl-icon"><i class="fa-solid fa-seedling"></i></div>
+							<div>
+								<h4 class="text-white font-bold">Sustentabilidad</h4>
+								<p class="text-white/70 text-sm mt-1">
+									Materiales con bio-content y procesos de baja emisión sin
+									comprometer performance.
+								</p>
+								<div class="mt-3 space-x-2">
+									<span class="wl-chip">-11% CO₂ eq.</span>
+									<span class="wl-chip">Cert. ISO 14001</span>
+								</div>
+							</div>
+						</div>
+					</article>
+				</div>
+
+				<!-- Bloque 2: Fortaleza de marca (stats + premios) -->
+				<div class="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
+					<div class="wl-card text-center">
+						<div class="text-3xl md:text-4xl font-black text-white">
+							<span class="counter" data-target="18">0</span>
+						</div>
+						<p class="text-xs text-white/70 mt-1">Patentes activas</p>
+					</div>
+					<div class="wl-card text-center">
+						<div class="text-3xl md:text-4xl font-black text-white">
+							<span class="counter" data-target="98">0</span>%
+						</div>
+						<p class="text-xs text-white/70 mt-1">NPS (recomendación)</p>
+					</div>
+					<div class="wl-card text-center">
+						<div class="text-3xl md:text-4xl font-black text-white">
+							<span class="counter" data-target="2500">0</span>+
+						</div>
+						<p class="text-xs text-white/70 mt-1">Dealers en la red</p>
+					</div>
+					<div class="wl-card text-center">
+						<div class="text-3xl md:text-4xl font-black text-white">
+							<span class="counter" data-target="120">0</span>+
+						</div>
+						<p class="text-xs text-white/70 mt-1">Modelos y medidas</p>
+					</div>
+				</div>
+
+				<!-- Premios / confianza -->
+				<div
+					class="mt-6 rounded-2xl border border-white/10 bg-white/5 p-4 md:p-5"
+				>
+					<div class="grid sm:grid-cols-3 gap-4 text-white items-center">
+						<div class="flex items-center gap-3">
+							<i class="fa-solid fa-trophy text-[var(--accent)] text-2xl"></i>
+							<div>
+								<p class="font-bold leading-tight">Awards & Tests</p>
+								<p class="text-white/70 text-xs">
+									Reconocimientos en pruebas independientes de frenado y
+									desgaste.
+								</p>
+							</div>
+						</div>
+						<div class="flex items-center gap-3">
+							<i
+								class="fa-solid fa-flask-vial text-[var(--accent)] text-2xl"
+							></i>
+							<div>
+								<p class="font-bold leading-tight">Test Lab</p>
+								<p class="text-white/70 text-xs">
+									Dinámicas, NVH y fatiga con protocolos propios.
+								</p>
+							</div>
+						</div>
+						<div class="flex items-center gap-3">
+							<i
+								class="fa-solid fa-certificate text-[var(--accent)] text-2xl"
+							></i>
+							<div>
+								<p class="font-bold leading-tight">Warranty</p>
+								<p class="text-white/70 text-xs">
+									Cobertura clara con soporte 24/7.
+								</p>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Bloque 3: Comparativa rápida -->
+				<div class="mt-10 grid lg:grid-cols-2 gap-5">
+					<div class="wl-card">
+						<h4 class="text-white font-bold mb-3">Landscape vs. Genérico</h4>
+						<ul class="text-sm space-y-2">
+							<li class="flex items-start gap-2">
+								<i class="fa-solid fa-check good mt-1"></i
+								><span class="text-white/80"
+									>Compuestos propietarios con certificación interna.</span
+								>
+							</li>
+							<li class="flex items-start gap-2">
+								<i class="fa-solid fa-check good mt-1"></i
+								><span class="text-white/80"
+									>Garantía de kilometraje + Road Hazard.</span
+								>
+							</li>
+							<li class="flex items-start gap-2">
+								<i class="fa-solid fa-check good mt-1"></i
+								><span class="text-white/80"
+									>Red instalada y tiempos SLA medibles.</span
+								>
+							</li>
+							<li class="flex items-start gap-2">
+								<i class="fa-solid fa-xmark bad mt-1"></i
+								><span class="text-white/60"
+									>Genérico: mezcla estándar, sin data pública de pruebas.</span
+								>
+							</li>
+						</ul>
+						<div class="mt-4 flex flex-wrap gap-2">
+							<span class="wl-chip">All-Season</span>
+							<span class="wl-chip">All-Weather</span>
+							<span class="wl-chip">Mud-Terrain</span>
+							<span class="wl-chip">UHP</span>
+						</div>
+					</div>
+
+					<!-- Testimonios / prueba social -->
+					<div class="wl-card">
+						<h4 class="text-white font-bold mb-3">
+							Lo que dicen nuestros clientes
+						</h4>
+						<div class="space-y-3 text-white/80 text-sm">
+							<blockquote
+								class="bg-white/5 p-3 rounded-xl border border-white/10"
+							>
+								“+20k km y desgaste parejo. Silencio notorio en autopista.” —
+								<span class="text-white">Flota logística</span>
+							</blockquote>
+							<blockquote
+								class="bg-white/5 p-3 rounded-xl border border-white/10"
+							>
+								“Frenado en lluvia mejor que mis anteriores, sin vibraciones.” —
+								<span class="text-white">SUV familiar</span>
+							</blockquote>
+						</div>
+					</div>
+				</div>
+
+				<!-- CTA -->
+				<div class="mt-10 text-center">
+					<a
+						href="#find-dealer"
+						class="inline-flex items-center gap-2 px-6 py-3 rounded-md font-extrabold text-black"
+						style="
+							background: var(--accent);
+							box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+						"
+					>
+						Experiméntalo cerca de ti
+						<span
+							class="inline-grid place-items-center w-6 h-6 rounded-full border border-black/20"
+							>➜</span
+						>
+					</a>
+				</div>
+			</div>
+
+			<!-- Contadores animados -->
+			<script>
+				(function () {
+					const els = document.querySelectorAll(
+						"#why-landscape-strength .counter"
+					);
+					const ease = (t) => 1 - Math.pow(1 - t, 3);
+					function animate(el) {
+						const target = +el.getAttribute("data-target");
+						const dur = 1200;
+						const start = performance.now();
+						function tick(now) {
+							const p = Math.min(1, (now - start) / dur);
+							el.textContent = Math.floor(ease(p) * target).toLocaleString();
+							if (p < 1) requestAnimationFrame(tick);
+						}
+						requestAnimationFrame(tick);
+					}
+					const io = new IntersectionObserver(
+						(entries) => {
+							entries.forEach((e) => {
+								if (e.isIntersecting) {
+									animate(e.target);
+									io.unobserve(e.target);
+								}
+							});
+						},
+						{ threshold: 0.5 }
+					);
+					els.forEach((el) => io.observe(el));
+				})();
+			</script>
+		</section>
+
+		<!-- ==================== CORPORATE NEWS ==================== -->
+		<section
+			id="corporate-news"
+			class="relative py-12 md:py-16 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950"
+		>
+			<style>
+				:root {
+					--brand: #b424a7;
+					--accent: #c344b8;
+				}
+				.news-card {
+					@apply rounded-2xl bg-white/5 border border-white/10 overflow-hidden h-full;
+				}
+				.chip {
+					@apply rounded-full px-3 py-1.5 text-xs font-semibold bg-white/10 text-white/80 border border-white/10 cursor-pointer;
+				}
+				.chip[data-active="true"] {
+					background: color-mix(in srgb, var(--brand) 25%, transparent);
+					color: #fff;
+					border-color: color-mix(in srgb, var(--brand) 55%, #fff);
+				}
+				.meta {
+					@apply text-[11px] tracking-wide uppercase text-white/60;
+				}
+			</style>
+
+			<div class="max-w-7xl mx-auto px-4">
+				<!-- Header -->
+				<div
+					class="mb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-4"
+				>
+					<div>
+						<h3
+							class="text-white text-3xl md:text-4xl font-black tracking-tight"
+						>
+							Corporate News
+						</h3>
+						<p class="text-white/70 mt-2 max-w-2xl">
+							Comunicados, actualizaciones de negocio y notas para
+							inversionistas.
+						</p>
+					</div>
+					<!-- filtros -->
+					<div class="flex flex-wrap items-center gap-2">
+						<button class="chip" data-filter="all" data-active="true">
+							All
+						</button>
+						<button class="chip" data-filter="press">Press Release</button>
+						<button class="chip" data-filter="investors">Investors</button>
+						<button class="chip" data-filter="product">Product</button>
+						<button class="chip" data-filter="csr">CSR</button>
+					</div>
+				</div>
+
+				<!-- Featured -->
+				<article class="news-card mb-6">
+					<div class="grid lg:grid-cols-2">
+						<div class="relative">
+							<!-- imagen/video placeholder -->
+							<img
+								src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1600&auto=format&fit=crop"
+								alt="Featured"
+								class="w-full h-64 lg:h-full object-cover"
+							/>
+							<span
+								class="absolute left-4 top-4 chip border-none bg-black/50 text-white"
+								>Featured</span
+							>
+						</div>
+						<div class="p-5 md:p-7">
+							<div class="meta">
+								Press Release ·
+								<time datetime="2025-09-10">Sep 10, 2025</time> · 3 min read
+							</div>
+							<h4 class="text-white text-xl md:text-2xl font-bold mt-2">
+								Landscape inaugura centro de pruebas NVH para validar compuestos
+								de próxima generación
+							</h4>
+							<p class="text-white/70 mt-3">
+								La nueva instalación certifica protocolos de ruido y vibración,
+								acelerando el desarrollo de tecnologías ColdFlex™ y QuietWave.
+							</p>
+							<div class="mt-4 flex gap-2">
+								<span class="chip">R&D</span>
+								<span class="chip">Innovation</span>
+							</div>
+							<div class="mt-6 flex gap-3">
+								<button
+									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black"
+									style="
+										background: var(--accent);
+										box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+									"
+									data-open="n1"
+								>
+									Read more
+									<span
+										class="inline-grid place-items-center w-5 h-5 rounded-full border border-black/20"
+										>➜</span
+									>
+								</button>
+								<a href="#" class="text-[var(--accent)] hover:underline"
+									>Press kit</a
+								>
+							</div>
+						</div>
+					</div>
+				</article>
+
+				<!-- Grid -->
+				<div id="newsGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+					<!-- Cards (usa data-category para filtros) -->
+					<article class="news-card" data-category="investors">
+						<img
+							src="https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?q=80&w=1600&auto=format&fit=crop"
+							class="w-full h-40 object-cover"
+							alt=""
+						/>
+						<div class="p-5">
+							<div class="meta">
+								Investors · <time datetime="2025-08-22">Aug 22, 2025</time> · 2
+								min
+							</div>
+							<h5 class="text-white font-bold mt-1">
+								Resultados Q2: margen +180 bps impulsado por mix All-Weather
+							</h5>
+							<p class="text-white/70 text-sm mt-2">
+								Ingresos suben 12% A/A; outlook FY se mantiene con guía al alza.
+							</p>
+							<div class="mt-3 flex gap-2">
+								<span class="chip">Earnings</span
+								><span class="chip">Guidance</span>
+							</div>
+							<button
+								class="mt-4 text-[var(--accent)] hover:underline"
+								data-open="n2"
+							>
+								View details
+							</button>
+						</div>
+					</article>
+
+					<article class="news-card" data-category="product">
+						<img
+							src="https://images.unsplash.com/photo-1483721310020-03333e577078?q=80&w=1600&auto=format&fit=crop"
+							class="w-full h-40 object-cover"
+							alt=""
+						/>
+						<div class="p-5">
+							<div class="meta">
+								Product · <time datetime="2025-07-30">Jul 30, 2025</time> · 2
+								min
+							</div>
+							<h5 class="text-white font-bold mt-1">
+								Lanzamiento Urban Series: mayor agarre en ciudad y lluvia
+							</h5>
+							<p class="text-white/70 text-sm mt-2">
+								MultiContour-X con surcos profundos y compuesto DryGrip+™.
+							</p>
+							<div class="mt-3 flex gap-2">
+								<span class="chip">All-Weather</span
+								><span class="chip">Urban</span>
+							</div>
+							<button
+								class="mt-4 text-[var(--accent)] hover:underline"
+								data-open="n3"
+							>
+								View details
+							</button>
+						</div>
+					</article>
+
+					<article class="news-card" data-category="csr">
+						<img
+							src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1600&auto=format&fit=crop"
+							class="w-full h-40 object-cover"
+							alt=""
+						/>
+						<div class="p-5">
+							<div class="meta">
+								CSR · <time datetime="2025-06-12">Jun 12, 2025</time> · 1 min
+							</div>
+							<h5 class="text-white font-bold mt-1">
+								Programa de reciclaje de llantas alcanza 2M unidades
+							</h5>
+							<p class="text-white/70 text-sm mt-2">
+								Menos CO₂ y economía circular con partners regionales.
+							</p>
+							<div class="mt-3 flex gap-2">
+								<span class="chip">Sustainability</span
+								><span class="chip">Impact</span>
+							</div>
+							<button
+								class="mt-4 text-[var(--accent)] hover:underline"
+								data-open="n4"
+							>
+								View details
+							</button>
+						</div>
+					</article>
+
+					<article class="news-card" data-category="press">
+						<img
+							src="https://images.unsplash.com/photo-1450101215322-bf5cd27642fc?q=80&w=1600&auto=format&fit=crop"
+							class="w-full h-40 object-cover"
+							alt=""
+						/>
+						<div class="p-5">
+							<div class="meta">
+								Press Release ·
+								<time datetime="2025-05-05">May 05, 2025</time> · 2 min
+							</div>
+							<h5 class="text-white font-bold mt-1">
+								Nueva planta MX incrementa capacidad en 35%
+							</h5>
+							<p class="text-white/70 text-sm mt-2">
+								Automatización y eficiencia energética de última generación.
+							</p>
+							<div class="mt-3 flex gap-2">
+								<span class="chip">Operations</span
+								><span class="chip">Manufacturing</span>
+							</div>
+							<button
+								class="mt-4 text-[var(--accent)] hover:underline"
+								data-open="n5"
+							>
+								View details
+							</button>
+						</div>
+					</article>
+
+					<article class="news-card" data-category="product">
+						<img
+							src="https://images.unsplash.com/photo-1520975930448-c1a91b3bfe46?q=80&w=1600&auto=format&fit=crop"
+							class="w-full h-40 object-cover"
+							alt=""
+						/>
+						<div class="p-5">
+							<div class="meta">
+								Product · <time datetime="2025-04-18">Apr 18, 2025</time> · 3
+								min
+							</div>
+							<h5 class="text-white font-bold mt-1">
+								ColdFlex™ 2.0: mejor elasticidad a baja temperatura
+							</h5>
+							<p class="text-white/70 text-sm mt-2">
+								Menor cristalización y más agarre en inviernos moderados.
+							</p>
+							<div class="mt-3 flex gap-2">
+								<span class="chip">R&D</span><span class="chip">Compound</span>
+							</div>
+							<button
+								class="mt-4 text-[var(--accent)] hover:underline"
+								data-open="n6"
+							>
+								View details
+							</button>
+						</div>
+					</article>
+
+					<article class="news-card" data-category="investors">
+						<img
+							src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1600&auto=format&fit=crop"
+							class="w-full h-40 object-cover"
+							alt=""
+						/>
+						<div class="p-5">
+							<div class="meta">
+								Investors · <time datetime="2025-03-01">Mar 01, 2025</time> · 2
+								min
+							</div>
+							<h5 class="text-white font-bold mt-1">
+								Landscape emite bono verde por $120M
+							</h5>
+							<p class="text-white/70 text-sm mt-2">
+								Financia iniciativas de ahorro energético y reciclaje.
+							</p>
+							<div class="mt-3 flex gap-2">
+								<span class="chip">Green Bond</span
+								><span class="chip">ESG</span>
+							</div>
+							<button
+								class="mt-4 text-[var(--accent)] hover:underline"
+								data-open="n7"
+							>
+								View details
+							</button>
+						</div>
+					</article>
+				</div>
+
+				<!-- Load more -->
+				<div class="text-center mt-8">
+					<button
+						id="loadMoreNews"
+						class="inline-flex items-center gap-2 px-6 py-3 rounded-md font-extrabold text-black"
+						style="
+							background: var(--accent);
+							box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+						"
+					>
+						Load more
+						<span
+							class="inline-grid place-items-center w-6 h-6 rounded-full border border-black/20"
+							>+</span
+						>
+					</button>
+				</div>
+			</div>
+
+			<!-- Modal simple -->
+			<div id="newsModal" class="fixed inset-0 z-50 hidden">
+				<div class="absolute inset-0 bg-black/70"></div>
+				<div
+					class="relative max-w-2xl mx-auto mt-24 bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden"
+				>
+					<div
+						class="flex items-center justify-between px-5 py-3 border-b border-white/10"
+					>
+						<h4 id="newsModalTitle" class="text-white font-bold">Title</h4>
+						<button id="newsModalClose" class="text-white/70 hover:text-white">
+							✕
+						</button>
+					</div>
+					<div class="p-5 text-white/80" id="newsModalBody">
+						<!-- contenido dinámico -->
+					</div>
+				</div>
+			</div>
+
+			<script>
+				// -------- Filtros --------
+				const chips = document.querySelectorAll(
+					"#corporate-news .chip[data-filter]"
+				);
+				const cards = document.querySelectorAll("#newsGrid [data-category]");
+				chips.forEach((ch) =>
+					ch.addEventListener("click", () => {
+						chips.forEach((c) => c.setAttribute("data-active", "false"));
+						ch.setAttribute("data-active", "true");
+						const f = ch.getAttribute("data-filter");
+						cards.forEach((card) => {
+							card.classList.toggle(
+								"hidden",
+								f !== "all" && card.dataset.category !== f
+							);
+						});
+					})
+				);
+
+				// -------- Modal (vista rápida) --------
+				const modal = document.getElementById("newsModal");
+				const modalTitle = document.getElementById("newsModalTitle");
+				const modalBody = document.getElementById("newsModalBody");
+				const closeBtn = document.getElementById("newsModalClose");
+				function openModal({ title, body }) {
+					modalTitle.textContent = title;
+					modalBody.innerHTML = body;
+					modal.classList.remove("hidden");
+					document.body.style.overflow = "hidden";
+				}
+				function closeModal() {
+					modal.classList.add("hidden");
+					document.body.style.overflow = "";
+				}
+				closeBtn.addEventListener("click", closeModal);
+				modal.addEventListener("click", (e) => {
+					if (e.target === modal) closeModal();
+				});
+
+				document.querySelectorAll("[data-open]").forEach((btn) => {
+					btn.addEventListener("click", () => {
+						const id = btn.getAttribute("data-open");
+						// contenido demo por id
+						const content = {
+							n1: {
+								title: "NVH Test Center",
+								body: "<p>Instalación con cámaras anecoicas y dinamómetros para validar QuietWave y compuestos ColdFlex™.</p>",
+							},
+							n2: {
+								title: "Resultados Q2",
+								body: "<p>Ingreso +12% A/A; margen +180 bps; capex enfocado en expansión MX.</p>",
+							},
+							n3: {
+								title: "Urban Series",
+								body: "<p>MultiContour-X, surcos profundos y compuesto DryGrip+™. Disponible en 16–20”.</p>",
+							},
+							n4: {
+								title: "Reciclaje 2M",
+								body: "<p>Programa de economía circular con partners regionales. -CO₂ y reutilización de materiales.</p>",
+							},
+							n5: {
+								title: "Nueva planta MX",
+								body: "<p>Automatización, ahorro energético y capacidad +35% para líneas All-Season.</p>",
+							},
+							n6: {
+								title: "ColdFlex™ 2.0",
+								body: "<p>Mejor elasticidad a baja temperatura; menor cristalización; más agarre invernal.</p>",
+							},
+							n7: {
+								title: "Bono verde",
+								body: "<p>Emisión por $120M destinada a proyectos ESG certificados.</p>",
+							},
+						}[id] || { title: "News", body: "<p>Content not found.</p>" };
+						openModal(content);
+					});
+				});
+
+				// -------- Load more (demo) --------
+				document
+					.getElementById("loadMoreNews")
+					.addEventListener("click", () => {
+						const grid = document.getElementById("newsGrid");
+						const tpl = grid.firstElementChild.cloneNode(true);
+						// cambia fecha/título mínimos para distinguir
+						tpl.querySelector("time").textContent = "Today";
+						tpl.querySelector("h5").textContent =
+							"Nueva nota corporativa (demo)";
+						grid.appendChild(tpl);
+					});
+			</script>
+		</section>
+
+		<!-- ==================== RECRUITMENT ==================== -->
+		<section
+			id="recruitment"
+			class="relative py-12 md:py-16 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950"
+		>
+			<style>
+				:root {
+					--brand: #b424a7;
+					--accent: #c344b8;
+				}
+				.rec-card {
+					@apply rounded-2xl bg-white/5 border border-white/10 p-5 h-full;
+				}
+				.chip {
+					@apply rounded-full px-3 py-1.5 text-xs font-semibold bg-white/10 text-white/80 border border-white/10 cursor-pointer;
+				}
+				.chip[data-active="true"] {
+					background: color-mix(in srgb, var(--brand) 25%, transparent);
+					color: #fff;
+					border-color: color-mix(in srgb, var(--brand) 55%, #fff);
+				}
+				.step-dot {
+					width: 14px;
+					height: 14px;
+					border-radius: 9999px;
+					background: var(--brand);
+					box-shadow: 0 0 0 4px
+						color-mix(in srgb, var(--brand) 25%, transparent);
+				}
+			</style>
+
+			<div class="max-w-7xl mx-auto px-4">
+				<!-- Header -->
+				<div class="mb-8 text-center">
+					<h3 class="text-white text-3xl md:text-4xl font-black tracking-tight">
+						Join <span style="color: var(--brand)">Landscape</span>
+					</h3>
+					<p class="text-white/70 mt-2 max-w-2xl mx-auto">
+						Menos desgaste, más kilómetros… también en tu carrera.
+					</p>
+				</div>
+
+				<!-- Pitch + Perks -->
+				<div class="grid lg:grid-cols-3 gap-5">
+					<article class="rec-card lg:col-span-1">
+						<h4 class="text-white font-bold text-lg">Nuestra cultura</h4>
+						<p class="text-white/70 text-sm mt-2">
+							Ingeniería rigurosa, obsesión por el cliente y trabajo en equipo
+							binacional (MX & USA) con impacto real en la movilidad.
+						</p>
+						<div class="mt-4 grid grid-cols-2 gap-3 text-white/85 text-sm">
+							<div class="flex items-center gap-3">
+								<i class="fa-solid fa-medal text-[var(--accent)]"></i>
+								Incentivos por desempeño
+							</div>
+							<div class="flex items-center gap-3">
+								<i class="fa-solid fa-graduation-cap text-[var(--accent)]"></i>
+								Upskilling continuo
+							</div>
+							<div class="flex items-center gap-3">
+								<i class="fa-solid fa-house-laptop text-[var(--accent)]"></i>
+								Híbrido / remoto
+							</div>
+							<div class="flex items-center gap-3">
+								<i class="fa-solid fa-shield-heart text-[var(--accent)]"></i>
+								Seguro & bienestar
+							</div>
+						</div>
+					</article>
+
+					<!-- Filtros + Vacantes -->
+					<div class="lg:col-span-2">
+						<!-- Filtros -->
+						<form id="jobsFilter" class="rec-card mb-5">
+							<div class="grid md:grid-cols-4 gap-3">
+								<label class="text-xs text-white/70"
+									>Área
+									<select
+										id="fDept"
+										class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									>
+										<option value="">Todas</option>
+										<option value="engineering">Engineering</option>
+										<option value="product">Product</option>
+										<option value="operations">Operations</option>
+										<option value="sales">Sales</option>
+										<option value="marketing">Marketing</option>
+									</select>
+								</label>
+								<label class="text-xs text-white/70"
+									>Ubicación
+									<select
+										id="fLoc"
+										class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									>
+										<option value="">Cualquiera</option>
+										<option value="mx">México</option>
+										<option value="us">USA</option>
+										<option value="remote">Remote</option>
+									</select>
+								</label>
+								<label class="text-xs text-white/70"
+									>Tipo
+									<select
+										id="fType"
+										class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									>
+										<option value="">Todos</option>
+										<option value="fulltime">Full-time</option>
+										<option value="contract">Contract</option>
+										<option value="intern">Intern</option>
+									</select>
+								</label>
+								<div class="flex items-end">
+									<button
+										class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-extrabold text-black"
+										style="
+											background: var(--accent);
+											box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+										"
+									>
+										Buscar
+										<span
+											class="inline-grid place-items-center w-6 h-6 rounded-full border border-black/20"
+											>➜</span
+										>
+									</button>
+								</div>
+							</div>
+							<div class="mt-3 flex flex-wrap gap-2">
+								<span class="chip" data-tag="new">New</span>
+								<span class="chip" data-tag="urgent">Urgent</span>
+								<span class="chip" data-tag="senior">Senior</span>
+							</div>
+						</form>
+
+						<!-- Lista de vacantes -->
+						<div id="jobsList" class="space-y-3">
+							<!-- Job card (template repeated) -->
+							<article
+								class="rec-card"
+								data-dept="engineering"
+								data-loc="mx"
+								data-type="fulltime"
+								data-tags="new,senior"
+							>
+								<div class="flex flex-wrap items-center gap-3">
+									<span
+										class="text-xs px-2 py-1 rounded bg-white/10 border border-white/10 text-white/70"
+										>Engineering</span
+									>
+									<h5 class="text-white font-bold text-lg">
+										Sr. Tire Compound Engineer
+									</h5>
+									<span class="ml-auto text-[var(--accent)] text-sm"
+										><i class="fa-solid fa-location-dot"></i> Monterrey,
+										MX</span
+									>
+								</div>
+								<p class="text-white/70 text-sm mt-2">
+									Lidera desarrollo de compuestos ColdFlex™/DryGrip+™,
+									validación NVH y pruebas de desgaste.
+								</p>
+
+								<!-- Acordeón -->
+								<details class="mt-3 group">
+									<summary
+										class="cursor-pointer text-white/80 hover:text-white flex items-center gap-2 select-none"
+									>
+										<i
+											class="fa-solid fa-angle-down transition group-open:rotate-180"
+										></i>
+										Detalles & requisitos
+									</summary>
+									<div class="mt-3 text-white/70 text-sm space-y-2">
+										<p>
+											<strong>Requisitos:</strong> 5+ años en
+											polímeros/compounding; DOE; estadística; inglés B2.
+										</p>
+										<p>
+											<strong>Plus:</strong> experiencia en NVH, ISO 28580,
+											pruebas de pista.
+										</p>
+										<div class="flex gap-2 flex-wrap">
+											<span class="chip" data-static>New</span
+											><span class="chip" data-static>Senior</span>
+										</div>
+									</div>
+								</details>
+
+								<div class="mt-4 flex items-center gap-3">
+									<button
+										class="applyBtn inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black"
+										data-job="Sr. Tire Compound Engineer"
+										style="
+											background: var(--accent);
+											box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+										"
+									>
+										Apply
+									</button>
+									<button
+										class="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+									>
+										<i class="fa-regular fa-bookmark"></i> Save
+									</button>
+								</div>
+							</article>
+
+							<article
+								class="rec-card"
+								data-dept="product"
+								data-loc="us"
+								data-type="fulltime"
+								data-tags="new"
+							>
+								<div class="flex flex-wrap items-center gap-3">
+									<span
+										class="text-xs px-2 py-1 rounded bg-white/10 border border-white/10 text-white/70"
+										>Product</span
+									>
+									<h5 class="text-white font-bold text-lg">
+										Product Manager — All-Weather
+									</h5>
+									<span class="ml-auto text-[var(--accent)] text-sm"
+										><i class="fa-solid fa-location-dot"></i> Houston, US</span
+									>
+								</div>
+								<p class="text-white/70 text-sm mt-2">
+									Propietario de roadmap All-Weather, pricing y GTM para MX &
+									USA.
+								</p>
+								<details class="mt-3 group">
+									<summary
+										class="cursor-pointer text-white/80 hover:text-white flex items-center gap-2 select-none"
+									>
+										<i
+											class="fa-solid fa-angle-down transition group-open:rotate-180"
+										></i>
+										Detalles & requisitos
+									</summary>
+									<div class="mt-3 text-white/70 text-sm space-y-2">
+										<p>
+											<strong>Requisitos:</strong> 3–5 años en product
+											management; análisis de mercado; habilidades de
+											storytelling.
+										</p>
+										<p>
+											<strong>Plus:</strong> experiencia automotriz/llantero;
+											SQL básico.
+										</p>
+										<div class="flex gap-2 flex-wrap">
+											<span class="chip" data-static>New</span>
+										</div>
+									</div>
+								</details>
+								<div class="mt-4 flex items-center gap-3">
+									<button
+										class="applyBtn inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black"
+										data-job="Product Manager — All-Weather"
+										style="
+											background: var(--accent);
+											box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+										"
+									>
+										Apply
+									</button>
+									<button
+										class="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+									>
+										<i class="fa-regular fa-bookmark"></i> Save
+									</button>
+								</div>
+							</article>
+
+							<article
+								class="rec-card"
+								data-dept="operations"
+								data-loc="mx"
+								data-type="contract"
+								data-tags=""
+							>
+								<div class="flex flex-wrap items-center gap-3">
+									<span
+										class="text-xs px-2 py-1 rounded bg-white/10 border border-white/10 text-white/70"
+										>Operations</span
+									>
+									<h5 class="text-white font-bold text-lg">
+										Quality Technician (Contract)
+									</h5>
+									<span class="ml-auto text-[var(--accent)] text-sm"
+										><i class="fa-solid fa-location-dot"></i> Guadalajara,
+										MX</span
+									>
+								</div>
+								<p class="text-white/70 text-sm mt-2">
+									Inspección, pruebas y documentación ISO 9001 en planta.
+								</p>
+								<details class="mt-3 group">
+									<summary
+										class="cursor-pointer text-white/80 hover:text-white flex items-center gap-2 select-none"
+									>
+										<i
+											class="fa-solid fa-angle-down transition group-open:rotate-180"
+										></i>
+										Detalles & requisitos
+									</summary>
+									<div class="mt-3 text-white/70 text-sm space-y-2">
+										<p>
+											<strong>Requisitos:</strong> 2+ años QA/QC; manejo de
+											instrumentos; 5S; reporteo.
+										</p>
+										<p><strong>Plus:</strong> auditor interno ISO.</p>
+									</div>
+								</details>
+								<div class="mt-4 flex items-center gap-3">
+									<button
+										class="applyBtn inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black"
+										data-job="Quality Technician (Contract)"
+										style="
+											background: var(--accent);
+											box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+										"
+									>
+										Apply
+									</button>
+									<button
+										class="inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+									>
+										<i class="fa-regular fa-bookmark"></i> Save
+									</button>
+								</div>
+							</article>
+						</div>
+					</div>
+				</div>
+
+				<!-- Hiring process -->
+				<div class="mt-10 rec-card">
+					<h4 class="text-white font-bold mb-4">Nuestro proceso</h4>
+					<div class="grid md:grid-cols-4 gap-5 text-white/80 text-sm">
+						<div>
+							<div class="step-dot"></div>
+							<p class="mt-2 font-semibold text-white">1) Apply</p>
+							<p>CV + enlaces (LinkedIn/Portfolio).</p>
+						</div>
+						<div>
+							<div class="step-dot"></div>
+							<p class="mt-2 font-semibold text-white">2) Screening</p>
+							<p>15–20 min con Talent para encuadre.</p>
+						</div>
+						<div>
+							<div class="step-dot"></div>
+							<p class="mt-2 font-semibold text-white">3) Técnica</p>
+							<p>Challenge / técnica con el equipo.</p>
+						</div>
+						<div>
+							<div class="step-dot"></div>
+							<p class="mt-2 font-semibold text-white">4) Oferta</p>
+							<p>Feedback rápido y propuesta formal.</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- CTA final -->
+				<div class="mt-8 text-center">
+					<a
+						href="#jobsList"
+						class="inline-flex items-center gap-2 px-6 py-3 rounded-md font-extrabold text-black"
+						style="
+							background: var(--accent);
+							box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
+						"
+					>
+						Ver vacantes abiertas
+						<span
+							class="inline-grid place-items-center w-6 h-6 rounded-full border border-black/20"
+							>➜</span
+						>
+					</a>
+				</div>
+			</div>
+
+			<!-- Modal Apply -->
+			<div id="applyModal" class="fixed inset-0 z-50 hidden">
+				<div class="absolute inset-0 bg-black/70"></div>
+				<div
+					class="relative max-w-xl mx-auto mt-20 bg-neutral-900 border border-white/10 rounded-2xl overflow-hidden"
+				>
+					<div
+						class="flex items-center justify-between px-5 py-3 border-b border-white/10"
+					>
+						<h4 class="text-white font-bold">
+							Apply — <span id="applyJobTitle">Role</span>
+						</h4>
+						<button id="applyClose" class="text-white/70 hover:text-white">
+							✕
+						</button>
+					</div>
+					<form id="applyForm" class="p-5 text-sm text-white/80 grid gap-3">
+						<label class="text-xs text-white/70"
+							>Full name
+							<input
+								name="name"
+								required
+								class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								placeholder="Nombre Apellido"
+							/>
+						</label>
+						<div class="grid md:grid-cols-2 gap-3">
+							<label class="text-xs text-white/70"
+								>Email
+								<input
+									type="email"
+									name="email"
+									required
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									placeholder="you@email.com"
+								/>
+							</label>
+							<label class="text-xs text-white/70"
+								>Phone
+								<input
+									name="phone"
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									placeholder="+52 55…"
+								/>
+							</label>
+						</div>
+						<label class="text-xs text-white/70"
+							>LinkedIn / Portfolio
+							<input
+								name="link"
+								class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								placeholder="https://…"
+							/>
+						</label>
+						<label class="text-xs text-white/70"
+							>Resume (PDF)
+							<input
+								type="file"
+								name="cv"
+								accept=".pdf"
+								class="mt-1 w-full text-white/70"
+							/>
+						</label>
+						<label class="text-xs text-white/70"
+							>Cover letter
+							<textarea
+								name="cover"
+								rows="4"
+								class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+								placeholder="Cuéntanos por qué tú…"
+							></textarea>
+						</label>
+						<div class="flex items-center justify-between mt-2">
+							<label class="inline-flex items-center gap-2"
+								><input type="checkbox" required /> Acepto el aviso de
+								privacidad</label
+							>
+							<button
+								class="inline-flex items-center gap-2 px-5 py-2.5 rounded-md font-extrabold text-black"
+								style="
+									background: var(--accent);
+									box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+								"
+							>
+								Send application
+							</button>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<script>
+				// ---------- Filtros ----------
+				const jobsList = document.getElementById("jobsList");
+				const fDept = document.getElementById("fDept");
+				const fLoc = document.getElementById("fLoc");
+				const fType = document.getElementById("fType");
+				const chips1 = document.querySelectorAll(
+					"#recruitment .chip:not([data-static])"
+				);
+				const form1 = document.getElementById("jobsFilter");
+
+				let tagFilter = null;
+				chips1.forEach((ch) => {
+					ch.addEventListener("click", () => {
+						chips1.forEach((c) => c.setAttribute("data-active", "false"));
+						const active =
+							ch.getAttribute("data-active") === "true" ? null : ch.dataset.tag;
+						tagFilter = active;
+						if (active) {
+							ch.setAttribute("data-active", "true");
+						}
+						applyFilters();
+					});
+				});
+
+				form1.addEventListener("submit", (e) => {
+					e.preventDefault();
+					applyFilters();
+				});
+
+				function applyFilters() {
+					const dept = fDept.value,
+						loc = fLoc.value,
+						type = fType.value;
+					jobsList.querySelectorAll("article.rec-card").forEach((card) => {
+						const okDept = !dept || card.dataset.dept === dept;
+						const okLoc = !loc || card.dataset.loc === loc;
+						const okType = !type || card.dataset.type === type;
+						const okTag =
+							!tagFilter ||
+							(card.dataset.tags || "").split(",").includes(tagFilter);
+						card.classList.toggle(
+							"hidden",
+							!(okDept && okLoc && okType && okTag)
+						);
+					});
+				}
+
+				// ---------- Modal Apply ----------
+				const modal1 = document.getElementById("applyModal");
+				const modalClose = document.getElementById("applyClose");
+				const titleSpan = document.getElementById("applyJobTitle");
+
+				document.querySelectorAll(".applyBtn").forEach((btn) => {
+					btn.addEventListener("click", () => {
+						titleSpan.textContent = btn.dataset.job || "Role";
+						modal1.classList.remove("hidden");
+						document.body.style.overflow = "hidden";
+					});
+				});
+				function closeModal() {
+					modal1.classList.add("hidden");
+					document.body.style.overflow = "";
+				}
+				modalClose.addEventListener("click", closeModal);
+				modal1.addEventListener("click", (e) => {
+					if (e.target === modal1) closeModal();
+				});
+
+				// Demo submit
+				document.getElementById("applyForm").addEventListener("submit", (e) => {
+					e.preventDefault();
+					const fd = new FormData(e.target);
+					alert(
+						"Application sent (demo)\\n" +
+							JSON.stringify(Object.fromEntries(fd), null, 2)
+					);
+					closeModal();
+					e.target.reset();
+				});
+
+				// init
+				applyFilters();
+			</script>
+		</section>
+
+		<!-- ==================== FOOTER ==================== -->
+		<footer
+			class="relative pt-12 md:pt-16 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950 border-t border-white/10"
+		>
+			<style>
+				:root {
+					--brand: #b424a7;
+					--accent: #c344b8;
+				}
+				.f-chip {
+					@apply inline-flex items-center gap-2 text-xs px-2 py-1 rounded-full bg-white/10 border border-white/10 text-white/80;
+				}
+				.f-input {
+					@apply w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2 outline-none;
+				}
+				.f-input:focus {
+					box-shadow: 0 0 0 3px
+						color-mix(in srgb, var(--brand) 35%, transparent);
+				}
+			</style>
+
+			<div class="max-w-7xl mx-auto px-4">
+				<!-- Top row: logo + brief + newsletter -->
+				<div class="grid lg:grid-cols-12 gap-8 items-start">
+					<!-- Brand -->
+					<div class="lg:col-span-4">
+						<div class="flex items-center gap-3">
+							<img
+								src="assets/img/logo.png"
+								alt="Landscape"
+								class="h-8 w-auto"
+							/>
+							<span class="f-chip">Since 2015</span>
+						</div>
+						<p class="text-white/70 text-sm mt-3 max-w-md">
+							Ingeniería, seguridad y rendimiento para cada kilómetro. MX & USA
+							con red certificada de instalación.
+						</p>
+
+						<div class="mt-4 flex items-center gap-3 text-white/80">
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-facebook-f"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-instagram"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-x-twitter"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-youtube"></i
+							></a>
+							<span class="ml-3 text-xs text-white/50">Follow us</span>
+						</div>
+					</div>
+
+					<!-- Nav columns -->
+					<nav class="lg:col-span-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+						<div>
+							<h6 class="text-white font-bold mb-3">Productos</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#tire-lineup"
+										>Tire Lineup</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#find-dealer"
+										>Find a Dealer</a
+									>
+								</li>
+								<li><a class="hover:text-white" href="#">Promociones</a></li>
+								<li><a class="hover:text-white" href="#">Garantía</a></li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Soporte</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#">Registro de garantía</a>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#">Centros de servicio</a>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#">Guías & recursos</a>
+								</li>
+								<li><a class="hover:text-white" href="#">FAQ</a></li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Empresa</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#why-landscape"
+										>Why Landscape</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#why-landscape-strength"
+										>Brand Strength</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#corporate-news"
+										>Corporate News</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#recruitment"
+										>Recruitment</a
+									>
+								</li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Legal</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li><a class="hover:text-white" href="#">Términos</a></li>
+								<li><a class="hover:text-white" href="#">Privacidad</a></li>
+								<li><a class="hover:text-white" href="#">Cookies</a></li>
+								<li><a class="hover:text-white" href="#">Accesibilidad</a></li>
+							</ul>
+						</div>
+					</nav>
+
+					<!-- Newsletter / Contact -->
+					<div class="lg:col-span-3">
+						<h6 class="text-white font-bold mb-3">Mantente al día</h6>
+						<form id="newsletterForm" class="flex gap-2">
+							<input
+								type="email"
+								required
+								placeholder="Tu correo"
+								class="f-input"
+							/>
+							<button
+								class="px-4 py-2 rounded-md font-extrabold text-black"
+								style="
+									background: var(--accent);
+									box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+								"
+							>
+								Suscribirme
+							</button>
+						</form>
+						<p class="text-white/50 text-xs mt-2">
+							Al suscribirte aceptas nuestra
+							<a href="#" class="hover:text-white underline"
+								>Política de Privacidad</a
+							>.
+						</p>
+
+						<div class="mt-6 text-white/70 text-sm space-y-1">
+							<p>
+								<i class="fa-solid fa-location-dot text-[var(--accent)]"></i>
+								Monterrey, MX · Houston, US
+							</p>
+							<p>
+								<a href="mailto:hello@landscape.io" class="hover:text-white"
+									><i class="fa-solid fa-envelope text-[var(--accent)]"></i>
+									hello@landscape.io</a
+								>
+							</p>
+							<p>
+								<a href="tel:+528100000000" class="hover:text-white"
+									><i class="fa-solid fa-phone text-[var(--accent)]"></i> +52 81
+									0000 0000</a
+								>
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Divider -->
+				<div class="my-8 h-px bg-white/10"></div>
+
+				<!-- Bottom bar -->
+				<div
+					class="pb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+				>
+					<div class="text-white/60 text-sm">
+						© <span id="year"></span> Landscape. All rights reserved.
+					</div>
+
+					<div class="flex items-center gap-4 text-white/60 text-sm">
+						<a href="#" class="hover:text-white">Sitemap</a>
+						<span class="opacity-30">•</span>
+						<a href="#" class="hover:text-white">Do Not Sell My Info</a>
+						<span class="opacity-30">•</span>
+						<button
+							id="backToTop"
+							class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+						>
+							<i class="fa-solid fa-arrow-up"></i> Back to top
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sutil glow de fondo -->
+			<div
+				class="pointer-events-none absolute inset-0"
+				style="
+					background: radial-gradient(
+						40% 35% at 80% 0%,
+						color-mix(in srgb, var(--brand) 14%, transparent),
+						transparent 60%
+					);
+				"
+			></div>
+
+			<script>
+				// Año automático
+				document.getElementById("year").textContent = new Date().getFullYear();
+
+				// Back to top (suave)
+				document.getElementById("backToTop").addEventListener("click", () => {
+					window.scrollTo({ top: 0, behavior: "smooth" });
+				});
+
+				// Newsletter (demo)
+				document
+					.getElementById("newsletterForm")
+					.addEventListener("submit", (e) => {
+						e.preventDefault();
+						const email = e.target.querySelector('input[type="email"]').value;
+						alert("Gracias por suscribirte (demo): " + email);
+						e.target.reset();
+					});
+			</script>
+		</footer>
+
+		<script>
+			const track = document.querySelector("#track");
+			const slides = [...track.children];
+			const dotsRow = slides.map((s) => s.querySelector("[data-dots]"));
+
+			// Crea dots
+			let dots = [];
+			slides.forEach((_, i) => {
+				const d = document.createElement("button");
+				d.className = "dot";
+				d.setAttribute("aria-label", `Ir a la diapositiva ${i + 1}`);
+				d.addEventListener("click", () => goTo(i));
+				dots.push(d);
+			});
+			dotsRow.forEach((row) =>
+				dots.forEach((d) => row.appendChild(d.cloneNode(true)))
+			);
+			dots = [...document.querySelectorAll(".dot")].slice(0, slides.length);
+
+			// --- helpers de video ---
+			function pauseAllVideos() {
+				document.querySelectorAll("video[data-video]").forEach((v) => {
+					v.pause();
+					// opcional: reinicia al salir del slide
+					// v.currentTime = 0;
+				});
+			}
+			function playVideosInSlide(i) {
+				const _slides = [...document.querySelectorAll("#track > *")];
+				_slides[i]?.querySelectorAll("video[data-video]").forEach((v) => {
+					// si estaba preload="none", forzamos carga mínima
+					if (v.preload === "none" && v.readyState === 0) v.load();
+					v.play().catch(() => {});
+				});
+			}
+
+			let current = 0,
+				timer;
+
+			function goTo(i) {
+				current = (i + slides.length) % slides.length;
+				track.style.transform = `translateX(-${current * 100}%)`;
+				dots.forEach((d, idx) => d.classList.toggle("active", idx === current));
+
+				// 🔧 IMPORTANTE: controlar videos EN CADA CAMBIO
+				pauseAllVideos();
+				playVideosInSlide(current);
+
+				reset();
+			}
+			function next() {
+				goTo(current + 1);
+			}
+			function prev() {
+				goTo(current - 1);
+			}
+
+			document.getElementById("next").addEventListener("click", next);
+			document.getElementById("prev").addEventListener("click", prev);
+
+			function reset() {
+				clearInterval(timer);
+				timer = setInterval(next, 6000);
+			}
+
+			// Opcional: pausar todo si la pestaña se oculta
+			document.addEventListener("visibilitychange", () => {
+				if (document.hidden) pauseAllVideos();
+				else playVideosInSlide(current);
+			});
+
+			// iniciar
+			reset();
+			goTo(0); // ya llama a pause/play internamente
+		</script>
+	</body>
+</html>
