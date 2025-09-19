@@ -507,14 +507,38 @@
 					/>
 				</div>
 				<nav
-					class="flex items-center justify-center gap-8 md:gap-10 font-semibold tracking-wide uppercase text-sm pb-4"
+					class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-12 gap-y-4 justify-items-center font-semibold tracking-wide uppercase text-sm pb-4"
 				>
-					<a href="#" class="hover:opacity-80">Busca tu llanta perfecta</a>
-					<a href="#" class="hover:opacity-80">Encuentra un distribuidor</a>
-					<a href="#" class="hover:opacity-80">Nuestros modelos</a>
-					<a href="#" class="hover:opacity-80">¿Porque Landscape?</a>
-					<a href="#" class="hover:opacity-80">Noticias</a>
-					<a href="#" class="hover:opacity-80">¡Únete a nuestro equipo!</a>
+					<a
+						href="#"
+						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						>Busca tu llanta perfecta</a
+					>
+					<a
+						href="#"
+						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						>Encuentra un distribuidor</a
+					>
+					<a
+						href="#"
+						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						>Nuestros modelos</a
+					>
+					<a
+						href="#"
+						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						>¿Porque Landscape?</a
+					>
+					<a
+						href="#"
+						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						>Noticias Corporativas</a
+					>
+					<a
+						href="#"
+						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						>¡Únete a Landscape!</a
+					>
 				</nav>
 			</div>
 		</header>
@@ -779,7 +803,7 @@
 					<h3 class="text-2xl font-black tracking-tight" style="color: white">
 						Encuentra tus llantas
 					</h3>
-					<div class="inline-flex rounded-full bg-white/10 p-1">
+					<!-- <div class="inline-flex rounded-full bg-white/10 p-1">
 						<button
 							id="tabByVehicle"
 							class="px-4 py-2 text-sm rounded-full font-semibold bg-[var(--brand)] text-white"
@@ -792,7 +816,7 @@
 						>
 							Por medida
 						</button>
-					</div>
+					</div> -->
 				</div>
 
 				<div class="grid gap-6 md:grid-cols-3">
@@ -1925,22 +1949,22 @@
 					});
 
 					// --- Tilt ligero (hover 3D) ---
-					cards.forEach((card) => {
-						const max = 10; // grados
-						function tilt(e) {
-							const r = card.getBoundingClientRect();
-							const x = (e.clientX - r.left) / r.width,
-								y = (e.clientY - r.top) / r.height;
-							const rx = (y - 0.5) * -2 * max;
-							const ry = (x - 0.5) * 2 * max;
-							card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
-						}
-						card.addEventListener("mousemove", tilt);
-						card.addEventListener(
-							"mouseleave",
-							() => (card.style.transform = "")
-						);
-					});
+					// cards.forEach((card) => {
+					// 	const max = 10; // grados
+					// 	function tilt(e) {
+					// 		const r = card.getBoundingClientRect();
+					// 		const x = (e.clientX - r.left) / r.width,
+					// 			y = (e.clientY - r.top) / r.height;
+					// 		const rx = (y - 0.5) * -2 * max;
+					// 		const ry = (x - 0.5) * 2 * max;
+					// 		card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+					// 	}
+					// 	card.addEventListener("mousemove", tilt);
+					// 	card.addEventListener(
+					// 		"mouseleave",
+					// 		() => (card.style.transform = "")
+					// 	);
+					// });
 
 					// --- Compare tray ---
 					const tray = document.getElementById("compareTray");
@@ -3358,11 +3382,11 @@
 					<div class="lg:col-span-4">
 						<div class="flex items-center gap-3">
 							<img
-								src="assets/img/logo.png"
+								src="assets/img/logo_morado.png"
 								alt="Landscape"
 								class="h-8 w-auto"
 							/>
-							<span class="f-chip">Since 2015</span>
+							<span class="f-chip">Since 2025</span>
 						</div>
 						<p class="text-white/70 text-sm mt-3 max-w-md">
 							Ingeniería, seguridad y rendimiento para cada kilómetro. MX & USA
@@ -3516,10 +3540,10 @@
 					</div>
 
 					<div class="flex items-center gap-4 text-white/60 text-sm">
-						<a href="#" class="hover:text-white">Sitemap</a>
+						<!-- <a href="#" class="hover:text-white">Sitemap</a>
 						<span class="opacity-30">•</span>
 						<a href="#" class="hover:text-white">Do Not Sell My Info</a>
-						<span class="opacity-30">•</span>
+						<span class="opacity-30">•</span> -->
 						<button
 							id="backToTop"
 							class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
