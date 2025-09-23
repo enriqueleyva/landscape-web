@@ -88,20 +88,22 @@ const tabSize = document.getElementById("tabBySize");
 const formVeh = document.getElementById("finderByVehicle");
 const formSize = document.getElementById("finderBySize");
 
-tabVehicle.addEventListener("click", () => {
-	formVeh.classList.remove("hidden");
-	formSize.classList.add("hidden");
-	tabVehicle.classList.add("bg-[var(--brand)]", "text-white");
-	tabSize.classList.remove("bg-[var(--brand)]", "text-white");
-	tabSize.classList.add("text-white/80");
-});
-tabSize.addEventListener("click", () => {
-	formSize.classList.remove("hidden");
-	formVeh.classList.add("hidden");
-	tabSize.classList.add("bg-[var(--brand)]", "text-white");
-	tabVehicle.classList.remove("bg-[var(--brand)]", "text-white");
-	tabVehicle.classList.add("text-white/80");
-});
+if (tabVehicle && tabSize) {
+	tabVehicle.addEventListener("click", () => {
+		formVeh.classList.remove("hidden");
+		formSize.classList.add("hidden");
+		tabVehicle.classList.add("bg-[var(--brand)]", "text-white");
+		tabSize.classList.remove("bg-[var(--brand)]", "text-white");
+		tabSize.classList.add("text-white/80");
+	});
+	tabSize.addEventListener("click", () => {
+		formSize.classList.remove("hidden");
+		formVeh.classList.add("hidden");
+		tabSize.classList.add("bg-[var(--brand)]", "text-white");
+		tabVehicle.classList.remove("bg-[var(--brand)]", "text-white");
+		tabVehicle.classList.add("text-white/80");
+	});
+}
 
 // --- Datos demo (coordenadas reales de ciudades: CDMX, GDL, MTY, Houston, Dallas, LA) ---
 const DEALERS = [
