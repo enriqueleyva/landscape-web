@@ -1,0 +1,742 @@
+:root {
+    --purple-1: #820099;
+    /* oscuro */
+    --purple-2: #c344b8;
+    /* medio */
+    --purple-3: #d76ece;
+    /* claro */
+}
+
+/* ===========================
+     TOP STRIP (iconos)
+  ============================*/
+.top-strip {
+    background: #fafafa;
+}
+
+/* ===========================
+     HEADER PURPLE RIBBON
+  ============================*/
+.ribbon {
+    position: relative;
+    overflow: hidden;
+    background: radial-gradient(180% 80% at 50% -20%,
+            rgba(255, 255, 255, 0.08),
+            transparent 60%),
+        linear-gradient(180deg, var(--purple-1), var(--purple-1));
+}
+
+/* “curva” sutil arriba/abajo */
+.ribbon::before,
+.ribbon::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 120px;
+    background: radial-gradient(140% 120% at 50% -20%,
+            rgba(255, 255, 255, 0.12),
+            transparent 60%);
+    opacity: 0.4;
+    pointer-events: none;
+}
+
+.ribbon::before {
+    top: -70px;
+}
+
+.ribbon::after {
+    bottom: -70px;
+    transform: scaleY(-1);
+}
+
+header.ribbon,
+header.ribbon a,
+header.ribbon .text-white {
+    color: #fff !important;
+}
+
+/* Si usas opacidades en el header, dales su equivalente en blanco */
+header.ribbon .text-white\/85 {
+    color: rgba(255, 255, 255, 0.85) !important;
+}
+
+header.ribbon .text-white\/70 {
+    color: rgba(255, 255, 255, 0.7) !important;
+}
+
+header.ribbon .text-white\/60 {
+    color: rgba(255, 255, 255, 0.6) !important;
+}
+
+/* ===========================
+     HERO STAGE
+  ============================*/
+.stage {
+    position: relative;
+    min-height: 620px;
+    max-height: 820px;
+    height: 72vh;
+    background: radial-gradient(1200px 800px at 50% 20%,
+            rgba(142, 109, 177, 0.15),
+            transparent 60%),
+        radial-gradient(1200px 800px at 50% 80%,
+            rgba(142, 109, 177, 0.12),
+            transparent 60%),
+        linear-gradient(180deg, #0b0b0d 0%, #0b0b0d 35%, #070708 100%);
+    overflow: hidden;
+}
+
+/* Grano/lluvia */
+.rain {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px,
+            transparent 1px),
+        radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+    background-size: 3px 3px, 5px 5px;
+    background-position: 0 0, 10px 10px;
+    opacity: 0.7;
+    mix-blend-mode: overlay;
+}
+
+/* “X” luminoso, fiel a proporciones del screenshot */
+.x-wrap {
+    position: absolute;
+    inset: -12% -8%;
+    z-index: 0;
+}
+
+.x-bar {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg,
+            rgba(255, 255, 255, 0.22),
+            rgba(255, 255, 255, 0.06));
+    -webkit-mask: linear-gradient(transparent 36%,
+            black 36% 64%,
+            transparent 64%);
+    mask: linear-gradient(transparent 36%, black 36% 64%, transparent 64%);
+    mix-blend-mode: screen;
+    filter: drop-shadow(0 50px 120px rgba(0, 0, 0, 0.6));
+}
+
+.x-a {
+    transform: rotate(45deg) scale(1.08);
+}
+
+.x-b {
+    transform: rotate(-45deg) scale(1.08);
+}
+
+/* Carrusel 100% ancho por slide */
+#track {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 100%;
+    transition: transform 0.6s cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+}
+
+/* Sombra de “pop” a llantas */
+.tire-shadow {
+    filter: drop-shadow(0 35px 55px rgba(0, 0, 0, 0.8));
+}
+
+/* Etiquetas de llanta (condensado) */
+.tag {
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.55);
+}
+
+/* Dots */
+.dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 9999px;
+    border: 2px solid #fff;
+    opacity: 0.6;
+}
+
+.dot.active {
+    background: #fff;
+    opacity: 1;
+}
+
+/* Flechas */
+.navbtn {
+    @apply grid place-items-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition;
+    backdrop-filter: blur(2px);
+}
+
+/* Tipos (simular condensadas) */
+.condensed {
+    letter-spacing: 0.06em;
+    font-stretch: condensed;
+}
+
+.ultra-wide {
+    letter-spacing: 0.35em;
+}
+
+/* < !--=====THEME OVERRIDES · LIGHT MODE=====--> */
+:root {
+    --ink-1: #111827;
+    /* texto principal (gris muy oscuro) */
+    --ink-2: #4b5563;
+    /* texto secundario */
+    --ink-3: #6b7280;
+    /* meta / captions */
+    --bg-1: #ffffff;
+    /* base */
+    --bg-2: #f7f7f9;
+    /* paneles / bloques */
+    --bg-3: #ededf0;
+    /* secciones alternas */
+    --line: #e5e7eb;
+    /* bordes claros */
+}
+
+/* ====== GENERAL ====== */
+body.light,
+body {
+    background: var(--bg-1);
+    color: var(--ink-1);
+}
+
+/* Borde global más claro */
+.border-white\/10 {
+    border-color: var(--line) !important;
+}
+
+.border-black\/10 {
+    border-color: var(--line) !important;
+}
+
+/* Tipos claros (antes text-white…) */
+.text-white {
+    color: var(--ink-1) !important;
+}
+
+.text-white\/85 {
+    color: color-mix(in srgb, var(--ink-1) 85%, transparent) !important;
+}
+
+.text-white\/80 {
+    color: color-mix(in srgb, var(--ink-1) 80%, transparent) !important;
+}
+
+.text-white\/70 {
+    color: var(--ink-2) !important;
+}
+
+.text-white\/60 {
+    color: var(--ink-3) !important;
+}
+
+.text-white\/50 {
+    color: #9ca3af !important;
+}
+
+/* Botones y chips sobre claro */
+.bg-white\/10,
+.bg-white\/5 {
+    background: #ffffff !important;
+}
+
+.hover\:bg-white\/15:hover {
+    background: #f3f4f6 !important;
+}
+
+.f-chip,
+.chip,
+.pill,
+.spec,
+.tl-chip {
+    background: #fff !important;
+    border-color: var(--line) !important;
+    color: var(--ink-2) !important;
+}
+
+/* Icon buttons (flechas del carrusel) */
+.navbtn {
+    background: #e5e7eb !important;
+    /* neutral-200 */
+    border: 1px solid #d1d5db !important;
+}
+
+.navbtn:hover {
+    background: #eaecef !important;
+}
+
+/* Dots del slider en claro */
+.dot {
+    border-color: var(--ink-1) !important;
+    opacity: 0.5;
+}
+
+.dot.active {
+    background: var(--ink-1) !important;
+    opacity: 1;
+}
+
+/* ====== RIBBON (morado) se conserva; solo aclaramos brillos ====== */
+.ribbon::before,
+.ribbon::after {
+    background: radial-gradient(140% 120% at 50% -20%,
+            rgba(255, 255, 255, 0.22),
+            transparent 60%);
+    opacity: 0.6;
+}
+
+/* ====== HERO STAGE: pasar de negro a claros con overlay ====== */
+.stage {
+    background: radial-gradient(1200px 800px at 50% 20%,
+            rgba(17, 24, 39, 0.06),
+            transparent 60%),
+        radial-gradient(1200px 800px at 50% 80%,
+            rgba(17, 24, 39, 0.05),
+            transparent 60%),
+        linear-gradient(180deg,
+            var(--bg-1) 0%,
+            var(--bg-2) 60%,
+            var(--bg-3) 100%) !important;
+}
+
+/* Si el slide es VIDEO/IMAGEN, ponemos velo blanco suave para que el texto oscuro se lea */
+.stage::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(120% 80% at 50% 30%,
+            rgba(255, 255, 255, 0.65),
+            rgba(255, 255, 255, 0.35) 45%,
+            rgba(255, 255, 255, 0.2) 70%,
+            rgba(255, 255, 255, 0.1) 100%);
+    pointer-events: none;
+}
+
+/* “Lluvia” más sutil en claro */
+.rain {
+    background-image: radial-gradient(rgba(0, 0, 0, 0.06) 1px,
+            transparent 1px),
+        radial-gradient(rgba(0, 0, 0, 0.04) 1px, transparent 1px) !important;
+    mix-blend-mode: multiply !important;
+    opacity: 0.6 !important;
+    z-index: 0;
+}
+
+/* X luminosa: degradé gris */
+.x-bar {
+    background: linear-gradient(180deg,
+            rgba(0, 0, 0, 0.12),
+            rgba(0, 0, 0, 0.04)) !important;
+    filter: drop-shadow(0 30px 80px rgba(0, 0, 0, 0.12)) !important;
+}
+
+/* Títulos encima del velo */
+.stage .relative.z-10,
+.stage .relative.z-\[10\] {
+    position: relative;
+    z-index: 2;
+}
+
+.stage .ultra-wide,
+.stage .condensed {
+    color: var(--ink-1) !important;
+}
+
+/* ====== SECCIONES OSCURAS -> CLARAS ====== */
+/* Buscador de llantas */
+#finderByVehicle,
+#finderBySize,
+#find-dealer .map-box,
+#find-dealer .dealer-card,
+#tire-lineup .tire-card,
+#tire-lineup .compare-tray,
+#corporate-news .news-card,
+#why-landscape-strength .wl-card,
+#recruitment .rec-card,
+footer {
+    background: var(--bg-2) !important;
+    border-color: var(--line) !important;
+}
+
+/* Secciones con fondo degradado oscuro -> claro */
+#find-dealer,
+#tire-lineup,
+#corporate-news,
+#recruitment,
+#why-landscape-strength,
+footer {
+    background: linear-gradient(180deg,
+            var(--bg-2),
+            var(--bg-1)) !important;
+}
+
+/* Tarjetas de “tire-hero” (cabecera de cada card) */
+.tire-hero {
+    background: radial-gradient(100% 80% at 60% 20%,
+            rgba(17, 24, 39, 0.06),
+            transparent 60%),
+        linear-gradient(180deg, #ffffff, #f7f7f9) !important;
+}
+
+.tire-img {
+    filter: drop-shadow(0 18px 28px rgba(17, 24, 39, 0.2)) !important;
+}
+
+.badge {
+    background: #ffffff !important;
+    color: var(--ink-2) !important;
+    border-color: var(--line) !important;
+}
+
+/* Map demo label */
+#find-dealer .map-box .bg-black\/40 {
+    background: #ffffffcc !important;
+    color: var(--ink-1) !important;
+    border-color: var(--line) !important;
+}
+
+/* Modal fondos */
+#newsModal .bg-black\/70,
+#applyModal .bg-black\/70 {
+    background: rgba(0, 0, 0, 0.35) !important;
+}
+
+#newsModal .bg-neutral-900,
+#applyModal .bg-neutral-900 {
+    background: var(--bg-2) !important;
+}
+
+#newsModal .text-white,
+#applyModal .text-white {
+    color: var(--ink-1) !important;
+}
+
+/* Footer textos */
+footer .text-white {
+    color: var(--ink-1) !important;
+}
+
+footer .text-white\/80 {
+    color: var(--ink-2) !important;
+}
+
+footer .text-white\/70 {
+    color: var(--ink-2) !important;
+}
+
+footer .text-white\/60 {
+    color: var(--ink-3) !important;
+}
+
+/* Flechitas, contadores, detalles */
+.good {
+    color: var(--ink-1) !important;
+}
+
+.bad {
+    color: #b91c1c !important;
+}
+
+/* rojo sobrio sobre claro */
+
+
+/* Asegura blanco aunque el sitio esté en modo claro */
+.stage .slogan-lockup,
+.stage .slogan-lockup * {
+    color: #fff !important;
+}
+
+.slogan-lockup {
+    transform: translateY(6px);
+    opacity: 0;
+    animation: sloganIn 0.45s cubic-bezier(0.22, 0.61, 0.36, 1) 0.15s forwards;
+    text-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+}
+
+@keyframes sloganIn {
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* Si un slide necesita el titular más compacto: */
+@media (max-width: 380px) {
+    .slogan-lockup .tracking-wide {
+        letter-spacing: 0.02em;
+    }
+}
+
+
+:root {
+    --brand: #b424a7;
+    /* morado principal (ya definido arriba en tu sitio) */
+    --accent: #c344b8;
+    /* dorado CTA */
+}
+
+.chip {
+    @apply rounded-full px-3 py-1.5 text-xs font-semibold bg-white/10 text-white/80 border border-white/10;
+}
+
+.chip[data-active="true"] {
+    background: color-mix(in srgb, var(--brand) 25%, transparent);
+    color: #fff;
+    border-color: color-mix(in srgb, var(--brand) 55%, #fff);
+}
+
+.dealer-card {
+    @apply rounded-2xl bg-white/5 border border-white/10 p-4 md:p-5;
+}
+
+.pin {
+    position: absolute;
+    transform: translate(-50%, -100%);
+    width: 18px;
+    height: 18px;
+    border-radius: 9999px;
+    background: var(--accent);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.35);
+}
+
+.pin::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    top: 100%;
+    transform: translateX(-50%);
+    width: 2px;
+    height: 10px;
+    background: var(--accent);
+}
+
+.map-box {
+    position: relative;
+    background: radial-gradient(80% 60% at 50% 40%,
+            rgba(255, 255, 255, 0.04),
+            transparent 60%),
+        linear-gradient(180deg, #0b0b0d, #070708);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    overflow: hidden;
+    min-height: 320px;
+}
+
+.map-grid {
+    position: absolute;
+    inset: 0;
+    background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px),
+        linear-gradient(90deg,
+            rgba(255, 255, 255, 0.05) 1px,
+            transparent 1px);
+    background-size: 40px 40px, 40px 40px;
+    pointer-events: none;
+}
+
+:root {
+    --brand: #b424a7;
+    --accent: #c344b8;
+}
+
+.tl-chip {
+    @apply rounded-full px-3 py-1.5 text-xs font-semibold bg-white/10 text-white/80 border border-white/10 cursor-pointer;
+}
+
+.tl-chip[data-active="true"] {
+    background: color-mix(in srgb, var(--brand) 25%, transparent);
+    color: #fff;
+    border-color: color-mix(in srgb, var(--brand) 55%, #fff);
+}
+
+.tire-card {
+    @apply rounded-2xl bg-white/5 border border-white/10 overflow-hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tire-card:hover {
+    box-shadow: 0 40px 80px rgba(0, 0, 0, 0.4);
+}
+
+.tire-hero {
+    position: relative;
+    background: radial-gradient(100% 80% at 60% 20%,
+            rgba(255, 255, 255, 0.06),
+            transparent 60%),
+        linear-gradient(180deg, #0b0b0d, #070708);
+    min-height: 240px;
+}
+
+.tire-img {
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+    width: 220px;
+    height: 220px;
+    object-fit: contain;
+    filter: drop-shadow(0 25px 45px rgba(0, 0, 0, 0.8));
+    transform: translateZ(35px) rotate(-6deg);
+}
+
+.tire-glow {
+    position: absolute;
+    inset: -20%;
+    background: radial-gradient(45% 45% at 70% 60%,
+            color-mix(in srgb, var(--brand) 50%, transparent),
+            transparent 60%);
+    mix-blend-mode: screen;
+    pointer-events: none;
+}
+
+.badge {
+    @apply absolute left-4 top-4 text-[10px] font-bold tracking-wide uppercase bg-black/60 text-white rounded-full px-2 py-1 border border-white/10;
+}
+
+.spec {
+    @apply text-[11px] px-2 py-1 rounded-full bg-white/10 text-white/80 border border-white/10;
+}
+
+.compare-tray {
+    @apply mt-8 rounded-2xl bg-white/5 border border-white/10 p-4 overflow-x-auto;
+}
+
+.pill {
+    @apply inline-flex items-center gap-2 text-xs px-2 py-1 rounded-full bg-white/10 border border-white/10 text-white/80;
+}
+
+.cta-gold {
+    background: var(--accent);
+    box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+}
+
+
+:root {
+    --brand: #b424a7;
+    --accent: #c344b8;
+}
+
+.wl-card {
+    @apply rounded-2xl bg-white/5 border border-white/10 p-5 h-full;
+}
+
+.wl-chip {
+    @apply inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-semibold bg-white/10 text-white/80 border border-white/10;
+}
+
+.wl-icon {
+    @apply w-12 h-12 grid place-items-center rounded-xl text-white;
+    background: color-mix(in srgb, var(--brand) 30%, transparent);
+    border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
+}
+
+.good {
+    color: var(--accent);
+}
+
+.bad {
+    color: #ff6b6b;
+}
+
+:root {
+    --brand: #b424a7;
+    --accent: #c344b8;
+}
+
+.f-chip {
+    @apply inline-flex items-center gap-2 text-xs px-2 py-1 rounded-full bg-white/10 border border-white/10 text-white/80;
+}
+
+.f-input {
+    @apply w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2 outline-none;
+}
+
+.f-input:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--brand) 35%, transparent);
+}
+
+:root {
+    --brand: #b424a7;
+    --accent: #c344b8;
+}
+
+.rec-card {
+    @apply rounded-2xl bg-white/5 border border-white/10 p-5 h-full;
+}
+
+.chip {
+    @apply rounded-full px-3 py-1.5 text-xs font-semibold bg-white/10 text-white/80 border border-white/10 cursor-pointer;
+}
+
+.chip[data-active="true"] {
+    background: color-mix(in srgb, var(--brand) 25%, transparent);
+    color: #fff;
+    border-color: color-mix(in srgb, var(--brand) 55%, #fff);
+}
+
+.step-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 9999px;
+    background: var(--brand);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 25%, transparent);
+}
+
+:root {
+    --brand: #b424a7;
+    --accent: #c344b8;
+}
+
+.news-card {
+    @apply rounded-2xl bg-white/5 border border-white/10 overflow-hidden h-full;
+}
+
+.chip {
+    @apply rounded-full px-3 py-1.5 text-xs font-semibold bg-white/10 text-white/80 border border-white/10 cursor-pointer;
+}
+
+.chip[data-active="true"] {
+    background: color-mix(in srgb, var(--brand) 25%, transparent);
+    color: #fff;
+    border-color: color-mix(in srgb, var(--brand) 55%, #fff);
+}
+
+.meta {
+    @apply text-[11px] tracking-wide uppercase text-white/60;
+}
+
+
+/* Fuerza texto blanco SOLO en la barra fija, por encima de cualquier override */
+#brand-fixed,
+#brand-fixed * {
+    color: #fff !important;
+}
+
+/* Si usas variantes con opacidad */
+#brand-fixed .text-white\/95 {
+    color: rgba(255, 255, 255, .95) !important;
+}
+
+#brand-fixed .text-white\/90 {
+    color: rgba(255, 255, 255, .90) !important;
+}
+
+#brand-fixed .text-white\/80 {
+    color: rgba(255, 255, 255, .80) !important;
+}
+
+#brand-fixed .text-white\/70 {
+    color: rgba(255, 255, 255, .70) !important;
+}
+
+#brand-fixed .text-white\/60 {
+    color: rgba(255, 255, 255, .60) !important;
+}

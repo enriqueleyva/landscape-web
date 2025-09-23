@@ -47,9 +47,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
 	// Cambia estos paths por tus archivos reales:
 	const TIRE_SOURCES = [
-		"assets/img/ltraSport.png",
-		"assets/img/terragrip.png",
-		"assets/img/terrain.png",
+		"../assets/img/ltraSport.png",
+		"../assets/img/terragrip.png",
+		"../assets/img/terrain.png",
 	];
 
 	// Preload para que el cambio sea instantáneo
@@ -81,3 +81,720 @@ window.addEventListener("DOMContentLoaded", () => {
 	// Inicia el ciclo tras un pequeño delay
 	gsap.delayedCall(EVERY_SEC, swapTire);
 });
+
+// Tabs simple
+const tabVehicle = document.getElementById("tabByVehicle");
+const tabSize = document.getElementById("tabBySize");
+const formVeh = document.getElementById("finderByVehicle");
+const formSize = document.getElementById("finderBySize");
+
+tabVehicle.addEventListener("click", () => {
+	formVeh.classList.remove("hidden");
+	formSize.classList.add("hidden");
+	tabVehicle.classList.add("bg-[var(--brand)]", "text-white");
+	tabSize.classList.remove("bg-[var(--brand)]", "text-white");
+	tabSize.classList.add("text-white/80");
+});
+tabSize.addEventListener("click", () => {
+	formSize.classList.remove("hidden");
+	formVeh.classList.add("hidden");
+	tabSize.classList.add("bg-[var(--brand)]", "text-white");
+	tabVehicle.classList.remove("bg-[var(--brand)]", "text-white");
+	tabVehicle.classList.add("text-white/80");
+});
+
+// --- Datos demo (coordenadas reales de ciudades: CDMX, GDL, MTY, Houston, Dallas, LA) ---
+const DEALERS = [
+	{
+		id: 1,
+		name: "Durable Tire Roma",
+		city: "CDMX",
+		lat: 19.416,
+		lng: -99.162,
+		phone: "+52 55 0000 0001",
+		address: "Col. Roma Norte, CDMX",
+		services: ["install", "balance"],
+		hours: "Mon-Sat 9–18",
+	},
+	{
+		id: 2,
+		name: "Durable Tire Reforma",
+		city: "CDMX",
+		lat: 19.427,
+		lng: -99.166,
+		phone: "+52 55 0000 0002",
+		address: "Paseo de la Reforma, CDMX",
+		services: ["install", "247"],
+		hours: "24/7",
+	},
+	{
+		id: 3,
+		name: "Durable Tire MTY",
+		city: "Monterrey",
+		lat: 25.667,
+		lng: -100.31,
+		phone: "+52 81 0000 0003",
+		address: "San Pedro, NL",
+		services: ["install"],
+		hours: "Mon-Sat 9–18",
+	},
+	{
+		id: 4,
+		name: "Durable Tire GDL",
+		city: "Guadalajara",
+		lat: 20.676,
+		lng: -103.347,
+		phone: "+52 33 0000 0004",
+		address: "Providencia, Jal.",
+		services: ["install", "balance"],
+		hours: "Mon-Fri 9–18",
+	},
+	{
+		id: 5,
+		name: "Durable Tire Houston",
+		city: "Houston",
+		lat: 29.76,
+		lng: -95.369,
+		phone: "+1 713 000 0005",
+		address: "Downtown, TX",
+		services: ["install", "247"],
+		hours: "24/7",
+	},
+	{
+		id: 6,
+		name: "Durable Tire Dallas",
+		city: "Dallas",
+		lat: 32.776,
+		lng: -96.797,
+		phone: "+1 214 000 0006",
+		address: "Design District, TX",
+		services: ["install"],
+		hours: "Mon-Sat 9–18",
+	},
+	{
+		id: 7,
+		name: "Durable Tire LA",
+		city: "Los Angeles",
+		lat: 34.052,
+		lng: -118.244,
+		phone: "+1 213 000 0007",
+		address: "Arts District, CA",
+		services: ["install", "balance"],
+		hours: "Mon-Sat 9–18",
+	},
+];
+
+// --- helpers ---
+const rad = (d) => (d * Math.PI) / 180;
+function haversine(a, b) {
+	const R = 6371; // km
+	const dLat = rad(b.lat - a.lat),
+		dLng = rad(b.lng - a.lng);
+	const s =
+		Math.sin(dLat / 2) ** 2 +
+		Math.cos(rad(a.lat)) * Math.cos(rad(b.lat)) * Math.sin(dLng / 2) ** 2;
+	return 2 * R * Math.asin(Math.sqrt(s));
+}
+function parseLocation(input) {
+	// "lat,lon" o texto suelto: mapeo rápido a ciudades demo
+	const direct = input.split(",").map((s) => s.trim());
+	if (
+		direct.length === 2 &&
+		!isNaN(parseFloat(direct[0])) &&
+		!isNaN(parseFloat(direct[1]))
+	) {
+		return { lat: parseFloat(direct[0]), lng: parseFloat(direct[1]) };
+	}
+	const t = input.toLowerCase();
+	if (t.includes("mty") || t.includes("monterrey"))
+		return { lat: 25.667, lng: -100.31 };
+	if (
+		t.includes("cdmx") ||
+		t.includes("méxico") ||
+		t.includes("mexico city") ||
+		t.includes("reforma") ||
+		t.includes("roma")
+	)
+		return { lat: 19.4326, lng: -99.1332 };
+	if (t.includes("guadalajara") || t.includes("gdl"))
+		return { lat: 20.676, lng: -103.347 };
+	if (t.includes("houston")) return { lat: 29.76, lng: -95.369 };
+	if (t.includes("dallas")) return { lat: 32.776, lng: -96.797 };
+	if (t.includes("los angeles") || t.includes("la,"))
+		return { lat: 34.052, lng: -118.244 };
+	return null; // si no, el usuario puede usar "lat,lon"
+}
+
+// --- UI state ---
+const form = document.getElementById("dealerForm");
+const inputLoc = document.getElementById("dealerLocation");
+const radiusSel = document.getElementById("dealerRadius");
+const listEl = document.getElementById("dealerList");
+const countEl = document.getElementById("resultCount");
+const mapBox = document.getElementById("mapBox");
+const filtersActive = { install: false, open: false, 247: false };
+
+// filtros chips
+document.querySelectorAll(".chip[data-filter]").forEach((ch) => {
+	ch.addEventListener("click", () => {
+		const k = ch.getAttribute("data-filter");
+		filtersActive[k] = !filtersActive[k];
+		ch.setAttribute("data-active", String(filtersActive[k]));
+	});
+});
+
+// Geolocalización
+document.getElementById("geoBtn").addEventListener("click", () => {
+	if (!navigator.geolocation) {
+		alert("Geolocation not supported");
+		return;
+	}
+	navigator.geolocation.getCurrentPosition(
+		(pos) => {
+			const { latitude: lat, longitude: lng } = pos.coords;
+			inputLoc.value = `${lat.toFixed(5)},${lng.toFixed(5)}`;
+		},
+		() => alert("Could not get your location")
+	);
+});
+
+// Render
+function renderDealers(origin, km) {
+	// calcula distancias
+	let items = DEALERS.map((d) => ({
+		...d,
+		distance: haversine(origin, d),
+	})).filter((d) => d.distance <= km);
+
+	// filtros
+	if (filtersActive.install)
+		items = items.filter((d) => d.services.includes("install"));
+	if (filtersActive["247"])
+		items = items.filter((d) => d.services.includes("247"));
+	if (filtersActive.open)
+		items = items.filter(
+			(d) => d.hours.includes("24") || d.hours.includes("9")
+		); // demo
+
+	// orden por distancia
+	items.sort((a, b) => a.distance - b.distance);
+
+	// Lista
+	countEl.textContent = items.length;
+	listEl.innerHTML =
+		items
+			.map(
+				(d) => `
+        <article class="dealer-card">
+          <div class="flex items-start gap-3">
+            <div class="shrink-0 w-10 h-10 rounded-full grid place-items-center"
+                 style="background: color-mix(in srgb, var(--brand) 30%, transparent); border:1px solid rgba(255,255,255,.15)">
+              🛞
+            </div>
+            <div class="min-w-0">
+              <h5 class="text-white font-bold">${d.name}</h5>
+              <p class="text-white/70 text-sm">${d.address}</p>
+              <div class="mt-2 flex flex-wrap gap-2">
+                ${d.services
+									.map(
+										(s) =>
+											`<span class="chip">${
+												s === "install"
+													? "Installation"
+													: s === "247"
+													? "24/7"
+													: "Balancing"
+											}</span>`
+									)
+									.join("")}
+              </div>
+              <div class="mt-3 flex items-center gap-3 text-sm">
+                <span class="text-white/70">${d.hours}</span>
+                <span class="text-white/40">•</span>
+                <span class="text-[var(--accent)] font-semibold">${d.distance.toFixed(
+									1
+								)} km</span>
+                <a class="ml-auto inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+                   href="tel:${d.phone.replace(
+											/[^+\d]/g,
+											""
+										)}" aria-label="Call ${d.name}">Call</a>
+                <a class="inline-flex items-center gap-2 px-3 py-2 rounded-md font-semibold text-black"
+                   style="background: var(--accent); box-shadow: 0 4px 0 rgba(0,0,0,.25);"
+                   target="_blank" rel="noopener"
+                   href="https://www.google.com/maps/dir/${origin.lat},${
+					origin.lng
+				}/${d.lat},${d.lng}">
+                  Directions
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+      `
+			)
+			.join("") ||
+		`<div class="dealer-card text-white/70">No dealers found in ${km} km — try a larger radius.</div>`;
+
+	// Mapa (pins en un plano simple)
+	drawPins(origin, items);
+}
+
+function drawPins(origin, items) {
+	mapBox.querySelectorAll(".pin, .youarehere").forEach((el) => el.remove());
+	// bounds aproximados con dealers + origin
+	const pts = items.concat([{ lat: origin.lat, lng: origin.lng }]);
+	const minLat = Math.min(...pts.map((p) => p.lat)) - 0.2;
+	const maxLat = Math.max(...pts.map((p) => p.lat)) + 0.2;
+	const minLng = Math.min(...pts.map((p) => p.lng)) - 0.2;
+	const maxLng = Math.max(...pts.map((p) => p.lng)) + 0.2;
+	const mapRect = mapBox.getBoundingClientRect();
+
+	function proj(lat, lng) {
+		// proyección lineal simple al contenedor
+		const x = (lng - minLng) / (maxLng - minLng);
+		const y = 1 - (lat - minLat) / (maxLat - minLat);
+		return { left: x * mapRect.width, top: y * mapRect.height };
+	}
+
+	// tú estás aquí
+	const you = document.createElement("div");
+	const p0 = proj(origin.lat, origin.lng);
+	you.className = "youarehere";
+	you.style.position = "absolute";
+	you.style.left = p0.left + "px";
+	you.style.top = p0.top + "px";
+	you.innerHTML = `<div class="pin" style="background: var(--brand)"></div>
+                       <div class="absolute left-1/2 -translate-x-1/2 translate-y-1.5 text-[10px] text-white/80">You</div>`;
+	mapBox.appendChild(you);
+
+	// pins de dealers
+	items.forEach((d) => {
+		const p = proj(d.lat, d.lng);
+		const pin = document.createElement("div");
+		pin.className = "pin";
+		pin.style.left = p.left + "px";
+		pin.style.top = p.top + "px";
+		pin.title = d.name;
+		mapBox.appendChild(pin);
+	});
+}
+
+// Submit
+form.addEventListener("submit", (e) => {
+	e.preventDefault();
+	const km = parseFloat(radiusSel.value);
+	const parsed = parseLocation(inputLoc.value.trim());
+	if (!parsed) {
+		alert('Enter a city/ZIP from the demo list or use "lat,lon".');
+		return;
+	}
+	renderDealers(parsed, km);
+});
+
+// estado inicial (CDMX 25 km)
+renderDealers({ lat: 19.4326, lng: -99.1332 }, 25);
+
+// <!-- JS: filtros, tilt y comparación -->
+
+(function () {
+	// --- Tabs de categoría ---
+	const chips = document.querySelectorAll("#tire-lineup .tl-chip");
+	const cards = document.querySelectorAll("#tireGrid .tire-card");
+	chips.forEach((ch) => {
+		ch.addEventListener("click", () => {
+			chips.forEach((c) => c.setAttribute("data-active", "false"));
+			ch.setAttribute("data-active", "true");
+			const cat = ch.getAttribute("data-cat");
+			cards.forEach((card) => {
+				const show = cat === "all" || card.dataset.cat === cat;
+				card.classList.toggle("hidden", !show);
+			});
+		});
+	});
+
+	// --- Tilt ligero (hover 3D) ---
+	// cards.forEach((card) => {
+	// 	const max = 10; // grados
+	// 	function tilt(e) {
+	// 		const r = card.getBoundingClientRect();
+	// 		const x = (e.clientX - r.left) / r.width,
+	// 			y = (e.clientY - r.top) / r.height;
+	// 		const rx = (y - 0.5) * -2 * max;
+	// 		const ry = (x - 0.5) * 2 * max;
+	// 		card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+	// 	}
+	// 	card.addEventListener("mousemove", tilt);
+	// 	card.addEventListener(
+	// 		"mouseleave",
+	// 		() => (card.style.transform = "")
+	// 	);
+	// });
+
+	// --- Compare tray ---
+	const tray = document.getElementById("compareTray");
+	const pills = document.getElementById("comparePills");
+	const body = document.getElementById("compareBody");
+	const btnClear = document.getElementById("clearCompare");
+	const selected = new Map(); // model -> data
+
+	function renderCompare() {
+		const arr = [...selected.values()];
+		tray.classList.toggle("hidden", arr.length === 0);
+		// pills
+		pills.innerHTML = arr
+			.map(
+				(d) => `
+          <span class="pill">
+            ${d.model}
+            <button class="remove" data-model="${d.model}" title="Remove">✕</button>
+          </span>
+        `
+			)
+			.join("");
+		// table
+		body.innerHTML = arr
+			.map(
+				(d) => `
+          <tr>
+            <td class="py-2 pr-4 text-white">${d.model}</td>
+            <td class="py-2 pr-4">${d.tread}</td>
+            <td class="py-2 pr-4">${d.traction}</td>
+            <td class="py-2 pr-4">${d.noise}</td>
+            <td class="py-2 pr-4">${d.sizes}</td>
+          </tr>
+        `
+			)
+			.join("");
+		// listeners remove
+		pills.querySelectorAll(".remove").forEach((b) => {
+			b.addEventListener("click", () => {
+				selected.delete(b.dataset.model);
+				renderCompare();
+			});
+		});
+	}
+
+	document.querySelectorAll("#tireGrid .addCompare").forEach((btn) => {
+		btn.addEventListener("click", () => {
+			const card = btn.closest(".tire-card");
+			const data = {
+				model: card.dataset.model,
+				tread: card.dataset.tread,
+				traction: card.dataset.traction,
+				noise: card.dataset.noise,
+				sizes: card.dataset.sizes,
+			};
+			if (selected.has(data.model)) {
+				selected.delete(data.model);
+			} else {
+				selected.set(data.model, data);
+			}
+			renderCompare();
+		});
+	});
+
+	btnClear.addEventListener("click", () => {
+		selected.clear();
+		renderCompare();
+	});
+})();
+
+// <!-- Contadores animados -->
+
+(function () {
+	const els = document.querySelectorAll("#why-landscape-strength .counter");
+	const ease = (t) => 1 - Math.pow(1 - t, 3);
+	function animate(el) {
+		const target = +el.getAttribute("data-target");
+		const dur = 1200;
+		const start = performance.now();
+		function tick(now) {
+			const p = Math.min(1, (now - start) / dur);
+			el.textContent = Math.floor(ease(p) * target).toLocaleString();
+			if (p < 1) requestAnimationFrame(tick);
+		}
+		requestAnimationFrame(tick);
+	}
+	const io = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((e) => {
+				if (e.isIntersecting) {
+					animate(e.target);
+					io.unobserve(e.target);
+				}
+			});
+		},
+		{ threshold: 0.5 }
+	);
+	els.forEach((el) => io.observe(el));
+})();
+
+// -------- Filtros --------
+const chips = document.querySelectorAll("#corporate-news .chip[data-filter]");
+const cards = document.querySelectorAll("#newsGrid [data-category]");
+chips.forEach((ch) =>
+	ch.addEventListener("click", () => {
+		chips.forEach((c) => c.setAttribute("data-active", "false"));
+		ch.setAttribute("data-active", "true");
+		const f = ch.getAttribute("data-filter");
+		cards.forEach((card) => {
+			card.classList.toggle(
+				"hidden",
+				f !== "all" && card.dataset.category !== f
+			);
+		});
+	})
+);
+
+// -------- Modal (vista rápida) --------
+const modal = document.getElementById("newsModal");
+const modalTitle = document.getElementById("newsModalTitle");
+const modalBody = document.getElementById("newsModalBody");
+const closeBtn = document.getElementById("newsModalClose");
+function openModal({ title, body }) {
+	modalTitle.textContent = title;
+	modalBody.innerHTML = body;
+	modal.classList.remove("hidden");
+	document.body.style.overflow = "hidden";
+}
+function closeModal() {
+	modal.classList.add("hidden");
+	document.body.style.overflow = "";
+}
+closeBtn.addEventListener("click", closeModal);
+modal.addEventListener("click", (e) => {
+	if (e.target === modal) closeModal();
+});
+
+document.querySelectorAll("[data-open]").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		const id = btn.getAttribute("data-open");
+		// contenido demo por id
+		const content = {
+			n1: {
+				title: "NVH Test Center",
+				body: "<p>Instalación con cámaras anecoicas y dinamómetros para validar QuietWave y compuestos ColdFlex™.</p>",
+			},
+			n2: {
+				title: "Resultados Q2",
+				body: "<p>Ingreso +12% A/A; margen +180 bps; capex enfocado en expansión MX.</p>",
+			},
+			n3: {
+				title: "Urban Series",
+				body: "<p>MultiContour-X, surcos profundos y compuesto DryGrip+™. Disponible en 16–20”.</p>",
+			},
+			n4: {
+				title: "Reciclaje 2M",
+				body: "<p>Programa de economía circular con partners regionales. -CO₂ y reutilización de materiales.</p>",
+			},
+			n5: {
+				title: "Nueva planta MX",
+				body: "<p>Automatización, ahorro energético y capacidad +35% para líneas All-Season.</p>",
+			},
+			n6: {
+				title: "ColdFlex™ 2.0",
+				body: "<p>Mejor elasticidad a baja temperatura; menor cristalización; más agarre invernal.</p>",
+			},
+			n7: {
+				title: "Bono verde",
+				body: "<p>Emisión por $120M destinada a proyectos ESG certificados.</p>",
+			},
+		}[id] || { title: "News", body: "<p>Content not found.</p>" };
+		openModal(content);
+	});
+});
+
+// -------- Load more (demo) --------
+document.getElementById("loadMoreNews").addEventListener("click", () => {
+	const grid = document.getElementById("newsGrid");
+	const tpl = grid.firstElementChild.cloneNode(true);
+	// cambia fecha/título mínimos para distinguir
+	tpl.querySelector("time").textContent = "Today";
+	tpl.querySelector("h5").textContent = "Nueva nota corporativa (demo)";
+	grid.appendChild(tpl);
+});
+
+// ---------- Filtros ----------
+const jobsList = document.getElementById("jobsList");
+const fDept = document.getElementById("fDept");
+const fLoc = document.getElementById("fLoc");
+const fType = document.getElementById("fType");
+const chips1 = document.querySelectorAll(
+	"#recruitment .chip:not([data-static])"
+);
+const form1 = document.getElementById("jobsFilter");
+
+let tagFilter = null;
+chips1.forEach((ch) => {
+	ch.addEventListener("click", () => {
+		chips1.forEach((c) => c.setAttribute("data-active", "false"));
+		const active =
+			ch.getAttribute("data-active") === "true" ? null : ch.dataset.tag;
+		tagFilter = active;
+		if (active) {
+			ch.setAttribute("data-active", "true");
+		}
+		applyFilters();
+	});
+});
+
+form1.addEventListener("submit", (e) => {
+	e.preventDefault();
+	applyFilters();
+});
+
+function applyFilters() {
+	const dept = fDept.value,
+		loc = fLoc.value,
+		type = fType.value;
+	jobsList.querySelectorAll("article.rec-card").forEach((card) => {
+		const okDept = !dept || card.dataset.dept === dept;
+		const okLoc = !loc || card.dataset.loc === loc;
+		const okType = !type || card.dataset.type === type;
+		const okTag =
+			!tagFilter || (card.dataset.tags || "").split(",").includes(tagFilter);
+		card.classList.toggle("hidden", !(okDept && okLoc && okType && okTag));
+	});
+}
+
+// ---------- Modal Apply ----------
+const modal1 = document.getElementById("applyModal");
+const modalClose = document.getElementById("applyClose");
+const titleSpan = document.getElementById("applyJobTitle");
+
+document.querySelectorAll(".applyBtn").forEach((btn) => {
+	btn.addEventListener("click", () => {
+		titleSpan.textContent = btn.dataset.job || "Role";
+		modal1.classList.remove("hidden");
+		document.body.style.overflow = "hidden";
+	});
+});
+function closeModal() {
+	modal1.classList.add("hidden");
+	document.body.style.overflow = "";
+}
+modalClose.addEventListener("click", closeModal);
+modal1.addEventListener("click", (e) => {
+	if (e.target === modal1) closeModal();
+});
+
+// Demo submit
+document.getElementById("applyForm").addEventListener("submit", (e) => {
+	e.preventDefault();
+	const fd = new FormData(e.target);
+	alert(
+		"Application sent (demo)\\n" +
+			JSON.stringify(Object.fromEntries(fd), null, 2)
+	);
+	closeModal();
+	e.target.reset();
+});
+
+// init
+applyFilters();
+
+// Año automático
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Back to top (suave)
+document.getElementById("backToTop").addEventListener("click", () => {
+	window.scrollTo({ top: 0, behavior: "smooth" });
+});
+
+// Newsletter (demo)
+document.getElementById("newsletterForm").addEventListener("submit", (e) => {
+	e.preventDefault();
+	const email = e.target.querySelector('input[type="email"]').value;
+	alert("Gracias por suscribirte (demo): " + email);
+	e.target.reset();
+});
+
+const track = document.querySelector("#track");
+const slides = [...track.children];
+const dotsRow = slides.map((s) => s.querySelector("[data-dots]"));
+
+// Crea dots
+let dots = [];
+slides.forEach((_, i) => {
+	const d = document.createElement("button");
+	d.className = "dot";
+	d.setAttribute("aria-label", `Ir a la diapositiva ${i + 1}`);
+	d.addEventListener("click", () => goTo(i));
+	dots.push(d);
+});
+dotsRow.forEach((row) =>
+	dots.forEach((d) => row.appendChild(d.cloneNode(true)))
+);
+dots = [...document.querySelectorAll(".dot")].slice(0, slides.length);
+
+// --- helpers de video ---
+function pauseAllVideos() {
+	document.querySelectorAll("video[data-video]").forEach((v) => {
+		v.pause();
+		// opcional: reinicia al salir del slide
+		// v.currentTime = 0;
+	});
+}
+function playVideosInSlide(i) {
+	const _slides = [...document.querySelectorAll("#track > *")];
+	_slides[i]?.querySelectorAll("video[data-video]").forEach((v) => {
+		// si estaba preload="none", forzamos carga mínima
+		if (v.preload === "none" && v.readyState === 0) v.load();
+		v.play().catch(() => {});
+	});
+}
+
+let current = 0,
+	timer;
+
+function goTo(i) {
+	current = (i + slides.length) % slides.length;
+	track.style.transform = `translateX(-${current * 100}%)`;
+	dots.forEach((d, idx) => d.classList.toggle("active", idx === current));
+
+	// 🔧 IMPORTANTE: controlar videos EN CADA CAMBIO
+	pauseAllVideos();
+	playVideosInSlide(current);
+
+	reset();
+}
+function next() {
+	goTo(current + 1);
+}
+function prev() {
+	goTo(current - 1);
+}
+
+document.getElementById("next").addEventListener("click", next);
+document.getElementById("prev").addEventListener("click", prev);
+
+function reset() {
+	clearInterval(timer);
+	timer = setInterval(next, 6000);
+}
+
+// Opcional: pausar todo si la pestaña se oculta
+document.addEventListener("visibilitychange", () => {
+	if (document.hidden) pauseAllVideos();
+	else playVideosInSlide(current);
+});
+
+// iniciar
+reset();
+goTo(0); // ya llama a pause/play internamente
+
+(function () {
+	const bar = document.getElementById("brand-fixed");
+	function applyOffset() {
+		// Altura total del banner (incluye safe-area)
+		const h = bar.offsetHeight;
+		// Empuja el documento hacia abajo para que nada quede tapado
+		document.body.style.paddingTop = h + "px";
+		// Útil si quieres posicionar algo relativo a esta barra:
+		document.documentElement.style.setProperty("--fixedbar-h", h + "px");
+	}
+	// Aplicar al cargar y al redimensionar
+	window.addEventListener("load", applyOffset);
+	window.addEventListener("resize", () => requestAnimationFrame(applyOffset));
+})();
