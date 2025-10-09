@@ -235,10 +235,17 @@ const inputLoc = document.getElementById("dealerLocation");
 const radiusSel = document.getElementById("dealerRadius");
 const listEl = document.getElementById("dealerList");
 const countEl = document.getElementById("resultCount");
-const mapBox = document.getElementById("mapBox");
+const mapCanvas = document.getElementById("mapCanvas");
+const rootStyles = getComputedStyle(document.documentElement);
+const BRAND_COLOR =
+	(rootStyles.getPropertyValue("--brand") || "#b424a7").trim() || "#b424a7";
+const ACCENT_COLOR =
+	(rootStyles.getPropertyValue("--accent") || "#c344b8").trim() || "#c344b8";
 const filtersActive = { install: false, open: false, 247: false };
 let lastOrigin = null;
 let lastDealers = [];
+let leafletMap = null;
+let markersLayer = null;
 // filtros chips
 document.querySelectorAll(".chip[data-filter]").forEach((ch) => {
 	ch.addEventListener("click", () => {
@@ -346,51 +353,80 @@ function renderDealers(origin, km) {
 	lastDealers = items;
 	drawPins(origin, items);
 }
-
-function drawPins(origin, items) {
-	mapBox.querySelectorAll(".pin, .youarehere").forEach((el) => el.remove());
-	// bounds aproximados con dealers + origin
-	const pts = items.concat([{ lat: origin.lat, lng: origin.lng }]);
-	const minLat = Math.min(...pts.map((p) => p.lat)) - 0.2;
-	const maxLat = Math.max(...pts.map((p) => p.lat)) + 0.2;
-	const minLng = Math.min(...pts.map((p) => p.lng)) - 0.2;
-	const maxLng = Math.max(...pts.map((p) => p.lng)) + 0.2;
-	const mapWidth = mapBox.clientWidth;
-	const mapHeight = mapBox.clientHeight;
-	if (!mapWidth || !mapHeight) return;
-
-	function proj(lat, lng) {
-		// proyección lineal simple al contenedor
-		const x = (lng - minLng) / (maxLng - minLng);
-		const y = 1 - (lat - minLat) / (maxLat - minLat);
-		return { left: x * mapWidth, top: y * mapHeight };
+function ensureMap(origin) {
+	if (!mapCanvas) return;
+	if (!leafletMap) {
+		leafletMap = L.map(mapCanvas, {
+			center: [origin.lat, origin.lng],
+			zoom: 12,
+			scrollWheelZoom: false,
+		});
+		L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+			attribution: "© OpenStreetMap contributors",
+			maxZoom: 19,
+		}).addTo(leafletMap);
+		markersLayer = L.layerGroup().addTo(leafletMap);
 	}
+}
+function drawPins(origin, items) {
+	ensureMap(origin);
+	if (!leafletMap || !markersLayer) return;
 
-	// tú estás aquí
-	const you = document.createElement("div");
-	const p0 = proj(origin.lat, origin.lng);
-	you.className = "youarehere";
-	you.style.left = p0.left + "px";
-	you.style.top = p0.top + "px";
-	you.innerHTML = `<div class="pin" style="background: var(--brand)"></div>
-                       <div class="absolute left-1/2 -translate-x-1/2 translate-y-1.5 text-[10px] text-white/80">You</div>`;
-	mapBox.appendChild(you);
+	markersLayer.clearLayers();
 
-	// pins de dealers
+	const bounds = L.latLngBounds([[origin.lat, origin.lng]]);
+
+	L.circleMarker([origin.lat, origin.lng], {
+		radius: 9,
+		color: "#ffffff",
+		weight: 2,
+		fillColor: BRAND_COLOR,
+		fillOpacity: 1,
+	})
+		.addTo(markersLayer)
+		.bindTooltip("You", {
+			direction: "top",
+			offset: [0, -12],
+			permanent: true,
+			className: "map-tooltip",
+		});
+
 	items.forEach((d) => {
-		const p = proj(d.lat, d.lng);
-		const pin = document.createElement("div");
-		pin.className = "pin";
-		pin.style.left = p.left + "px";
-		pin.style.top = p.top + "px";
-		pin.title = d.name;
-		mapBox.appendChild(pin);
+		const marker = L.circleMarker([d.lat, d.lng], {
+			radius: 7,
+			color: "#111827",
+			weight: 1,
+			fillColor: ACCENT_COLOR,
+			fillOpacity: 0.9,
+		}).addTo(markersLayer);
+
+		marker.bindTooltip(d.name, {
+			direction: "top",
+			offset: [0, -8],
+			className: "map-tooltip",
+		});
+
+		marker.bindPopup(
+			`<strong>${d.name}</strong><br>${
+				d.address
+			}<br><span style="color:#4b5563;">${d.distance.toFixed(1)} km away</span>`
+		);
+
+		bounds.extend(marker.getLatLng());
 	});
+
+	leafletMap.invalidateSize();
+
+	if (items.length) {
+		leafletMap.fitBounds(bounds.pad(0.2), { maxZoom: 13 });
+	} else {
+		leafletMap.setView([origin.lat, origin.lng], 12);
+	}
 }
 
 window.addEventListener("resize", () => {
-	if (lastOrigin) {
-		drawPins(lastOrigin, lastDealers);
+	if (leafletMap) {
+		leafletMap.invalidateSize();
 	}
 });
 // Submit
