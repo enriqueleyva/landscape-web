@@ -2403,7 +2403,7 @@
 							class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/10 text-white hover:bg-white/15 border border-white/10"
 							data-cta="book-consult"
 						>
-							Book a consultation <span>📅</span>
+							Chat with us <span>💬</span>
 						</button>
 						<a
 							href="assets/pdf/Hello_Landscape.pdf"
@@ -2414,6 +2414,46 @@
 							Learn wear-resistance secrets <span>📄</span>
 						</a>
 					</div>
+				</div>
+				<!-- Chat widget -->
+				<div
+					id="chat-widget"
+					class="chat-widget"
+					role="dialog"
+					aria-labelledby="chat-widget-title"
+					aria-modal="false"
+					aria-hidden="true"
+				>
+					<div class="chat-header">
+						<h3 id="chat-widget-title">Landscape Assistant</h3>
+						<button
+							type="button"
+							class="chat-close-btn"
+							aria-label="Cerrar chat"
+						>
+							<i class="fa-solid fa-xmark"></i>
+						</button>
+					</div>
+					<div class="chat-body" role="log" aria-live="polite">
+						<div class="chat-message bot">
+							Hello! I'm Landscape's virtual assistant. How can I help you
+							today?
+						</div>
+					</div>
+					<form class="chat-input" id="chat-widget-form">
+						<label for="chat-widget-message" class="sr-only"
+							>Type your message</label
+						>
+						<input
+							type="text"
+							id="chat-widget-message"
+							name="message"
+							autocomplete="off"
+							placeholder="Type something..."
+							required
+						/>
+						<button type="submit">Ask</button>
+					</form>
 				</div>
 			</div>
 		</div>
@@ -2443,6 +2483,81 @@
 						console.log("CTA click", el.dataset.cta);
 						// TODO: window.gtag?.('event','cta_click',{ label: el.dataset.cta });
 					});
+				});
+
+				const chatWidget = document.getElementById("chat-widget");
+				const chatToggle = document.querySelector("[data-cta='book-consult']");
+				const chatCloseBtn = chatWidget?.querySelector(".chat-close-btn");
+				const chatForm = document.getElementById("chat-widget-form");
+				const chatInput = document.getElementById("chat-widget-message");
+				const chatLog = chatWidget?.querySelector(".chat-body");
+				const cannedResponses = [
+					"Thank you for your message. A specialist will contact you shortly.",
+					"I'm collecting your information. Could you share your city and preferred time?",
+					"If you need immediate assistance, you can also call 1-800-LANDSCAPE.",
+				];
+
+				function appendMessage(role, text) {
+					if (!chatLog) return;
+					const bubble = document.createElement("div");
+					bubble.className = `chat-message ${role}`;
+					bubble.textContent = text;
+					chatLog.appendChild(bubble);
+					chatLog.scrollTop = chatLog.scrollHeight;
+				}
+
+				function openChat() {
+					if (!chatWidget) return;
+					chatWidget.classList.add("is-open");
+					chatWidget.setAttribute("aria-hidden", "false");
+					setTimeout(() => {
+						chatInput?.focus();
+					}, 120);
+				}
+
+				function closeChat() {
+					if (!chatWidget) return;
+					chatWidget.classList.remove("is-open");
+					chatWidget.setAttribute("aria-hidden", "true");
+				}
+
+				chatToggle?.addEventListener("click", () => {
+					openChat();
+				});
+
+				chatCloseBtn?.addEventListener("click", () => {
+					closeChat();
+					chatToggle?.focus();
+				});
+
+				document.addEventListener("keydown", (event) => {
+					if (
+						event.key === "Escape" &&
+						chatWidget?.classList.contains("is-open")
+					) {
+						event.preventDefault();
+						closeChat();
+						chatToggle?.focus();
+					}
+				});
+
+				chatForm?.addEventListener("submit", (event) => {
+					event.preventDefault();
+					const message = chatInput?.value.trim();
+					if (!message) {
+						return;
+					}
+					appendMessage("user", message);
+					if (chatInput) {
+						chatInput.value = "";
+					}
+					setTimeout(() => {
+						const reply =
+							cannedResponses[
+								Math.floor(Math.random() * cannedResponses.length)
+							];
+						appendMessage("bot", reply);
+					}, 450);
 				});
 			})();
 		</script>
