@@ -235,7 +235,8 @@ const listEl = document.getElementById("dealerList");
 const countEl = document.getElementById("resultCount");
 const mapBox = document.getElementById("mapBox");
 const filtersActive = { install: false, open: false, 247: false };
-
+let lastOrigin = null;
+let lastDealers = [];
 // filtros chips
 document.querySelectorAll(".chip[data-filter]").forEach((ch) => {
 	ch.addEventListener("click", () => {
@@ -339,6 +340,8 @@ function renderDealers(origin, km) {
 		`<div class="dealer-card text-white/70">No dealers found in ${km} km — try a larger radius.</div>`;
 
 	// Mapa (pins en un plano simple)
+	lastOrigin = origin;
+	lastDealers = items;
 	drawPins(origin, items);
 }
 
@@ -350,20 +353,21 @@ function drawPins(origin, items) {
 	const maxLat = Math.max(...pts.map((p) => p.lat)) + 0.2;
 	const minLng = Math.min(...pts.map((p) => p.lng)) - 0.2;
 	const maxLng = Math.max(...pts.map((p) => p.lng)) + 0.2;
-	const mapRect = mapBox.getBoundingClientRect();
+	const mapWidth = mapBox.clientWidth;
+	const mapHeight = mapBox.clientHeight;
+	if (!mapWidth || !mapHeight) return;
 
 	function proj(lat, lng) {
 		// proyección lineal simple al contenedor
 		const x = (lng - minLng) / (maxLng - minLng);
 		const y = 1 - (lat - minLat) / (maxLat - minLat);
-		return { left: x * mapRect.width, top: y * mapRect.height };
+		return { left: x * mapWidth, top: y * mapHeight };
 	}
 
 	// tú estás aquí
 	const you = document.createElement("div");
 	const p0 = proj(origin.lat, origin.lng);
 	you.className = "youarehere";
-	you.style.position = "absolute";
 	you.style.left = p0.left + "px";
 	you.style.top = p0.top + "px";
 	you.innerHTML = `<div class="pin" style="background: var(--brand)"></div>
@@ -382,6 +386,11 @@ function drawPins(origin, items) {
 	});
 }
 
+window.addEventListener("resize", () => {
+	if (lastOrigin) {
+		drawPins(lastOrigin, lastDealers);
+	}
+});
 // Submit
 form.addEventListener("submit", (e) => {
 	e.preventDefault();
