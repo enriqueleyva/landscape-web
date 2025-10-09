@@ -45,41 +45,43 @@ window.addEventListener("DOMContentLoaded", () => {
 	// === Rotación automática de llantas ===
 	const tireEl = document.getElementById("tire");
 
-	// Cambia estos paths por tus archivos reales:
-	const TIRE_SOURCES = [
-		"../assets/img/ltraSport.png",
-		"../assets/img/terragrip.png",
-		"../assets/img/terrain.png",
-	];
+	if (tireEl) {
+		// Cambia estos paths por tus archivos reales:
+		const TIRE_SOURCES = [
+			"../assets/img/ltraSport.png",
+			"../assets/img/terragrip.png",
+			"../assets/img/terrain.png",
+		];
 
-	// Preload para que el cambio sea instantáneo
-	TIRE_SOURCES.forEach((src) => {
-		const img = new Image();
-		img.src = src;
-	});
+		// Preload para que el cambio sea instantáneo
+		TIRE_SOURCES.forEach((src) => {
+			const img = new Image();
+			img.src = src;
+		});
 
-	let idx = 0;
-	const EVERY_SEC = 4; // cada 4s (ajústalo)
+		let idx = 0;
+		const EVERY_SEC = 4; // cada 4s (ajústalo)
 
-	function swapTire() {
-		const next = TIRE_SOURCES[(idx + 1) % TIRE_SOURCES.length];
+		function swapTire() {
+			const next = TIRE_SOURCES[(idx + 1) % TIRE_SOURCES.length];
 
-		// Timeline del cambio suave
-		gsap
-			.timeline({ defaults: { ease: "power2.inOut" } })
-			.to(tireEl, { opacity: 0, y: 20, scale: 0.98, duration: 0.45 })
-			.add(() => {
-				tireEl.src = next; // Cambiamos la imagen
-				idx = (idx + 1) % TIRE_SOURCES.length;
-			})
-			.to(tireEl, { opacity: 1, y: 0, scale: 1, duration: 0.55 });
+			// Timeline del cambio suave
+			gsap
+				.timeline({ defaults: { ease: "power2.inOut" } })
+				.to(tireEl, { opacity: 0, y: 20, scale: 0.98, duration: 0.45 })
+				.add(() => {
+					tireEl.src = next; // Cambiamos la imagen
+					idx = (idx + 1) % TIRE_SOURCES.length;
+				})
+				.to(tireEl, { opacity: 1, y: 0, scale: 1, duration: 0.55 });
 
-		// Programamos el siguiente cambio
+			// Programamos el siguiente cambio
+			gsap.delayedCall(EVERY_SEC, swapTire);
+		}
+
+		// Inicia el ciclo tras un pequeño delay
 		gsap.delayedCall(EVERY_SEC, swapTire);
 	}
-
-	// Inicia el ciclo tras un pequeño delay
-	gsap.delayedCall(EVERY_SEC, swapTire);
 });
 
 // Tabs simple
