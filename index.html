@@ -19,6 +19,37 @@
 		<link rel="stylesheet" href="css/style.css" />
 		<!-- Tailwind CDN (prototipo). Compílalo en prod. -->
 		<script src="https://cdn.tailwindcss.com"></script>
+
+		<style>
+			/* subrayado solo al pasar el mouse */
+			header nav a {
+				position: relative;
+			}
+			header nav a::after {
+				content: "";
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				bottom: -4px;
+				height: 2px;
+				width: 0;
+				border-radius: 9999px;
+				background: rgba(255, 255, 255, 0.9);
+				transition: width 0.25s ease;
+			}
+			header nav a:hover::after {
+				width: 24px;
+			}
+		</style>
+		<style>
+			html {
+				scroll-behavior: smooth;
+			}
+			/* si ya expusiste la altura en --fixedbar-h, úsala; si no, pon 80px aprox */
+			[id] {
+				scroll-margin-top: var(--fixedbar-h, 80px);
+			}
+		</style>
 	</head>
 	<body class="bg-white text-neutral-900 antialiased">
 		<!-- Fixed Brand Positioning Bar -->
@@ -67,7 +98,6 @@
 			</div>
 		</div>
 
-		<!-- TOP ICON STRIP -->
 		<!-- TOP ICON STRIP -->
 		<div class="top-strip">
 			<div class="max-w-7xl mx-auto px-4">
@@ -140,36 +170,31 @@
 					/>
 				</div>
 				<nav
-					class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-x-12 gap-y-4 justify-items-center font-semibold tracking-wide uppercase text-sm pb-4"
+					class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-12 gap-y-4 justify-items-center font-semibold tracking-wide uppercase text-sm pb-4"
 				>
 					<a
-						href="#"
-						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						href="#why-landscape-strength"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
 						>Find Your Perfect Tire</a
 					>
 					<a
-						href="#"
-						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
-						>Find a Dealer</a
-					>
-					<a
-						href="#"
-						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						href="#tire-lineup"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
 						>Tire Lineup</a
 					>
 					<a
-						href="#"
-						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						href="#about-us"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
 						>Why Landscape</a
 					>
 					<a
-						href="#"
-						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
-						>Corporate News</a
+						href="#corporate-news"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>News</a
 					>
 					<a
-						href="#"
-						class="block max-w-[16ch] text-center leading-tight [text-wrap:balance]"
+						href="#recruitment"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
 						>Join Landscape</a
 					>
 				</nav>
@@ -971,135 +996,6 @@
 			</div>
 		</section>
 
-		<!-- ==================== FIND A DEALER ==================== -->
-		<section
-			id="find-dealer"
-			class="relative py-10 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950"
-		>
-			<div class="max-w-7xl mx-auto px-4">
-				<!-- Título + subtítulo -->
-				<div class="mb-6 md:mb-8 flex items-end justify-between gap-4">
-					<div>
-						<h3
-							class="text-white text-2xl md:text-3xl font-black tracking-tight"
-						>
-							Find a Dealer
-						</h3>
-						<p class="text-white/70 text-sm">
-							Find nearby dealers for purchase and installation.
-						</p>
-					</div>
-					<a
-						href="#dealer-results"
-						class="hidden md:inline-flex items-center gap-2 text-sm text-[var(--accent)] hover:underline"
-					>
-						Jump to results ➜
-					</a>
-				</div>
-
-				<!-- FORM -->
-				<form
-					id="dealerForm"
-					class="rounded-2xl bg-white/5 border border-white/10 p-4 md:p-5"
-				>
-					<div
-						class="grid grid-cols-1 md:grid-cols-12 gap-3 md:gap-4 items-end"
-					>
-						<!-- Ubicación -->
-						<label class="md:col-span-5 text-xs text-white/70">
-							*Location (City, ZIP, or “lat,lon”)
-							<input
-								id="dealerLocation"
-								type="text"
-								placeholder="Ej. 06100 · Houston · 25.67,-100.31"
-								class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-								required
-							/>
-						</label>
-
-						<!-- Radio -->
-						<label class="md:col-span-3 text-xs text-white/70">
-							Radius (km)
-							<select
-								id="dealerRadius"
-								class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-							>
-								<option>10</option>
-								<option selected>25</option>
-								<option>50</option>
-								<option>100</option>
-								<option>200</option>
-							</select>
-						</label>
-
-						<!-- Filtros rápidos -->
-						<div class="md:col-span-4 flex flex-wrap items-center gap-2">
-							<button type="button" class="chip" data-filter="install">
-								Installation
-							</button>
-							<button type="button" class="chip" data-filter="open">
-								Open now
-							</button>
-							<button type="button" class="chip" data-filter="247">24/7</button>
-							<button
-								type="button"
-								id="geoBtn"
-								class="ml-auto inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
-							>
-								📍 Use my location
-							</button>
-						</div>
-
-						<!-- CTA -->
-						<div class="md:col-span-12 flex justify-end">
-							<button
-								class="inline-flex items-center gap-2 px-5 py-3 rounded-md font-extrabold text-black"
-								style="
-									background: var(--accent);
-									box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
-								"
-							>
-								Search Dealers
-								<span
-									class="inline-grid place-items-center w-6 h-6 rounded-full border border-black/20"
-									>➜</span
-								>
-							</button>
-						</div>
-					</div>
-				</form>
-
-				<!-- Layout mapa + lista -->
-				<div
-					class="mt-6 grid grid-cols-1 lg:grid-cols-5 gap-5"
-					id="dealer-results"
-				>
-					<!-- MAP -->
-					<div class="lg:col-span-2">
-						<div class="map-box">
-							<div
-								id="mapCanvas"
-								class="map-canvas"
-								role="region"
-								aria-label="Mapa interactivo de distribuidores Landscape"
-							></div>
-						</div>
-					</div>
-
-					<!-- LISTA -->
-					<div class="lg:col-span-3">
-						<div class="flex items-center justify-between mb-3">
-							<h4 class="text-white font-bold">Results</h4>
-							<div class="text-white/70 text-sm">
-								<span id="resultCount">0</span> dealers
-							</div>
-						</div>
-						<div id="dealerList" class="space-y-3"></div>
-					</div>
-				</div>
-			</div>
-		</section>
-
 		<!-- ==================== TIRE LINEUP (FEATURED MODELS) ==================== -->
 		<section
 			id="tire-lineup"
@@ -1426,6 +1322,8 @@
 				</div>
 			</div>
 		</section>
+
+		<section id="about-us"></section>
 
 		<!-- ==================== CORPORATE NEWS ==================== -->
 		<section
@@ -1826,10 +1724,12 @@
 								</label>
 								<div class="flex items-end">
 									<button
-										class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-extrabold text-black"
+										class="w-full inline-flex items-center justify-center gap-2 px-4 py-2 rounded-md font-extrabold"
 										style="
 											background: var(--accent);
 											box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+
+											color: white;
 										"
 									>
 										Search
@@ -2560,6 +2460,34 @@
 					}, 450);
 				});
 			})();
+		</script>
+
+		<script>
+			// Mapea hrefs (#id) del nav a secciones
+			const links = [...document.querySelectorAll('header nav a[href^="#"]')];
+			const map = new Map(links.map((a) => [a.getAttribute("href"), a]));
+
+			// Estilo activo: subrayado permanente + color pleno
+			const setActive = (href) => {
+				links.forEach((a) => a.classList.remove("active-nav"));
+				map.get(href)?.classList.add("active-nav");
+			};
+
+			// Observa secciones (usa ids que ya tienes: #finder, #find-dealer, etc.)
+			const sections = [...map.keys()]
+				.map((sel) => document.querySelector(sel))
+				.filter(Boolean);
+
+			const io = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((e) => {
+						if (e.isIntersecting) setActive("#" + e.target.id);
+					});
+				},
+				{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
+			);
+
+			sections.forEach((s) => io.observe(s));
 		</script>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
