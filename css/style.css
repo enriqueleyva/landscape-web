@@ -810,7 +810,12 @@ footer .text-white\/60 {
 }
 
 .wl-card {
-    @apply rounded-2xl bg-white/5 border border-white/10 p-5 h-full;
+    /* @apply rounded-2xl bg-white/5 border border-white/10 p-5 h-full; */
+    border-radius: 1.25rem;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 1.5rem;
+    height: 100%;
 }
 
 .wl-chip {
