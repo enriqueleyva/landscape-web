@@ -252,9 +252,9 @@
 										<div class="font-extrabold tracking-tight leading-none">
 											<!-- Logo en lugar de "Landscape" -->
 											<img
-												src="assets/img/landscape-complete-purple.png"
+												src="assets/img/landscape-complete-purple.webp"
 												alt="Landscape"
-												class="mx-auto h-12 sm:h-14 md:h-16 lg:h-20 w-auto drop-shadow"
+												class="mx-auto lg:h-60 w-auto drop-shadow"
 												loading="eager"
 												decoding="async"
 											/>
@@ -290,29 +290,27 @@
 							<!-- <source src="videos/slide1.webm" type="video/webm"> -->
 						</video>
 
-						<!-- X + lluvia -->
-						<div class="x-wrap">
-							<div class="x-bar x-a"></div>
-							<div class="x-bar x-b"></div>
-						</div>
-						<div class="rain"></div>
-
 						<!-- Título -->
 						<div class="relative z-10 h-full max-w-7xl mx-auto">
 							<div
 								class="h-full px-6 flex items-center justify-center text-center"
 							>
-								<div class="select-none">
-									<p
-										class="condensed font-black tracking-tight text-4xl md:text-6xl lg:text-7xl"
-									>
-										Less Wear
-									</p>
-									<h1
-										class="condensed font-black tracking-tight text-4xl md:text-6xl lg:text-7xl"
-									>
-										More Miles
-									</h1>
+								<!-- LOCKUP DE POSICIONAMIENTO -->
+								<div
+									class="relative z-20 h-full flex items-center justify-center text-center px-6"
+								>
+									<div class="slogan-lockup select-none">
+										<div class="font-extrabold tracking-tight leading-none">
+											<!-- Logo en lugar de "Landscape" -->
+											<img
+												src="assets/img/landscape-complete-purple.webp"
+												alt="Landscape"
+												class="mx-auto lg:h-60 w-auto drop-shadow"
+												loading="eager"
+												decoding="async"
+											/>
+										</div>
+									</div>
 								</div>
 							</div>
 						</div>
@@ -682,245 +680,82 @@
 							terrain.
 						</p>
 					</div>
-					<div class="flex flex-wrap items-center gap-2">
-						<button class="tl-chip" data-cat="all" data-active="true">
-							All
-						</button>
-						<button class="tl-chip" data-cat="passenger">Passenger</button>
-						<button class="tl-chip" data-cat="truck">Truck & SUV</button>
-						<button class="tl-chip" data-cat="mud">Mud-Terrain</button>
-						<button class="tl-chip" data-cat="uhp">UHP</button>
-					</div>
 				</div>
 
-				<!-- Grid de modelos -->
-				<div id="tireGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
-					<!-- Card 1 -->
-					<article
-						class="tire-card"
-						data-cat="passenger"
-						data-model="ARIA H7"
-						data-tread="700"
-						data-traction="A"
-						data-noise="Low"
-						data-sizes="16–18”"
-					>
-						<div class="tire-hero">
-							<span class="badge">NEW</span>
-							<div class="tire-glow"></div>
-							<img
-								src="assets/img/terrain2.png"
-								srcset="
-									assets/img/terrain2-640.avif   640w,
-									assets/img/terrain2-1280.avif 1280w
-								"
-								alt="ARIA H7"
-								class="tire-img"
-								loading="lazy"
-							/>
-						</div>
-						<div class="p-5">
-							<div class="flex items-start gap-3">
+				<!-- ===== SECCIÓN: Descubre nuestras llantas ===== -->
+				<section class="relative py-14 md:py-20 overflow-hidden">
+					<!-- Óvalo de fondo derecho -->
+					<div
+						class="pointer-events-none absolute right-[-12%] top-1/2 -translate-y-1/2 w-[1200px] h-[560px] rounded-[280px] bg-neutral-100"
+					></div>
+
+					<div class="max-w-6xl mx-auto px-6">
+						<div class="grid md:grid-cols-2 gap-8">
+							<!-- TILE 1: Encuentre su distribuidor -->
+							<a
+								href="#find-dealer"
+								class="group relative rounded-xl overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,.25)] border border-black/20"
+							>
+								<!-- imagen -->
+								<img
+									src="assets/img/truck_section1.webp"
+									alt="Encuentre su distribuidor"
+									class="w-full h-[300px] md:h-[340px] object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+								/>
+								<!-- veladura + brillo -->
+								<div class="absolute inset-0 bg-black/20"></div>
 								<div
-									class="w-10 h-10 grid place-items-center rounded-xl text-white"
-									style="
-										background: color-mix(
-											in srgb,
-											var(--brand) 30%,
-											transparent
-										);
-										border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
-									"
-								>
-									🛞
-								</div>
-								<div class="min-w-0">
-									<h4 class="text-white font-bold text-lg leading-tight">
-										ARIA H7
-									</h4>
-									<p class="text-white/70 text-sm">Passenger · All-Season</p>
-								</div>
-								<span class="ml-auto pill">All-Weather</span>
-							</div>
-							<div class="mt-3 flex flex-wrap gap-2">
-								<span class="spec">Treadwear 700</span>
-								<span class="spec">Traction A</span>
-								<span class="spec">Low noise</span>
-								<span class="spec">16–18”</span>
-							</div>
-							<div class="mt-4 flex items-center gap-2">
-								<a
-									href="#"
-									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black cta-gold"
-									>Details <span>➜</span></a
-								>
-								<button
-									class="addCompare inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
-								>
-									Add to compare
-								</button>
-							</div>
-						</div>
-					</article>
-
-					<!-- Card 2 -->
-					<article
-						class="tire-card"
-						data-cat="truck"
-						data-model="TrailGuard AT"
-						data-tread="580"
-						data-traction="A"
-						data-noise="Med"
-						data-sizes="17–20”"
-					>
-						<div class="tire-hero">
-							<span class="badge">TOP PICK</span>
-							<div class="tire-glow"></div>
-							<img
-								src="assets/img/terrain.png"
-								alt="TrailGuard AT"
-								class="tire-img"
-								loading="lazy"
-							/>
-						</div>
-						<div class="p-5">
-							<div class="flex items-start gap-3">
+									class="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-[radial-gradient(60%_40%_at_50%_0%,rgba(255,255,255,.25),transparent_60%)]"
+								></div>
+								<!-- texto -->
 								<div
-									class="w-10 h-10 grid place-items-center rounded-xl text-white"
-									style="
-										background: color-mix(
-											in srgb,
-											var(--brand) 30%,
-											transparent
-										);
-										border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
-									"
+									class="absolute inset-0 grid place-items-center px-6 text-center"
 								>
-									🚙
+									<h3
+										class="btn-text font-black uppercase tracking-wider leading-tight text-2xl md:text-3xl [text-shadow:0_6px_24px_rgba(0,0,0,.45)]"
+									>
+										Passenger Tires
+										<span class="inline-block align-middle translate-x-1"
+											>→</span
+										>
+									</h3>
 								</div>
-								<div class="min-w-0">
-									<h4 class="text-white font-bold text-lg leading-tight">
-										TrailGuard AT
-									</h4>
-									<p class="text-white/70 text-sm">Truck & SUV · All-Terrain</p>
-								</div>
-								<span class="ml-auto pill">Snow Ready</span>
-							</div>
-							<div class="mt-3 flex flex-wrap gap-2">
-								<span class="spec">Treadwear 580</span>
-								<span class="spec">Traction A</span>
-								<span class="spec">Medium noise</span>
-								<span class="spec">17–20”</span>
-							</div>
-							<div class="mt-4 flex items-center gap-2">
-								<a
-									href="#"
-									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black cta-gold"
-									>Details <span>➜</span></a
-								>
-								<button
-									class="addCompare inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
-								>
-									Add to compare
-								</button>
-							</div>
-						</div>
-					</article>
+							</a>
 
-					<!-- Card 3 -->
-					<article
-						class="tire-card"
-						data-cat="mud"
-						data-model="MudForce M/T"
-						data-tread="520"
-						data-traction="A"
-						data-noise="High"
-						data-sizes="17–22”"
-					>
-						<div class="tire-hero">
-							<span class="badge">MUD-TERRAIN</span>
-							<div class="tire-glow"></div>
-							<img
-								src="assets/img/terragrip.png"
-								alt="MudForce M/T"
-								class="tire-img"
-								loading="lazy"
-							/>
-						</div>
-						<div class="p-5">
-							<div class="flex items-start gap-3">
+							<!-- TILE 2: Catálogo 2025 -->
+							<a
+								href="#find-dealer"
+								class="group relative rounded-xl overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,.25)] border border-black/20"
+							>
+								<!-- imagen -->
+								<img
+									src="assets/img/commercial.webp"
+									alt="Encuentre su distribuidor"
+									class="w-full h-[300px] md:h-[340px] object-cover transition-transform duration-500 group-hover:scale-[1.04]"
+								/>
+								<!-- veladura + brillo -->
+								<!-- <div class="absolute inset-0 bg-black/10"></div> -->
 								<div
-									class="w-10 h-10 grid place-items-center rounded-xl text-white"
-									style="
-										background: color-mix(
-											in srgb,
-											var(--brand) 30%,
-											transparent
-										);
-										border: 1px solid color-mix(in srgb, var(--brand) 60%, #fff);
-									"
+									class="absolute inset-0 opacity-0 group-hover:opacity-100 transition bg-[radial-gradient(60%_40%_at_50%_0%,rgba(255,255,255,.25),transparent_60%)]"
+								></div>
+								<!-- texto -->
+								<div
+									class="absolute inset-0 grid place-items-center px-6 text-center"
 								>
-									🗻
+									<h3
+										class="btn-text font-black uppercase tracking-wider leading-tight text-2xl md:text-3xl [text-shadow:0_6px_24px_rgba(0,0,0,.45)]"
+									>
+										Commercial <br />
+										Truck Tires
+										<span class="inline-block align-middle translate-x-1"
+											>→</span
+										>
+									</h3>
 								</div>
-								<div class="min-w-0">
-									<h4 class="text-white font-bold text-lg leading-tight">
-										MudForce M/T
-									</h4>
-									<p class="text-white/70 text-sm">Mud-Terrain · Off-Road</p>
-								</div>
-								<span class="ml-auto pill">Reinforced</span>
-							</div>
-							<div class="mt-3 flex flex-wrap gap-2">
-								<span class="spec">Treadwear 520</span>
-								<span class="spec">Traction A</span>
-								<span class="spec">High noise</span>
-								<span class="spec">17–22”</span>
-							</div>
-							<div class="mt-4 flex items-center gap-2">
-								<a
-									href="#"
-									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold text-black cta-gold"
-									>Details <span>➜</span></a
-								>
-								<button
-									class="addCompare inline-flex items-center gap-2 px-3 py-2 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
-								>
-									Add to compare
-								</button>
-							</div>
+							</a>
 						</div>
-					</article>
-
-					<!-- Duplica más cards según necesites -->
-				</div>
-
-				<!-- Bandeja de comparación -->
-				<div id="compareTray" class="compare-tray hidden">
-					<div class="flex items-center justify-between mb-3">
-						<h4 class="text-white font-bold">Compare models</h4>
-						<button
-							id="clearCompare"
-							class="text-white/70 hover:text-white text-sm"
-						>
-							Clear
-						</button>
 					</div>
-					<div id="comparePills" class="flex flex-wrap gap-2 mb-3"></div>
-					<div class="overflow-x-auto">
-						<table class="min-w-[640px] w-full text-left text-white/80 text-sm">
-							<thead class="text-white/60">
-								<tr>
-									<th class="py-2 pr-4">Model</th>
-									<th class="py-2 pr-4">Treadwear</th>
-									<th class="py-2 pr-4">Traction</th>
-									<th class="py-2 pr-4">Noise</th>
-									<th class="py-2 pr-4">Sizes</th>
-								</tr>
-							</thead>
-							<tbody id="compareBody"></tbody>
-						</table>
-					</div>
-				</div>
+				</section>
 			</div>
 		</section>
 
@@ -1432,14 +1267,14 @@
 								<div class="flex flex-wrap items-center gap-3">
 									<span
 										class="text-xs px-2 py-1 rounded bg-white/10 border border-white/10 text-white/70"
-										>Engineering</span
+										>Marketing</span
 									>
 									<h5 class="text-white font-bold text-lg">
-										Sr. Tire Compound Engineer
+										Tire Sales Representative – U.S. Market
 									</h5>
 									<span class="ml-auto text-[var(--accent)] text-sm"
-										><i class="fa-solid fa-location-dot"></i> Monterrey,
-										MX</span
+										><i class="fa-solid fa-location-dot"></i> United States
+										(Flexible within major tire markets)</span
 									>
 								</div>
 								<p class="text-white/70 text-sm mt-2">
