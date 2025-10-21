@@ -353,10 +353,10 @@ document.querySelectorAll(".chip[data-filter]").forEach((ch) => {
 		});
 	});
 
-	btnClear.addEventListener("click", () => {
-		selected.clear();
-		renderCompare();
-	});
+	// btnClear.addEventListener("click", () => {
+	// 	selected.clear();
+	// 	renderCompare();
+	// });
 })();
 
 // <!-- Contadores animados -->
