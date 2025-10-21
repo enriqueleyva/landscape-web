@@ -449,7 +449,7 @@ body {
 }
 
 /* Si el slide es VIDEO/IMAGEN, ponemos velo blanco suave para que el texto oscuro se lea */
-.stage::after {
+/* .stage::after {
     content: "";
     position: absolute;
     inset: 0;
@@ -460,7 +460,7 @@ body {
             rgba(255, 255, 255, 0.2) 70%,
             rgba(255, 255, 255, 0.1) 100%);
     pointer-events: none;
-}
+} */
 
 /* “Lluvia” más sutil en claro */
 .rain {
@@ -929,4 +929,17 @@ footer .text-white\/60 {
 
 #brand-fixed .text-white\/60 {
     color: rgba(255, 255, 255, .60) !important;
+}
+
+.btn-text {
+    color: #fff !important;
+}
+
+.btn-flag {
+    background-color: #820099;
+    color: #fff;
+}
+
+.btn-flag:hover {
+    background-color: black;
 }
