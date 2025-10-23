@@ -152,7 +152,7 @@
 						>Tire Lineup</a
 					>
 					<a
-						href="#about-us"
+						href="#about"
 						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
 						>Why Landscape</a
 					>
@@ -1138,8 +1138,6 @@
 			</div>
 		</section>
 
-		<section id="about-us"></section>
-
 		<!-- ==================== CORPORATE NEWS ==================== -->
 		<section
 			id="corporate-news"
@@ -1871,187 +1869,261 @@
 			</div>
 		</section>
 
-		<!-- ============= COMPANY HISTORY (TIMELINE) ============= -->
-		<section
-			id="company-history"
-			class="relative py-14 md:py-18 from-neutral-950 via-neutral-900 to-neutral-950 border-t border-white/10"
-		>
-			<style>
-				/* línea central del timeline */
-				#company-history .axis {
-					position: absolute;
-					left: 50%;
-					top: 0;
-					bottom: 0;
-					width: 2px;
-					background: linear-gradient(
-						180deg,
-						transparent,
-						rgba(255, 255, 255, 0.25),
-						transparent
-					);
-					transform: translateX(-50%);
-				}
-				/* card base */
-				.h-card {
-					@apply relative rounded-2xl bg-white/5 border border-white/10 p-5 md:p-6;
-					box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
-				}
-				/* punto del año */
-				.year-dot {
-					position: absolute;
-					top: 1rem;
-					width: 14px;
-					height: 14px;
-					border-radius: 9999px;
-					background: #fff;
-					border: 3px solid color-mix(in srgb, var(--brand) 70%, #fff);
-					box-shadow: 0 0 0 6px
-						color-mix(in srgb, var(--brand) 20%, transparent);
-				}
-				/* chip de año */
-				.year-chip {
-					@apply inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-white/10 border border-white/10 text-white/80;
-				}
-				/* estado activo al hacer scroll */
-				.h-card[data-active="true"] {
-					outline: 2px solid color-mix(in srgb, var(--brand) 55%, #fff);
-					outline-offset: 0;
-				}
-			</style>
-
+		<!-- ========== ABOUT / ACERCA DE ========== -->
+		<section id="about" class="relative py-16 md:py-24">
 			<div class="max-w-7xl mx-auto px-4">
-				<!-- Header -->
-				<div class="text-center mb-10">
-					<h3 class="text-white text-3xl md:text-4xl font-black tracking-tight">
-						Our History
-					</h3>
-					<p class="text-white/70 mt-2 max-w-2xl mx-auto">
-						Decades of engineering, composite innovation and commitment to
-						safety.
-					</p>
+				<!-- Fila de título centrado -->
+				<div class="md:col-span-2 text-center mb-8">
+					<h2 class="text-3xl md:text-4xl font-black tracking-tight text-white">
+						About us
+					</h2>
 				</div>
+				<div class="grid items-center gap-10 md:grid-cols-2">
+					<!-- TEXTO (izquierda) -->
+					<div>
+						<p class="mt-4 text-white/80 leading-relaxed">
+							We, Landscape Tires, are dedicated to manufacturing tires that
+							meet the needs of modern drivers, whether it's for daily
+							commuting, off-road adventures, or high-performance driving.
+							"Landscape - Maximum Performance" is always the essence of our
+							brand. Our tire are durability, excellent service life, and
+							outstanding performance, at same time, to maintain the highest
+							standards of safety and value.
+						</p>
 
-				<!-- Línea central -->
-				<span class="axis hidden lg:block"></span>
+						<h3 class="mt-6 font-extrabold text-white text-xl">
+							Excellent Products
+						</h3>
 
-				<!-- Timeline -->
-				<div class="grid gap-8">
-					<!-- Item 1 (left) -->
-					<article class="relative lg:pr-[52%]">
-						<div class="h-card">
-							<span class="year-chip">1998 · Foundation</span>
-							<h4 class="text-white font-bold text-lg mt-2">The Beginning</h4>
-							<p class="text-white/70 text-sm mt-2">
-								Landscape nace con una meta clara: llantas durables y accesibles
-								para mercados MX/US. Primer laboratorio de compuestos y acuerdos
-								con distribuidores regionales.
-							</p>
-							<div class="mt-3 flex flex-wrap gap-2">
-								<span class="year-chip">First Dealer Network</span>
-								<span class="year-chip">QC Lab</span>
+						<ul class="mt-3 space-y-2 text-white/80">
+							<li class="flex items-start gap-3">
+								<i class="fa-solid fa-road mt-1 text-[var(--brand)]"></i>
+								<span
+									><strong>Comfort on the road:</strong> passenger tyres, quiet
+									and stable on the motorway.</span
+								>
+							</li>
+							<li class="flex items-start gap-3">
+								<i class="fa-solid fa-mountain mt-1 text-[var(--brand)]"></i>
+								<span
+									><strong>Rugged off-road:</strong> reliable traction on dirt,
+									mud, sand, gravel and snow.</span
+								>
+							</li>
+							<li class="flex items-start gap-3">
+								<i
+									class="fa-solid fa-location-dot mt-1 text-[var(--brand)]"
+								></i>
+								<span
+									><strong>For each trip:</strong> he right tyre for each
+									destination and vehicle type.</span
+								>
+							</li>
+						</ul>
+
+						<div class="mt-6 grid gap-3 sm:grid-cols-2">
+							<div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+								<div class="flex items-center gap-3">
+									<i class="fa-solid fa-gauge-high text-white"></i>
+									<div>
+										<p class="font-bold text-white">Performance + value</p>
+										<p class="text-sm text-white/70">
+											Ideal balance for daily use and extreme demands.
+										</p>
+									</div>
+								</div>
+							</div>
+							<div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+								<div class="flex items-center gap-3">
+									<i class="fa-solid fa-shield-heart text-white"></i>
+									<div>
+										<p class="font-bold text-white">Tested safety</p>
+										<p class="text-sm text-white/70">
+											High standards, uniform wear and great service life.
+										</p>
+									</div>
+								</div>
 							</div>
 						</div>
-						<span
-							class="year-dot right-0 translate-x-[calc(50%+1px)] hidden lg:block"
-						></span>
-					</article>
+					</div>
 
-					<!-- Item 2 (right) -->
-					<article class="relative lg:pl-[52%]">
-						<div class="h-card">
-							<span class="year-chip">2008 · R&D Upgrade</span>
-							<h4 class="text-white font-bold text-lg mt-2">
-								Aegis Materials Program
-							</h4>
-							<p class="text-white/70 text-sm mt-2">
-								Inversión en polímeros de nueva generación y mezclas “ColdFlex™
-								/ DryGrip+™”. Mejora de vida útil y reducción de resistencia al
-								rodamiento.
-							</p>
-							<div class="mt-3 flex flex-wrap gap-2">
-								<span class="year-chip">+12% lifespan</span>
-								<span class="year-chip">-8% rolling resistance</span>
+					<!-- CARRUSEL (derecha) -->
+					<div>
+						<div
+							class="relative rounded-2xl overflow-hidden bg-white/5 border border-white/10 shadow-[0_20px_60px_rgba(0,0,0,.35)]"
+						>
+							<!-- Track -->
+							<div
+								id="about-carousel"
+								class="flex transition-transform duration-500 ease-out"
+								style="transform: translateX(0)"
+							>
+								<!-- Slide 1 -->
+								<figure class="min-w-full h-[320px] md:h-[420px] relative">
+									<img
+										src="assets/img/gallery/g1.webp"
+										alt="Planta y cadena logística"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<!-- Slide 2 -->
+								<figure class="min-w-full h-[320px] md:h-[420px] relative">
+									<img
+										src="assets/img/gallery/g2.webp"
+										alt="Pruebas de materiales e I+D"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<!-- Slide 3 -->
+								<figure class="min-w-full h-[320px] md:h-[420px] relative">
+									<img
+										src="assets/img/gallery/g3.webp"
+										alt="Conducción en múltiples terrenos"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<figure class="min-w-full h-[320px] md:h-[420px] relative">
+									<img
+										src="assets/img/gallery/g4.webp"
+										alt="Conducción en múltiples terrenos"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<figure class="min-w-full h-[320px] md:h-[420px] relative">
+									<img
+										src="assets/img/gallery/g5.webp"
+										alt="Conducción en múltiples terrenos"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<figure class="min-w-full h-[320px] md:h-[420px] relative">
+									<img
+										src="assets/img/gallery/g6.webp"
+										alt="Conducción en múltiples terrenos"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+							</div>
+
+							<!-- Controles
+							<button
+								type="button"
+								aria-label="Anterior"
+								class="abs-btn left-3"
+							>
+								<i class="fa-solid fa-chevron-left"></i>
+							</button>
+							<button
+								type="button"
+								aria-label="Siguiente"
+								class="abs-btn right-3"
+							>
+								<i class="fa-solid fa-chevron-right"></i>
+							</button> -->
+
+							<!-- Indicadores -->
+							<div
+								class="absolute bottom-3 left-0 right-0 flex items-center justify-center gap-2"
+							>
+								<button
+									class="dot is-active"
+									aria-label="Ir a la diapositiva 1"
+								></button>
+								<button class="dot" aria-label="Ir a la diapositiva 2"></button>
+								<button class="dot" aria-label="Ir a la diapositiva 3"></button>
+								<button class="dot" aria-label="Ir a la diapositiva 2"></button>
+								<button class="dot" aria-label="Ir a la diapositiva 3"></button>
+								<button class="dot" aria-label="Ir a la diapositiva 3"></button>
 							</div>
 						</div>
-						<span
-							class="year-dot left-0 -translate-x-[calc(50%+1px)] hidden lg:block"
-						></span>
-					</article>
-
-					<!-- Item 3 (left, con imagen) -->
-					<article class="relative lg:pr-[52%]">
-						<div class="h-card">
-							<span class="year-chip">2015 · Global Supply</span>
-							<h4 class="text-white font-bold text-lg mt-2">
-								North America Expansion
-							</h4>
-							<p class="text-white/70 text-sm mt-2">
-								Apertura de centros logísticos y certificación de instalaciones.
-								Se estandariza la garantía y el soporte bilingüe ES/EN.
-							</p>
-							<!-- imagen opcional -->
-							<img
-								src="assets/img/gallery/g1.webp"
-								alt="NA Logistics Hub"
-								class="mt-4 w-full h-40 object-cover rounded-lg border border-white/10"
-							/>
-						</div>
-						<span
-							class="year-dot right-0 translate-x-[calc(50%+1px)] hidden lg:block"
-						></span>
-					</article>
-
-					<!-- Item 4 (right) -->
-					<article class="relative lg:pl-[52%]">
-						<div class="h-card">
-							<span class="year-chip">2024 · Tech Milestone</span>
-							<h4 class="text-white font-bold text-lg mt-2">
-								Aegis High-Durability Tech
-							</h4>
-							<p class="text-white/70 text-sm mt-2">
-								Lanzamos nuestra arquitectura reforzada con control de presión
-								multi-punto y carcasa de alta resistencia; más kilómetros con
-								menor desgaste.
-							</p>
-							<div class="mt-3 flex flex-wrap gap-2">
-								<span class="year-chip">BPOT Crown</span>
-								<span class="year-chip">Multi-point Sensing</span>
-							</div>
-						</div>
-						<span
-							class="year-dot left-0 -translate-x-[calc(50%+1px)] hidden lg:block"
-						></span>
-					</article>
-				</div>
-
-				<!-- CTA -->
-				<div class="text-center mt-10">
-					<a
-						href="#why-landscape"
-						class="inline-flex items-center gap-2 px-5 py-3 rounded-md font-extrabold text-black btn-text"
-						style="
-							background: var(--accent);
-							box-shadow: 0 6px 0 rgba(0, 0, 0, 0.25);
-						"
-					>
-						Explore our brand <span>➜</span>
-					</a>
+					</div>
 				</div>
 			</div>
 
-			<!-- Glow sutil -->
+			<!-- Glow decorativo -->
 			<div
 				class="pointer-events-none absolute inset-0"
 				style="
 					background: radial-gradient(
-						30% 25% at 80% 0%,
+						28% 20% at 85% 10%,
 						color-mix(in srgb, var(--brand) 12%, transparent),
 						transparent 60%
 					);
 				"
 			></div>
+			<!-- CTA final: ir a la historia -->
+			<div class="mt-10 md:mt-12">
+				<div class="max-w-7xl mx-auto px-4">
+					<div class="text-center">
+						<a
+							href="pages/about_us.html"
+							class="btn-text inline-flex items-center gap-2 px-5 py-3 rounded-xl font-extrabold text-white shadow-[0_8px_0_rgba(0,0,0,.25)] transition hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/70"
+							style="background: var(--brand)"
+							aria-label="Conoce nuestra
+							historia"
+							title="Conoce nuestra historia"
+						>
+							Learn about our history
+							<span aria-hidden="true">➜</span>
+						</a>
+					</div>
+				</div>
+			</div>
 		</section>
+
+		<!-- ===== Estilos mínimos para los controles del carrusel ===== -->
+		<style>
+			#about .abs-btn {
+				@apply absolute top-1/2 -translate-y-1/2 z-10 grid place-items-center
+           h-10 w-10 rounded-full bg-black/45 text-white
+           border border-white/10 backdrop-blur;
+			}
+			#about .abs-btn:hover {
+				@apply bg-black/60;
+			}
+			#about .dot {
+				@apply h-2.5 w-2.5 rounded-full bg-white/35 hover:bg-white/60 transition;
+			}
+			#about .dot.is-active {
+				background: color-mix(in srgb, var(--brand) 80%, #fff);
+			}
+		</style>
+
+		<!-- ===== JS del carrusel (sin dependencias) ===== -->
+		<script>
+			(() => {
+				const root = document.querySelector("#about");
+				if (!root) return;
+
+				const track = root.querySelector("#about-carousel");
+				const slides = Array.from(track.children);
+				const btnPrev = root.querySelector(".abs-btn.left-3");
+				const btnNext = root.querySelector(".abs-btn.right-3");
+				const dots = Array.from(root.querySelectorAll(".dot"));
+
+				let index = 0;
+				const goTo = (i) => {
+					index = (i + slides.length) % slides.length;
+					track.style.transform = `translateX(-${index * 100}%)`;
+					dots.forEach((d, n) => d.classList.toggle("is-active", n === index));
+				};
+
+				// btnPrev.addEventListener("click", () => goTo(index - 1));
+				// btnNext.addEventListener("click", () => goTo(index + 1));
+				dots.forEach((d, n) => d.addEventListener("click", () => goTo(n)));
+
+				// Auto-play suave (opcional: comenta si no lo quieres)
+				let timer = setInterval(() => goTo(index + 1), 5000);
+				root.addEventListener("mouseenter", () => clearInterval(timer));
+				root.addEventListener(
+					"mouseleave",
+					() => (timer = setInterval(() => goTo(index + 1), 5000))
+				);
+
+				// Responsivo: recalcula al cambiar tamaño (por si el contenedor cambia)
+				window.addEventListener("resize", () => goTo(index));
+			})();
+		</script>
 
 		<!-- ==================== FOOTER ==================== -->
 		<footer

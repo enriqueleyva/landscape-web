@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Landscape</title>
+		<!-- En <head> -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+
+		<link rel="stylesheet" href="../css/style.css" />
+		<!-- Tailwind CDN (prototipo). Compílalo en prod. -->
+		<script src="https://cdn.tailwindcss.com"></script>
+
+		<style>
+			/* subrayado solo al pasar el mouse */
+			header nav a {
+				position: relative;
+			}
+			header nav a::after {
+				content: "";
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				bottom: -4px;
+				height: 2px;
+				width: 0;
+				border-radius: 9999px;
+				background: rgba(255, 255, 255, 0.9);
+				transition: width 0.25s ease;
+			}
+			header nav a:hover::after {
+				width: 24px;
+			}
+		</style>
+		<style>
+			html {
+				scroll-behavior: smooth;
+			}
+			/* si ya expusiste la altura en --fixedbar-h, úsala; si no, pon 80px aprox */
+			[id] {
+				scroll-margin-top: var(--fixedbar-h, 80px);
+			}
+		</style>
+	</head>
+	<body class="bg-white text-neutral-900 antialiased">
+		<!-- Fixed Brand Positioning Bar -->
+		<div
+			id="brand-fixed"
+			class="fixed inset-x-0 top-0 z-[100]"
+			style="background-color: var(--purple-1)"
+		>
+			<div
+				class="border-b border-white/10 bg-neutral-900/90 text-white backdrop-blur"
+			>
+				<!-- Safe area para iOS notch -->
+				<div style="padding-top: env(safe-area-inset-top)"></div>
+
+				<div class="mx-auto max-w-7xl">
+					<div class="h-10 sm:h-11 md:h-12 grid place-items-center px-4">
+						<!-- Puedes usar imagen de marca o texto. Dejo ambos: descomenta el que prefieras -->
+						<!-- Opción A: imagen -->
+
+						<div class="flex items-center gap-3">
+							<img
+								src="../assets/img/landscape-durable.png"
+								alt="Landscape"
+								class="h-6 sm:h-7 md:h-8 w-auto drop-shadow"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- TOP ICON STRIP -->
+		<div class="top-strip">
+			<div class="max-w-7xl mx-auto px-4">
+				<div class="flex items-center justify-between h-12">
+					<!-- Selector de idioma -->
+					<div
+						class="inline-flex rounded-full border border-black/10 overflow-hidden"
+					>
+						<button
+							type="button"
+							data-lang="en"
+							class="flex items-center gap-2 px-3 py-1 text-sm font-medium hover:bg-black/5 btn-flag"
+							aria-pressed="false"
+							aria-label="Switch to English (USA)"
+						>
+							<img src="../assets/img/flags/us.svg" alt="" class="w-5 h-5" />
+							<span>EN</span>
+						</button>
+						<button
+							type="button"
+							data-lang="es"
+							class="flex items-center gap-2 px-3 py-1 text-sm font-medium hover:bg-black/5"
+							aria-pressed="false"
+							aria-label="Cambiar a Español (México)"
+						>
+							<img src="../assets/img/flags/mx.svg" alt="" class="w-5 h-3" />
+							<span>ES</span>
+						</button>
+					</div>
+
+					<!-- Tus iconos (ahora a la derecha) -->
+					<div class="flex items-center gap-5 text-[var(--purple-1)]">
+						<!-- <button aria-label="Buscar" class="hover:opacity-80">
+							<i class="fa-solid fa-magnifying-glass text-xl"></i>
+						</button> -->
+						<a href="#" aria-label="Facebook" class="hover:opacity-80"
+							><i class="fa-brands fa-facebook-f text-xl"></i
+						></a>
+						<a href="#" aria-label="Instagram" class="hover:opacity-80"
+							><i class="fa-brands fa-instagram text-xl"></i
+						></a>
+						<a href="#" aria-label="X/Twitter" class="hover:opacity-80"
+							><i class="fa-brands fa-x-twitter text-xl"></i
+						></a>
+						<a href="#" aria-label="YouTube" class="hover:opacity-80"
+							><i class="fa-brands fa-youtube text-xl"></i
+						></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- PURPLE RIBBON: logo centrado + menú -->
+		<header class="ribbon text-white">
+			<div class="max-w-7xl mx-auto px-4">
+				<div class="py-5 flex items-center justify-center">
+					<!-- Tu logotipo (centrado, proporción similar al screenshot) -->
+					<img
+						src="../assets/img/logo.png"
+						alt="Brand"
+						class="h-12 md:h-14 w-auto"
+					/>
+				</div>
+				<nav
+					class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-12 gap-y-4 justify-items-center font-semibold tracking-wide uppercase text-sm pb-4"
+				>
+					<a
+						href="#why-landscape-strength"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>Find Your Perfect Tire</a
+					>
+					<a
+						href="#tire-lineup"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>Tire Lineup</a
+					>
+					<a
+						href="#about-us"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>Why Landscape</a
+					>
+					<a
+						href="#corporate-news"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>News</a
+					>
+					<a
+						href="#recruitment"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>Join Landscape</a
+					>
+				</nav>
+			</div>
+		</header>
+
+		<main class="">
+			<!-- ================= HERO + SUBNAV ================= -->
+			<section class="relative md:py-15">
+				<!-- Glow -->
+				<div
+					class="pointer-events-none absolute inset-0"
+					style="
+						background: radial-gradient(
+							28% 22% at 50% 0%,
+							color-mix(in srgb, var(--brand, #6b2dfb) 14%, transparent),
+							transparent 60%
+						);
+					"
+				></div>
+			</section>
+
+			<!-- ================= INTRO ================= -->
+			<section id="intro" class="py-12 md:py-16">
+				<div
+					class="max-w-7xl mx-auto px-4 grid md:grid-cols-12 gap-10 items-start"
+				>
+					<div class="md:col-span-7">
+						<h2 class="text-3xl md:text-4xl font-black">About Landscape</h2>
+						<div class="mt-4 space-y-4 text-white/85 leading-relaxed">
+							<p>
+								We, Landscape Tires, are dedicated to manufacturing tires that
+								meet the needs of modern drivers, whether it's for daily
+								commuting, off-road adventures, or high-performance driving.
+								"Landscape - Maximum Performance" is always the essence of our
+								brand. Our tire are durability, excellent service life, and
+								outstanding performance, at same time, to maintain the highest
+								standards of safety and value.
+							</p>
+						</div>
+
+						<!-- Métricas / proof points -->
+						<dl class="mt-6 grid gap-4 sm:grid-cols-3">
+							<div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+								<dt class="text-sm text-white/70">Focus</dt>
+								<dd class="text-lg font-extrabold">Performance + Value</dd>
+							</div>
+							<div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+								<dt class="text-sm text-white/70">Safety</dt>
+								<dd class="text-lg font-extrabold">High standards</dd>
+							</div>
+							<div class="rounded-2xl bg-white/10 border border-white/10 p-4">
+								<dt class="text-sm text-white/70">Land</dt>
+								<dd class="text-lg font-extrabold">Road & off-road</dd>
+							</div>
+						</dl>
+					</div>
+
+					<!-- Carrusel scroll-snap a la derecha -->
+					<aside id="carousel" class="md:col-span-5">
+						<div
+							class="relative rounded-2xl overflow-hidden bg-white/5 border border-white/10"
+						>
+							<div
+								class="snap-x snap-mandatory overflow-x-auto flex w-full h-[320px] md:h-[420px] scroll-smooth"
+								aria-label="Galería de imágenes"
+							>
+								<figure id="s2" class="min-w-full snap-start relative">
+									<img
+										src="../assets/img/gallery/g2.webp"
+										alt="Pruebas e I+D"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<figure id="s3" class="min-w-full snap-start relative">
+									<img
+										src="../assets/img/gallery/g3.webp"
+										alt="Conducción multiterreno"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<figure id="s3" class="min-w-full snap-start relative">
+									<img
+										src="../assets/img/gallery/g4.webp"
+										alt="Conducción multiterreno"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<figure id="s3" class="min-w-full snap-start relative">
+									<img
+										src="../assets/img/gallery/g5.webp"
+										alt="Conducción multiterreno"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+								<figure id="s3" class="min-w-full snap-start relative">
+									<img
+										src="../assets/img/gallery/g6.webp"
+										alt="Conducción multiterreno"
+										class="w-full h-full object-cover"
+									/>
+								</figure>
+							</div>
+
+							<!-- Controles simples (anclas) -->
+							<!-- <div
+								class="absolute bottom-3 left-0 right-0 flex justify-center gap-2"
+							>
+								<a
+									href="#s1"
+									class="h-2.5 w-2.5 rounded-full bg-white/35 hover:bg-white/70"
+								></a>
+								<a
+									href="#s2"
+									class="h-2.5 w-2.5 rounded-full bg-white/35 hover:bg-white/70"
+								></a>
+								<a
+									href="#s3"
+									class="h-2.5 w-2.5 rounded-full bg-white/35 hover:bg-white/70"
+								></a>
+							</div> -->
+						</div>
+					</aside>
+				</div>
+			</section>
+
+			<!-- ================= PRODUCTOS ================= -->
+			<section id="products" class="py-5 md:py-16">
+				<div class="max-w-7xl mx-auto px-4">
+					<header class="flex items-end justify-between gap-4 mb-6">
+						<h3 class="text-2xl md:text-3xl font-black">Excellent Products</h3>
+					</header>
+
+					<p class="text-white/80 leading-relaxed max-w-none">
+						We equip drivers with the most advanced tires, Landscape, on a
+						global scale. Landscape provides comfortable and quiet passenger
+						tires for driving on highways Landscape offers robust off-road tires
+						that deliver power in dirt, mud, sand, gravel, and snowy conditions.
+						Landscape has the right tire for every journey. Wherever life takes
+						you, we ensure our tires offer the reliability and performance you
+						can trust, taking you safely to your destination.
+					</p>
+					<ul class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3 py-10">
+						<!-- Card 1 -->
+						<li
+							class="rounded-2xl p-5 bg-white text-neutral-900 shadow-[0_16px_60px_rgba(0,0,0,.20)]"
+						>
+							<div class="flex items-start gap-3">
+								<span
+									class="mt-1 inline-grid h-9 w-9 place-items-center rounded-full"
+									style="
+										background: color-mix(
+											in srgb,
+											var(--brand, #6b2dfb) 18%,
+											#eee
+										);
+									"
+								>
+									<i class="fa-solid fa-road"></i>
+								</span>
+								<div>
+									<h4 class="font-black text-lg">Highway Comfort</h4>
+									<p class="text-sm text-neutral-600 mt-1">
+										Quiet and stable journeys on the motorway.
+									</p>
+								</div>
+							</div>
+						</li>
+						<!-- Card 2 -->
+						<li
+							class="rounded-2xl p-5 bg-white text-neutral-900 shadow-[0_16px_60px_rgba(0,0,0,.20)]"
+						>
+							<div class="flex items-start gap-3">
+								<span
+									class="mt-1 inline-grid h-9 w-9 place-items-center rounded-full"
+									style="
+										background: color-mix(
+											in srgb,
+											var(--brand, #6b2dfb) 18%,
+											#eee
+										);
+									"
+								>
+									<i class="fa-solid fa-mountain"></i>
+								</span>
+								<div>
+									<h4 class="font-black text-lg">Robust Off-Road</h4>
+									<p class="text-sm text-neutral-600 mt-1">
+										Reliable traction on dirt, mud, sand, gravel and snow.
+									</p>
+								</div>
+							</div>
+						</li>
+						<!-- Card 3 -->
+						<li
+							class="rounded-2xl p-5 bg-white text-neutral-900 shadow-[0_16px_60px_rgba(0,0,0,.20)]"
+						>
+							<div class="flex items-start gap-3">
+								<span
+									class="mt-1 inline-grid h-9 w-9 place-items-center rounded-full"
+									style="
+										background: color-mix(
+											in srgb,
+											var(--brand, #6b2dfb) 18%,
+											#eee
+										);
+									"
+								>
+									<i class="fa-solid fa-location-dot"></i>
+								</span>
+								<div>
+									<h4 class="font-black text-lg">For Every Journey</h4>
+									<p class="text-sm text-neutral-600 mt-1">
+										The right tyre for every route and vehicle.
+									</p>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</section>
+
+			<section id="filosofia" class="py-12 md:py-16">
+				<div class="max-w-7xl mx-auto px-4">
+					<h2
+						class="text-3xl md:text-4xl font-black tracking-tight text-white mb-3"
+					>
+						Our Philosophy
+					</h2>
+					<p class="text-white/80 leading-relaxed max-w-none">
+						We are committed to establishing the best service system to provide
+						customers with the best driving experience and the most suitable
+						solutions. This is the foundation of our business operations, and we
+						believe it is the healthiest way to create sustainable development.
+					</p>
+				</div>
+			</section>
+
+			<!-- ================= I+D ================= -->
+			<section id="rnd" class="py-12 md:py-16">
+				<div
+					class="max-w-7xl mx-auto px-4 grid md:grid-cols-2 gap-10 items-center"
+				>
+					<div>
+						<h3 class="text-2xl md:text-3xl font-black">
+							Innovation and Heritage
+						</h3>
+						<p class="text-white/80 leading-relaxed max-w-none">
+							Since the establishment of our company, our R&D technology has
+							been at the forefront of the industry. We have always focused on
+							providing high-performance, multi-terrain tires to meet the
+							requirement of various vehicles and harsh driving conditions. Our
+							innovation and customer satisfaction have always been at the
+							forefront of the industry, which also drives us to constantly
+							improvement and provide the best solutions for every driver.
+						</p>
+						<ul class="mt-5 space-y-3 text-white/85">
+							<li class="flex gap-3">
+								<i
+									class="fa-solid fa-flask text-[var(--brand,#6B2DFB)] mt-1"
+								></i>
+								Advanced compounds for life and grip.
+							</li>
+							<li class="flex gap-3">
+								<i class="fa-solid fa-dna text-[var(--brand,#6B2DFB)] mt-1"></i>
+								Belt design for reduced noise and uniform wear.
+							</li>
+							<li class="flex gap-3">
+								<i
+									class="fa-solid fa-gauge-high text-[var(--brand,#6B2DFB)] mt-1"
+								></i>
+								Braking and rolling resistance tests.
+							</li>
+							<li class="flex gap-3">
+								<i
+									class="fa-solid fa-screwdriver-wrench text-[var(--brand,#6B2DFB)] mt-1"
+								></i>
+								Continuous user-focused improvement.
+							</li>
+						</ul>
+					</div>
+					<div>
+						<div
+							class="aspect-[16/10] rounded-2xl overflow-hidden bg-white/5 border border-white/10"
+						>
+							<!-- Reemplaza con foto/render técnico -->
+							<img
+								src="../assets/img/gallery/g1.webp"
+								alt="Laboratorio e I+D"
+								class="w-full h-full object-cover"
+							/>
+						</div>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<!-- Opcional: autoplay muy suave para el carrusel scroll-snap -->
+		<script>
+			(function () {
+				const root = document.querySelector("#carousel .snap-x");
+				if (!root) return;
+				let i = 0,
+					slides = root.children.length;
+				let timer = setInterval(() => {
+					i = (i + 1) % slides;
+					root.scrollTo({ left: i * root.clientWidth, behavior: "smooth" });
+				}, 5000);
+				root.addEventListener("mouseenter", () => clearInterval(timer));
+				root.addEventListener(
+					"mouseleave",
+					() =>
+						(timer = setInterval(() => {
+							i = (i + 1) % slides;
+							root.scrollTo({ left: i * root.clientWidth, behavior: "smooth" });
+						}, 5000))
+				);
+				window.addEventListener("resize", () =>
+					root.scrollTo({ left: i * root.clientWidth })
+				);
+			})();
+		</script>
+
+		<!-- ==================== FOOTER ==================== -->
+		<footer
+			class="relative pt-12 md:pt-16 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950 border-t border-white/10"
+		>
+			<div class="max-w-7xl mx-auto px-4">
+				<!-- Top row: logo + brief + newsletter -->
+				<div class="grid lg:grid-cols-12 gap-8 items-start">
+					<!-- Brand -->
+					<div class="lg:col-span-4">
+						<div class="flex items-center gap-3">
+							<img
+								src="../assets/img/logo_morado.png"
+								alt="Landscape"
+								class="h-8 w-auto"
+							/>
+							<span class="f-chip">Since 1998</span>
+						</div>
+						<p class="text-white/70 text-sm mt-3 max-w-md">
+							Engineering, safety, and performance for every mile. MX & USA with
+							a certified installation network.
+						</p>
+
+						<div class="mt-4 flex items-center gap-3 text-white/80">
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-facebook-f"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-instagram"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-x-twitter"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-youtube"></i
+							></a>
+							<span class="ml-3 text-xs text-white/50">Follow us</span>
+						</div>
+					</div>
+
+					<!-- Nav columns -->
+					<nav class="lg:col-span-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+						<div>
+							<h6 class="text-white font-bold mb-3">Products</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#tire-lineup"
+										>Tire Lineup</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#find-dealer"
+										>Find a Dealer</a
+									>
+								</li>
+								<li><a class="hover:text-white" href="#">Offers</a></li>
+								<li><a class="hover:text-white" href="#">Warranty</a></li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Support</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#">Warranty Registration</a>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#">Service centers</a>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#">Guides & resources</a>
+								</li>
+								<li><a class="hover:text-white" href="#">FAQ</a></li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Company</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#why-landscape"
+										>Why Landscape</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#why-landscape-strength"
+										>Brand Strength</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#corporate-news"
+										>Corporate News</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#recruitment">Join Us</a>
+								</li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Legal</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li><a class="hover:text-white" href="#">Terms</a></li>
+								<li><a class="hover:text-white" href="#">Privacy</a></li>
+								<li><a class="hover:text-white" href="#">Cookies</a></li>
+								<li><a class="hover:text-white" href="#">Accessibility</a></li>
+							</ul>
+						</div>
+					</nav>
+
+					<!-- Newsletter / Contact -->
+					<div class="lg:col-span-3">
+						<h6 class="text-white font-bold mb-3">Stay up to date</h6>
+						<form id="newsletterForm" class="flex gap-2">
+							<input
+								type="email"
+								required
+								placeholder="Your email"
+								class="f-input"
+							/>
+							<button
+								class="px-4 py-2 rounded-md font-extrabold text-black"
+								style="
+									background: var(--accent);
+									box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+								"
+							>
+								Suscribirme
+							</button>
+						</form>
+						<p class="text-white/50 text-xs mt-2">
+							By subscribing you accept our
+							<a href="#" class="hover:text-white underline">Privacy Policy</a>.
+						</p>
+
+						<div class="mt-6 text-white/70 text-sm space-y-1">
+							<p>
+								<i class="fa-solid fa-location-dot text-[var(--accent)]"></i>
+								Monterrey, MX · Houston, US
+							</p>
+							<p>
+								<a href="mailto:hello@landscape.io" class="hover:text-white"
+									><i class="fa-solid fa-envelope text-[var(--accent)]"></i>
+									hello@landscape.io</a
+								>
+							</p>
+							<p>
+								<a href="tel:+528100000000" class="hover:text-white"
+									><i class="fa-solid fa-phone text-[var(--accent)]"></i> +52 81
+									0000 0000</a
+								>
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Divider -->
+				<div class="my-8 h-px bg-white/10"></div>
+
+				<!-- Bottom bar -->
+				<div
+					class="pb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+				>
+					<div class="text-white/60 text-sm">
+						© <span id="year"></span> Landscape. All rights reserved.
+					</div>
+
+					<div class="flex items-center gap-4 text-white/60 text-sm">
+						<!-- <a href="#" class="hover:text-white">Sitemap</a>
+						<span class="opacity-30">•</span>
+						<a href="#" class="hover:text-white">Do Not Sell My Info</a>
+						<span class="opacity-30">•</span> -->
+						<button
+							id="backToTop"
+							class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+						>
+							<i class="fa-solid fa-arrow-up"></i> Back to top
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sutil glow de fondo -->
+			<div
+				class="pointer-events-none absolute inset-0"
+				style="
+					background: radial-gradient(
+						40% 35% at 80% 0%,
+						color-mix(in srgb, var(--brand) 14%, transparent),
+						transparent 60%
+					);
+				"
+			></div>
+		</footer>
+		<!-- ===== STICKY CTA BAR (BOTTOM) ===== -->
+		<div
+			id="cta-bar"
+			class="fixed inset-x-0 bottom-0 z-[90] pointer-events-none"
+		>
+			<div class="mx-auto max-w-7xl px-4 pb-3">
+				<div
+					class="pointer-events-auto rounded-2xl border border-white/10 bg-neutral-900/90 backdrop-blur text-white shadow-[0_12px_40px_rgba(0,0,0,.35)]"
+				>
+					<div
+						class="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:gap-3"
+					>
+						<a
+							href="#find-dealer"
+							class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-extrabold btn-text"
+							style="
+								background: var(--accent);
+								box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+							"
+							data-cta="find-dealer"
+						>
+							Find the nearest dealer <span>🧭</span>
+						</a>
+						<button
+							type="button"
+							class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/10 text-white hover:bg-white/15 border border-white/10"
+							data-cta="book-consult"
+						>
+							Chat with us <span>💬</span>
+						</button>
+						<a
+							href="assets/pdf/Hello_Landscape.pdf"
+							class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-neutral-900 font-bold"
+							download
+							data-cta="download-whitepaper"
+						>
+							Learn wear-resistance secrets <span>📄</span>
+						</a>
+					</div>
+				</div>
+				<!-- Chat widget -->
+				<div
+					id="chat-widget"
+					class="chat-widget"
+					role="dialog"
+					aria-labelledby="chat-widget-title"
+					aria-modal="false"
+					aria-hidden="true"
+				>
+					<div class="chat-header">
+						<h3 id="chat-widget-title">Landscape Assistant</h3>
+						<button
+							type="button"
+							class="chat-close-btn"
+							aria-label="Cerrar chat"
+						>
+							<i class="fa-solid fa-xmark"></i>
+						</button>
+					</div>
+					<div class="chat-body" role="log" aria-live="polite">
+						<div class="chat-message bot">
+							Hello! I'm Landscape's virtual assistant. How can I help you
+							today?
+						</div>
+					</div>
+					<form class="chat-input" id="chat-widget-form">
+						<label for="chat-widget-message" class="sr-only"
+							>Type your message</label
+						>
+						<input
+							type="text"
+							id="chat-widget-message"
+							name="message"
+							autocomplete="off"
+							placeholder="Type something..."
+							required
+						/>
+						<button type="submit">Ask</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			// Mostrar la barra cuando el usuario ha hecho scroll y no está cerca del hero
+			(function () {
+				const bar = document.getElementById("cta-bar");
+				let visible = false;
+				function toggle() {
+					const y = window.scrollY || document.documentElement.scrollTop;
+					const shouldShow = y > 600; // ajusta según tu hero
+					if (shouldShow !== visible) {
+						visible = shouldShow;
+						bar.style.transform = visible
+							? "translateY(0)"
+							: "translateY(120%)";
+						bar.style.transition = "transform .35s cubic-bezier(.22,.61,.36,1)";
+					}
+				}
+				toggle();
+				window.addEventListener("scroll", toggle, { passive: true });
+
+				// Tracking básico
+				document.querySelectorAll("#cta-bar [data-cta]").forEach((el) => {
+					el.addEventListener("click", () => {
+						console.log("CTA click", el.dataset.cta);
+						// TODO: window.gtag?.('event','cta_click',{ label: el.dataset.cta });
+					});
+				});
+
+				const chatWidget = document.getElementById("chat-widget");
+				const chatToggle = document.querySelector("[data-cta='book-consult']");
+				const chatCloseBtn = chatWidget?.querySelector(".chat-close-btn");
+				const chatForm = document.getElementById("chat-widget-form");
+				const chatInput = document.getElementById("chat-widget-message");
+				const chatLog = chatWidget?.querySelector(".chat-body");
+				const cannedResponses = [
+					"Thank you for your message. A specialist will contact you shortly.",
+					"I'm collecting your information. Could you share your city and preferred time?",
+					"If you need immediate assistance, you can also call 1-800-LANDSCAPE.",
+				];
+
+				function appendMessage(role, text) {
+					if (!chatLog) return;
+					const bubble = document.createElement("div");
+					bubble.className = `chat-message ${role}`;
+					bubble.textContent = text;
+					chatLog.appendChild(bubble);
+					chatLog.scrollTop = chatLog.scrollHeight;
+				}
+
+				function openChat() {
+					if (!chatWidget) return;
+					chatWidget.classList.add("is-open");
+					chatWidget.setAttribute("aria-hidden", "false");
+					setTimeout(() => {
+						chatInput?.focus();
+					}, 120);
+				}
+
+				function closeChat() {
+					if (!chatWidget) return;
+					chatWidget.classList.remove("is-open");
+					chatWidget.setAttribute("aria-hidden", "true");
+				}
+
+				chatToggle?.addEventListener("click", () => {
+					openChat();
+				});
+
+				chatCloseBtn?.addEventListener("click", () => {
+					closeChat();
+					chatToggle?.focus();
+				});
+
+				document.addEventListener("keydown", (event) => {
+					if (
+						event.key === "Escape" &&
+						chatWidget?.classList.contains("is-open")
+					) {
+						event.preventDefault();
+						closeChat();
+						chatToggle?.focus();
+					}
+				});
+
+				chatForm?.addEventListener("submit", (event) => {
+					event.preventDefault();
+					const message = chatInput?.value.trim();
+					if (!message) {
+						return;
+					}
+					appendMessage("user", message);
+					if (chatInput) {
+						chatInput.value = "";
+					}
+					setTimeout(() => {
+						const reply =
+							cannedResponses[
+								Math.floor(Math.random() * cannedResponses.length)
+							];
+						appendMessage("bot", reply);
+					}, 450);
+				});
+			})();
+		</script>
+
+		<script>
+			// Mapea hrefs (#id) del nav a secciones
+			const links = [...document.querySelectorAll('header nav a[href^="#"]')];
+			const map = new Map(links.map((a) => [a.getAttribute("href"), a]));
+
+			// Estilo activo: subrayado permanente + color pleno
+			const setActive = (href) => {
+				links.forEach((a) => a.classList.remove("active-nav"));
+				map.get(href)?.classList.add("active-nav");
+			};
+
+			// Observa secciones (usa ids que ya tienes: #finder, #find-dealer, etc.)
+			const sections = [...map.keys()]
+				.map((sel) => document.querySelector(sel))
+				.filter(Boolean);
+
+			const io = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((e) => {
+						if (e.isIntersecting) setActive("#" + e.target.id);
+					});
+				},
+				{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
+			);
+
+			sections.forEach((s) => io.observe(s));
+		</script>
+
+		<script>
+			(function () {
+				const cards = document.querySelectorAll("#company-history .h-card");
+				if (!cards.length) return;
+				const io = new IntersectionObserver(
+					(entries) => {
+						entries.forEach(
+							(e) => (e.target.dataset.active = e.isIntersecting)
+						);
+					},
+					{ rootMargin: "-30% 0px -50% 0px", threshold: 0.2 }
+				);
+				cards.forEach((c) => io.observe(c));
+			})();
+		</script>
+
+		<script>
+			// Simple slider a clic (si quieres auto-play añade un setInterval)
+			(function () {
+				const track = document.querySelector(".carousel-track");
+				if (!track) return;
+				const slides = track.children.length;
+				let i = 0;
+				const dots = document.querySelectorAll(".dot");
+				function go(n) {
+					i = (n + slides) % slides;
+					track.style.transform = `translateX(-${i * 100}%)`;
+					dots.forEach(
+						(d, idx) =>
+							(d.style.background =
+								idx === i ? "rgba(255,255,255,.9)" : "rgba(255,255,255,.4)")
+					);
+				}
+				dots.forEach((d, idx) => d.addEventListener("click", () => go(idx)));
+				go(0);
+			})();
+		</script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+		<script src="js/main.js"></script>
+	</body>
+</html>
