@@ -465,14 +465,14 @@ document.querySelectorAll("[data-open]").forEach((btn) => {
 });
 
 // -------- Load more (demo) --------
-document.getElementById("loadMoreNews").addEventListener("click", () => {
-	const grid = document.getElementById("newsGrid");
-	const tpl = grid.firstElementChild.cloneNode(true);
-	// cambia fecha/título mínimos para distinguir
-	tpl.querySelector("time").textContent = "Today";
-	tpl.querySelector("h5").textContent = "Nueva nota corporativa (demo)";
-	grid.appendChild(tpl);
-});
+// document.getElementById("loadMoreNews").addEventListener("click", () => {
+// 	const grid = document.getElementById("newsGrid");
+// 	const tpl = grid.firstElementChild.cloneNode(true);
+// 	// cambia fecha/título mínimos para distinguir
+// 	tpl.querySelector("time").textContent = "Today";
+// 	tpl.querySelector("h5").textContent = "Nueva nota corporativa (demo)";
+// 	grid.appendChild(tpl);
+// });
 
 // ---------- Filtros ----------
 const jobsList = document.getElementById("jobsList");

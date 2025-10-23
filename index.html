@@ -216,22 +216,69 @@
 
 			<div id="viewport" class="overflow-hidden relative bg-black">
 				<div id="track">
-					<!-- SLIDE 3 — IMAGEN -->
+					<!-- SLIDE 1 — VIDEO -->
 					<div class="stage text-white">
-						<!-- Imagen de fondo -->
-						<img
-							src="assets/img/newImage.jpg"
-							alt="Colección Passenger"
+						<!-- Video de fondo -->
+						<video
 							class="absolute inset-0 w-full h-full object-cover z-[0]"
-							loading="lazy"
-						/>
+							autoplay
+							muted
+							loop
+							playsinline
+							preload="none"
+							data-video
+						>
+							<source src="assets/video/tire_grip.mp4" type="video/mp4" />
+							<!-- <source src="videos/slide1.webm" type="video/webm"> -->
+						</video>
 
-						<!-- X + lluvia -->
-						<div class="x-wrap">
-							<div class="x-bar x-a"></div>
-							<div class="x-bar x-b"></div>
+						<!-- Título -->
+						<div class="relative z-10 h-full max-w-7xl mx-auto">
+							<div
+								class="h-full px-6 flex items-center justify-center text-center"
+							>
+								<!-- LOCKUP DE POSICIONAMIENTO -->
+								<div
+									class="relative z-20 h-full flex items-center justify-center text-center px-6"
+								>
+									<div class="slogan-lockup select-none">
+										<div class="font-extrabold tracking-tight leading-none">
+											<!-- Logo en lugar de "Landscape" -->
+											<img
+												src="assets/img/landscape-complete-purple.webp"
+												alt="Landscape"
+												class="mx-auto lg:h-60 w-auto drop-shadow"
+												loading="eager"
+												decoding="async"
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<div class="rain"></div>
+
+						<!-- Dots -->
+						<div
+							class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20"
+							data-dots
+						></div>
+					</div>
+
+					<!-- SLIDE 1 — VIDEO -->
+					<div class="stage text-white">
+						<!-- Video de fondo -->
+						<video
+							class="absolute inset-0 w-full h-full object-cover z-[0]"
+							autoplay
+							muted
+							loop
+							playsinline
+							preload="none"
+							data-video
+						>
+							<source src="assets/video/truck.mp4" type="video/mp4" />
+							<!-- <source src="videos/slide1.webm" type="video/webm"> -->
+						</video>
 
 						<!-- Título -->
 						<div class="relative z-10 h-full max-w-7xl mx-auto">
@@ -383,6 +430,54 @@
 								src="assets/img/Vídeo_Promocional_Todoterreno_Estilo_Halftone.mp4"
 								type="video/mp4"
 							/>
+							<!-- <source src="videos/slide1.webm" type="video/webm"> -->
+						</video>
+
+						<!-- Título -->
+						<div class="relative z-10 h-full max-w-7xl mx-auto">
+							<div
+								class="h-full px-6 flex items-center justify-center text-center"
+							>
+								<!-- LOCKUP DE POSICIONAMIENTO -->
+								<div
+									class="relative z-20 h-full flex items-center justify-center text-center px-6"
+								>
+									<div class="slogan-lockup select-none">
+										<div class="font-extrabold tracking-tight leading-none">
+											<!-- Logo en lugar de "Landscape" -->
+											<img
+												src="assets/img/landscape-complete-purple.webp"
+												alt="Landscape"
+												class="mx-auto lg:h-60 w-auto drop-shadow"
+												loading="eager"
+												decoding="async"
+											/>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<!-- Dots -->
+						<div
+							class="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-3 z-20"
+							data-dots
+						></div>
+					</div>
+
+					<!-- SLIDE 1 — VIDEO -->
+					<div class="stage text-white">
+						<!-- Video de fondo -->
+						<video
+							class="absolute inset-0 w-full h-full object-cover z-[0]"
+							autoplay
+							muted
+							loop
+							playsinline
+							preload="none"
+							data-video
+						>
+							<source src="assets/video/box.mp4" type="video/mp4" />
 							<!-- <source src="videos/slide1.webm" type="video/webm"> -->
 						</video>
 
@@ -1065,16 +1160,6 @@
 							Press releases, business updates, and investor notes.
 						</p> -->
 					</div>
-					<!-- filtros -->
-					<div class="flex flex-wrap items-center gap-2">
-						<button class="chip" data-filter="all" data-active="true">
-							All
-						</button>
-						<button class="chip" data-filter="press">Press Release</button>
-						<button class="chip" data-filter="investors">Investors</button>
-						<button class="chip" data-filter="product">Product</button>
-						<button class="chip" data-filter="csr">CSR</button>
-					</div>
 				</div>
 
 				<!-- Featured -->
@@ -1083,51 +1168,45 @@
 						<div class="relative">
 							<!-- imagen/video placeholder -->
 							<img
-								src="https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1600&auto=format&fit=crop"
+								src="assets/img/suvCoverText.png"
 								alt="Featured"
 								class="w-full h-64 lg:h-full object-cover"
 							/>
-							<span
-								class="absolute left-4 top-4 chip border-none bg-black/50 text-white"
-								>Featured</span
-							>
 						</div>
 						<div class="p-5 md:p-7">
 							<div class="meta">
 								Press Release ·
-								<time datetime="2025-09-10">Sep 10, 2025</time> · 3 min read
+								<time datetime="2025-09-10">Sep 10, 2025</time> · 1 min read
 							</div>
 							<h4 class="text-white text-xl md:text-2xl font-bold mt-2">
-								Landscape opens NVH testing center to validate next-generation
-								compounds
+								We are waiting for you at SEMA show!
 							</h4>
 							<p class="text-white/70 mt-3">
-								The new facility certifies noise and vibration protocols,
-								accelerating the development of ColdFlex™ and QuietWave
-								technologies.
+								Join us at SEMA Show 2025 in Las Vegas (Nov 4–7) as we introduce
+								our latest durability tire innovations for passenger and
+								light-truck applications. Experience the quiet, longer-lasting
+								performance of Landscape. Meet the team and see what’s next.
 							</p>
-							<div class="mt-4 flex gap-2">
-								<span class="chip">R&D</span>
-								<span class="chip">Innovation</span>
-							</div>
+
 							<div class="mt-6 flex gap-3">
-								<button
-									class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold btn-text"
-									style="
-										background: var(--accent);
-										box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
-									"
-									data-open="n1"
+								<a
+									href="https://www.semashow.com/"
+									target="_blank"
+									rel="noopener"
 								>
-									Read more
-									<span
-										class="inline-grid place-items-center w-5 h-5 rounded-full border border-black/20"
-										>➜</span
+									<button
+										class="inline-flex items-center gap-2 px-4 py-2 rounded-md font-semibold btn-text"
+										style="
+											background: var(--accent);
+											box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+										"
 									>
-								</button>
-								<a href="#" class="text-[var(--accent)] hover:underline"
-									>Press kit</a
-								>
+										Read more
+										<span class="inline-grid place-items-center w-5 h-5"
+											>➜</span
+										>
+									</button>
+								</a>
 							</div>
 						</div>
 					</div>
