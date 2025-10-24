@@ -1,0 +1,237 @@
+{
+	"185/65R14": ["Touring Grand Tour A/S"],
+	"10.50//15": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3"
+	],
+	"185/60R15": ["Touring Grand Tour A/S"],
+	"185/65R15": ["Touring Grand Tour A/S"],
+	"195/60R15": ["Touring Grand Tour A/S"],
+	"195/65R15": ["Touring Grand Tour A/S"],
+	"205/65R15": ["Touring Grand Tour A/S"],
+	"205/70R15": ["Touring Grand Tour A/S"],
+	"215/70R15": ["Touring Grand Tour A/S"],
+	"235/70R15": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3"
+	],
+	"235/75R15": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3"
+	],
+	"205/60R16": ["Touring Grand Tour A/S"],
+	"205/65R16": ["Touring Grand Tour A/S"],
+	"215/55R16": ["Touring Grand Tour A/S"],
+	"215/60R16": ["Touring Grand Tour A/S"],
+	"215/65R16": ["Touring Grand Tour A/S"],
+	"215/70R16": ["CUV QuietCross A/S"],
+	"215/85R16": ["H/T TerraGrip"],
+	"225/60R16": ["Touring Grand Tour A/S"],
+	"225/70R16": ["CUV QuietCross A/S"],
+	"225/75R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"235/70R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"235/85R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"245/70R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"245/75R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"255/70R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"265/70R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"265/75R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip",
+		"R/T TerraForce"
+	],
+	"285/75R16": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"R/T TerraForce"
+	],
+	"12.50//17": ["R/T TerraForce"],
+	"215/45R17": ["UHP Ultra Sport F1"],
+	"215/50R17": ["Touring Grand Tour A/S"],
+	"215/55R17": ["Touring Grand Tour A/S"],
+	"215/60R17": ["CUV QuietCross A/S"],
+	"215/65R17": ["CUV QuietCross A/S"],
+	"225/45R17": ["UHP Ultra Sport F1"],
+	"225/50R17": ["Touring Grand Tour A/S"],
+	"225/55R17": ["Touring Grand Tour A/S"],
+	"225/60R17": ["CUV QuietCross A/S"],
+	"225/65R17": ["CUV QuietCross A/S"],
+	"235/50R17": ["UHP Ultra Sport F1"],
+	"235/55R17": ["Touring Grand Tour A/S"],
+	"235/80R17": ["H/T TerraGrip"],
+	"245/65R17": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"245/70R17": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"245/75R17": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"265/70R17": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip",
+		"R/T TerraForce"
+	],
+	"285/70R17": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"R/T TerraForce"
+	],
+	"315/70R17": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3"
+	],
+	"12.50//18": ["R/T TerraForce", "M/T TerraBeast"],
+	"225/40R18": ["UHP Ultra Sport F1"],
+	"225/50R18": ["UHP Ultra Sport F1"],
+	"225/55R18": ["CUV QuietCross A/S"],
+	"225/60R18": ["CUV QuietCross A/S"],
+	"235/55R18": ["UHP Ultra Sport F1"],
+	"235/60R18": ["CUV QuietCross A/S"],
+	"235/65R18": ["CUV QuietCross A/S"],
+	"245/40R18": ["UHP Ultra Sport F1"],
+	"245/60R18": ["CUV QuietCross A/S"],
+	"255/65R18": ["CUV QuietCross A/S"],
+	"265/60R18": ["H/T TerraGrip"],
+	"265/65R18": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"H/T TerraGrip"
+	],
+	"265/70R18": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"R/T TerraForce"
+	],
+	"275/65R18": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3"
+	],
+	"275/70R18": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"R/T TerraForce"
+	],
+	"285/70R18": ["M/T TerraBeast"],
+	"235/40R19": ["UHP Ultra Sport F1"],
+	"235/55R19": ["UHP Ultra Sport F1"],
+	"245/45R19": ["UHP Ultra Sport F1"],
+	"245/55R19": ["CUV QuietCross A/S"],
+	"255/45R19": ["UHP Ultra Sport F1"],
+	"12.50//20": ["R/T TerraForce", "M/T TerraBeast"],
+	"235/55R20": ["H/T TerraGrip"],
+	"245/50R20": ["CUV QuietCross A/S"],
+	"255/45R20": ["UHP Ultra Sport F1"],
+	"255/50R20": ["CUV QuietCross A/S"],
+	"255/55R20": ["CUV QuietCross A/S"],
+	"265/50R20": ["CUV QuietCross A/S"],
+	"275/55R20": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"CUV QuietCross A/S"
+	],
+	"275/60R20": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"CUV QuietCross A/S"
+	],
+	"275/65R20": [
+		"A/T Terra Master",
+		"A/T Terra Master T2",
+		"A/T Terra Master T3",
+		"R/T TerraForce"
+	],
+	"285/55R20": ["R/T TerraForce"],
+	"12.50//22": ["R/T TerraForce", "M/T TerraBeast"],
+	"285/45R22": ["CUV QuietCross A/S"],
+	"11//22.5": [
+		"LONG HAUL (LS21, LS23)",
+		"REGIONAL (RA61, RA63, RD71, RD72, RD74, RD75, RD76)",
+		"MIXED SERVICE (AM81, AM82, AM83, AM85/B/D)",
+		"WINTER (WS61, WS62)"
+	],
+	"255/70R22.5": [
+		"LONG HAUL (LS32)",
+		"REGIONAL (RD71)",
+		"MIXED SERVICE (AM81, AM83, AM85/B/D)"
+	],
+	"295/75R22.5": [
+		"LONG HAUL (LS21, LS23, LS32)",
+		"REGIONAL (RA61, RA63, RD71, RD72, RD76)",
+		"WINTER (WS61)"
+	],
+	"12.50//24": ["R/T TerraForce"],
+	"11//24.5": [
+		"LONG HAUL (LS21, LS23)",
+		"REGIONAL (RA61, RA63, RD71, RD72)",
+		"MIXED SERVICE (AM81, AM85/B/D)",
+		"WINTER (WS61, WS62)"
+	],
+	"285/75R24.5": [
+		"LONG HAUL (LS21, LS23)",
+		"REGIONAL (RA61, RA63, RD71, RD72)",
+		"MIXED SERVICE (AM85/B/D)",
+		"WINTER (WS61)"
+	]
+}

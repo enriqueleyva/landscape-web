@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Landscape</title>
+		<!-- En <head> -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+
+		<link rel="stylesheet" href="../css/style.css" />
+		<!-- Tailwind CDN (prototipo). Compílalo en prod. -->
+		<script src="https://cdn.tailwindcss.com"></script>
+
+		<style>
+			/* subrayado solo al pasar el mouse */
+			header nav a {
+				position: relative;
+			}
+			header nav a::after {
+				content: "";
+				position: absolute;
+				left: 50%;
+				transform: translateX(-50%);
+				bottom: -4px;
+				height: 2px;
+				width: 0;
+				border-radius: 9999px;
+				background: rgba(255, 255, 255, 0.9);
+				transition: width 0.25s ease;
+			}
+			header nav a:hover::after {
+				width: 24px;
+			}
+		</style>
+		<style>
+			html {
+				scroll-behavior: smooth;
+			}
+			/* si ya expusiste la altura en --fixedbar-h, úsala; si no, pon 80px aprox */
+			[id] {
+				scroll-margin-top: var(--fixedbar-h, 80px);
+			}
+		</style>
+	</head>
+	<body class="bg-white text-neutral-900 antialiased">
+		<!-- Fixed Brand Positioning Bar -->
+		<div
+			id="brand-fixed"
+			class="fixed inset-x-0 top-0 z-[100]"
+			style="background-color: var(--purple-1)"
+		>
+			<div
+				class="border-b border-white/10 bg-neutral-900/90 text-white backdrop-blur"
+			>
+				<!-- Safe area para iOS notch -->
+				<div style="padding-top: env(safe-area-inset-top)"></div>
+
+				<div class="mx-auto max-w-7xl">
+					<div class="h-10 sm:h-11 md:h-12 grid place-items-center px-4">
+						<!-- Puedes usar imagen de marca o texto. Dejo ambos: descomenta el que prefieras -->
+						<!-- Opción A: imagen -->
+
+						<div class="flex items-center gap-3">
+							<img
+								src="../assets/img/landscape-durable.png"
+								alt="Landscape"
+								class="h-6 sm:h-7 md:h-8 w-auto drop-shadow"
+							/>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- TOP ICON STRIP -->
+		<div class="top-strip">
+			<div class="max-w-7xl mx-auto px-4">
+				<div class="flex items-center justify-between h-12">
+					<!-- Selector de idioma -->
+					<div
+						class="inline-flex rounded-full border border-black/10 overflow-hidden"
+					>
+						<button
+							type="button"
+							data-lang="en"
+							class="flex items-center gap-2 px-3 py-1 text-sm font-medium hover:bg-black/5 btn-flag"
+							aria-pressed="false"
+							aria-label="Switch to English (USA)"
+						>
+							<img src="../assets/img/flags/us.svg" alt="" class="w-5 h-5" />
+							<span>EN</span>
+						</button>
+						<button
+							type="button"
+							data-lang="es"
+							class="flex items-center gap-2 px-3 py-1 text-sm font-medium hover:bg-black/5"
+							aria-pressed="false"
+							aria-label="Cambiar a Español (México)"
+						>
+							<img src="../assets/img/flags/mx.svg" alt="" class="w-5 h-3" />
+							<span>ES</span>
+						</button>
+					</div>
+
+					<!-- Tus iconos (ahora a la derecha) -->
+					<div class="flex items-center gap-5 text-[var(--purple-1)]">
+						<!-- <button aria-label="Buscar" class="hover:opacity-80">
+							<i class="fa-solid fa-magnifying-glass text-xl"></i>
+						</button> -->
+						<a href="#" aria-label="Facebook" class="hover:opacity-80"
+							><i class="fa-brands fa-facebook-f text-xl"></i
+						></a>
+						<a href="#" aria-label="Instagram" class="hover:opacity-80"
+							><i class="fa-brands fa-instagram text-xl"></i
+						></a>
+						<a href="#" aria-label="X/Twitter" class="hover:opacity-80"
+							><i class="fa-brands fa-x-twitter text-xl"></i
+						></a>
+						<a href="#" aria-label="YouTube" class="hover:opacity-80"
+							><i class="fa-brands fa-youtube text-xl"></i
+						></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- PURPLE RIBBON: logo centrado + menú -->
+		<header class="ribbon text-white">
+			<div class="max-w-7xl mx-auto px-4">
+				<div class="py-5 flex items-center justify-center">
+					<!-- Tu logotipo (centrado, proporción similar al screenshot) -->
+					<img
+						src="../assets/img/logo.png"
+						alt="Brand"
+						class="h-12 md:h-14 w-auto"
+					/>
+				</div>
+				<nav
+					class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-x-12 gap-y-4 justify-items-center font-semibold tracking-wide uppercase text-sm pb-4"
+				>
+					<a
+						href="#why-landscape-strength"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>Find Your Perfect Tire</a
+					>
+					<a
+						href="#tire-lineup"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>Tire Lineup</a
+					>
+					<a
+						href="#about-us"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>Why Landscape</a
+					>
+					<a
+						href="#corporate-news"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>News</a
+					>
+					<a
+						href="#recruitment"
+						class="relative block max-w-[16ch] text-center leading-tight after:absolute after:left-1/2 after:-translate-x-1/2 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 hover:after:w-8 after:transition-all after:duration-300"
+						>Join Landscape</a
+					>
+				</nav>
+			</div>
+		</header>
+
+		<!-- ====== CATÁLOGO DE LLANTAS ====== -->
+		<section id="catalogo" class="bg-white">
+			<style>
+				:root {
+					--brand: #820099;
+					--brand-ink: #4a154b;
+				}
+				.pill {
+					@apply inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold;
+				}
+				.btn-outline {
+					@apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border text-[12px] font-semibold;
+				}
+				.title-kicker {
+					@apply uppercase tracking-[.24em] text-sm text-neutral-400;
+				}
+				.model {
+					@apply font-black uppercase leading-none;
+					color: var(--brand);
+				}
+				.brand {
+					@apply uppercase font-black tracking-widest text-[12px];
+					color: #1b63b9;
+				} /* si quieres, cambia este azul */
+				.rating i {
+					color: #f6a800;
+				} /* estrellas */
+				.new-badge {
+					@apply grid place-items-center text-white text-[10px] font-black w-12 h-12 rounded-full border-4 shadow-xl;
+					background: #ff8a00;
+					border-color: #1b63b9;
+					box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2),
+						inset 0 0 0 6px rgba(27, 99, 185, 0.15);
+				}
+				.tire-frame {
+					height: 220px;
+				}
+				@media (min-width: 1024px) {
+					.tire-frame {
+						height: 240px;
+					}
+				}
+			</style>
+
+			<!-- Barra de filtros -->
+			<!-- Contenedor centrado -->
+			<nav class="w-full">
+				<ul
+					class="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-6 py-4"
+				>
+					<!-- Pill -->
+					<li>
+						<a
+							href="#all"
+							class="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+						>
+							All
+						</a>
+					</li>
+
+					<li>
+						<a
+							href="#winter"
+							class="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+						>
+							<!-- icono -->
+							<span class="i-lucide-snowflake"></span>
+							Winter
+							<!-- badge -->
+							<span
+								class="ml-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-purple-600/10 text-purple-700 text-sm font-semibold px-2"
+								>4</span
+							>
+						</a>
+					</li>
+
+					<li>
+						<a
+							href="#passenger"
+							class="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+						>
+							<span class="i-lucide-car"></span>
+							Passenger
+							<span
+								class="ml-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-purple-600/10 text-purple-700 text-sm font-semibold px-2"
+								>3</span
+							>
+						</a>
+					</li>
+
+					<li>
+						<a
+							href="#suv"
+							class="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+						>
+							<span class="i-lucide-truck"></span>
+							SUV/Light Truck
+							<span
+								class="ml-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-purple-600/10 text-purple-700 text-sm font-semibold px-2"
+								>5</span
+							>
+						</a>
+					</li>
+
+					<li>
+						<a
+							href="#commercial"
+							class="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+						>
+							<span class="i-lucide-bus"></span>
+							Commercial LT
+							<span
+								class="ml-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-purple-600/10 text-purple-700 text-sm font-semibold px-2"
+								>2</span
+							>
+						</a>
+					</li>
+				</ul>
+			</nav>
+
+			<style>
+				.chip {
+					display: inline-flex;
+					align-items: center;
+					gap: 0.5rem;
+					padding: 0.5rem 0.8rem;
+					border-radius: 9999px;
+					font-weight: 600;
+					font-size: 0.85rem;
+					background: #fff;
+					border: 1px solid rgba(0, 0, 0, 0.12);
+					color: #1f2937;
+					transition: all 0.2s ease;
+				}
+				.chip i {
+					color: #820099;
+				}
+				.chip .count {
+					font-size: 0.75rem;
+					background: #82009910;
+					color: #820099;
+					padding: 0.15rem 0.45rem;
+					border-radius: 9999px;
+				}
+				.chip:hover {
+					box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+					transform: translateY(-1px);
+				}
+				.chip.active {
+					background: #820099;
+					color: #fff;
+					border-color: #820099;
+				}
+				.chip.active i {
+					color: #fff;
+				}
+				.chip.active .count {
+					background: rgba(255, 255, 255, 0.2);
+					color: #fff;
+				}
+			</style>
+
+			<script>
+				(function () {
+					const chips = document.querySelectorAll("#chipFilters .chip");
+					const groups = document.querySelectorAll("[data-group]");
+					function apply(f) {
+						groups.forEach(
+							(g) =>
+								(g.style.display =
+									f === "all" || g.dataset.group === f ? "" : "none")
+						);
+						chips.forEach((c) =>
+							c.classList.toggle("active", c.dataset.filter === f)
+						);
+					}
+					chips.forEach((c) =>
+						c.addEventListener("click", () => apply(c.dataset.filter))
+					);
+					apply("all");
+				})();
+			</script>
+
+			<!-- En tu sizes.html, dentro de #catalogo -->
+			<div id="catalogo-dynamic" class="max-w-6xl mx-auto px-4 py-8">
+				<h3 class="mb-4 flex items-end gap-3">
+					<span class="text-2xl font-black tracking-wide text-neutral-700">
+						Catálogo dinámico
+					</span>
+					<span class="h-[2px] flex-1 bg-neutral-200"></span>
+				</h3>
+				<div id="cards-grid" class="grid md:grid-cols-2 gap-10"></div>
+			</div>
+		</section>
+
+		<script>
+			/* ====== Utils ====== */
+			const slug = (s) =>
+				String(s || "")
+					.normalize("NFD")
+					.replace(/[\u0300-\u036f]/g, "")
+					.toLowerCase()
+					.replace(/[^a-z0-9]+/g, "-")
+					.replace(/(^-|-$)/g, "");
+
+			const byId = (id) => document.getElementById(id);
+
+			/* Heurística para agrupar en contenedores existentes:
+   - Si encuentras <div data-group="invierno">, manda Winter/WS allí
+   - Si encuentras <div data-group="pasajero">, manda lo (PCR) allí
+   - Si no hay, cae al #cards-grid (A) */
+			function pickTargetContainer(item) {
+				const name = (item?.modelo || "").toLowerCase();
+				const has = (sel) => document.querySelector(sel);
+
+				// 1) invierno: por palabra o por prefijo WSxx
+				if (
+					/(winter|invierno)/i.test(item?.descripcion || "") ||
+					/^ws\d+/i.test(item?.modelo || "")
+				) {
+					const el = has('[data-group="invierno"]');
+					if (el) return el;
+				}
+
+				// 2) pasajero: si trae (PCR)
+				if (/\(pcr\)/i.test(item?.modelo || "")) {
+					const el = has('[data-group="pasajero"]');
+					if (el) return el;
+				}
+
+				// fallback: grid dinámico
+				return byId("cards-grid") || has("[data-group]") || document.body;
+			}
+
+			/* Imagen: intenta derivar un nombre de archivo por modelo; si no existe, usa placeholder */
+			function resolveImageSrc(item) {
+				// si tus assets siguen el esquema "assets/tires/<slug>.png", prueba con el modelo sin paréntesis
+				const base = (item?.modelo || "").replace(/\(.*?\)/g, "").trim();
+				const guess = `assets/tires/${slug(base)}.png`;
+				// no vamos a comprobar existencia; el <img> tiene onerror para caer a placeholder
+				return guess;
+			}
+
+			/* Render de una card de producto (estructura compatible con tu HTML) */
+			function renderCard(item) {
+				const imgSrc = resolveImageSrc(item);
+
+				// badges rápidos a partir de la descripción (opcionales)
+				const isNew = /new\b|nuevo/i.test(item?.descripcion || "");
+
+				// medidas (top 6 visibles, el resto plegables)
+				const medidas = Array.isArray(item?.medidas_disponibles)
+					? item.medidas_disponibles
+					: [];
+				const visibles = medidas.slice(0, 6);
+				const restantes = medidas.slice(6);
+
+				const article = document.createElement("article");
+				article.className =
+					"grid grid-cols-[140px,1fr] gap-4 items-start border-b md:border-0 pb-6 md:pb-0";
+
+				article.innerHTML = `
+    <!-- imagen -->
+    <div class="relative">
+      <div class="tire-frame relative">
+        <img src="${imgSrc}" alt="${item?.modelo || ""}"
+             class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none"
+             draggable="false"
+             onerror="this.onerror=null;this.src='assets/tires/placeholder.png';"/>
+      </div>
+      ${
+				isNew
+					? `<span class="absolute -bottom-1 right-2 new-badge">NEW</span>`
+					: ``
+			}
+    </div>
+
+    <!-- info -->
+    <div>
+      <div class="flex items-center gap-2">
+        <span class="brand">LANDSCAPE</span>
+      </div>
+
+      <div class="model text-2xl mt-1">${(item?.modelo || "").replace(
+				/\s*\(.*?\)\s*/,
+				""
+			)}</div>
+
+      <div class="uppercase text-[11px] tracking-wider text-neutral-500 mt-1">
+        ${
+					/\(pcr\)/i.test(item?.modelo || "")
+						? "PASAJERO / SUV & LT"
+						: "TBR / TRUCK & BUS"
+				}
+      </div>
+
+      <p class="mt-2 text-[12px] leading-5 text-neutral-600 max-w-[46ch]">
+        ${item?.descripcion || ""}
+      </p>
+
+      <!-- Medidas disponibles -->
+      ${
+				medidas.length
+					? `
+          <div class="mt-3">
+            <div class="text-[11px] uppercase tracking-wider text-neutral-500 mb-1">Medidas</div>
+            <div class="flex flex-wrap gap-2">
+              ${visibles
+								.map(
+									(m) => `
+                <span class="chip">
+                  <i class="fa-solid fa-circle-notch"></i>
+                  <span>${m}</span>
+                </span>`
+								)
+								.join("")}
+              ${
+								restantes.length
+									? `<button type="button" class="chip" data-more>
+                     +${restantes.length} más
+                   </button>`
+									: ``
+							}
+            </div>
+          </div>
+        `
+					: ``
+			}
+
+      <!-- rating placeholder + CTA -->
+      <div class="rating mt-2 text-[12px]">
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+        <i class="fa-regular fa-star"></i>
+        <a href="#" class="ml-2 underline text-neutral-500">Escribe una reseña</a>
+      </div>
+
+      <a href="#"
+         class="mt-3 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border text-[12px] font-semibold border-black/40 text-neutral-800 hover:bg-neutral-50">
+         APRENDE MÁS
+      </a>
+    </div>
+  `;
+
+				// comportamiento del botón "+N más"
+				const btnMore = article.querySelector("[data-more]");
+				if (btnMore && restantes.length) {
+					btnMore.addEventListener("click", () => {
+						const wrap = btnMore.parentElement;
+						restantes.forEach((m) =>
+							wrap.insertAdjacentHTML(
+								"beforeend",
+								`<span class="chip"><i class="fa-solid fa-circle-notch"></i><span>${m}</span></span>`
+							)
+						);
+						btnMore.remove();
+					});
+				}
+
+				return article;
+			}
+
+			/* ====== Boot ====== */
+			(async function mountCatalog() {
+				try {
+					const res = await fetch("../assets/info/data_modelos.json", {
+						cache: "no-store",
+					});
+					const data = await res.json(); // [{modelo, descripcion, medidas_disponibles}, ...]
+					if (!Array.isArray(data)) return;
+
+					data.forEach((item) => {
+						const target = pickTargetContainer(item);
+						target?.appendChild(renderCard(item));
+					});
+				} catch (err) {
+					console.error("No se pudo cargar data_modelos.json", err);
+				}
+			})();
+		</script>
+
+		<!-- Font Awesome (para estrellas), si no lo tienes ya -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+
+		<!-- ==================== FOOTER ==================== -->
+		<footer
+			class="relative pt-12 md:pt-16 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950 border-t border-white/10"
+		>
+			<div class="max-w-7xl mx-auto px-4">
+				<!-- Top row: logo + brief + newsletter -->
+				<div class="grid lg:grid-cols-12 gap-8 items-start">
+					<!-- Brand -->
+					<div class="lg:col-span-4">
+						<div class="flex items-center gap-3">
+							<img
+								src="../assets/img/logo_morado.png"
+								alt="Landscape"
+								class="h-8 w-auto"
+							/>
+							<span class="f-chip">Since 1998</span>
+						</div>
+						<p class="text-white/70 text-sm mt-3 max-w-md">
+							Engineering, safety, and performance for every mile. MX & USA with
+							a certified installation network.
+						</p>
+
+						<div class="mt-4 flex items-center gap-3 text-white/80">
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-facebook-f"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-instagram"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-x-twitter"></i
+							></a>
+							<a href="#" class="hover:text-white"
+								><i class="fa-brands fa-youtube"></i
+							></a>
+							<span class="ml-3 text-xs text-white/50">Follow us</span>
+						</div>
+					</div>
+
+					<!-- Nav columns -->
+					<nav class="lg:col-span-5 grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+						<div>
+							<h6 class="text-white font-bold mb-3">Products</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#tire-lineup"
+										>Tire Lineup</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#find-dealer"
+										>Find a Dealer</a
+									>
+								</li>
+								<li><a class="hover:text-white" href="#">Offers</a></li>
+								<li><a class="hover:text-white" href="#">Warranty</a></li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Support</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#">Warranty Registration</a>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#">Service centers</a>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#">Guides & resources</a>
+								</li>
+								<li><a class="hover:text-white" href="#">FAQ</a></li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Company</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li>
+									<a class="hover:text-white" href="#why-landscape"
+										>Why Landscape</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#why-landscape-strength"
+										>Brand Strength</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#corporate-news"
+										>Corporate News</a
+									>
+								</li>
+								<li>
+									<a class="hover:text-white" href="#recruitment">Join Us</a>
+								</li>
+							</ul>
+						</div>
+						<div>
+							<h6 class="text-white font-bold mb-3">Legal</h6>
+							<ul class="text-white/70 text-sm space-y-2">
+								<li><a class="hover:text-white" href="#">Terms</a></li>
+								<li><a class="hover:text-white" href="#">Privacy</a></li>
+								<li><a class="hover:text-white" href="#">Cookies</a></li>
+								<li><a class="hover:text-white" href="#">Accessibility</a></li>
+							</ul>
+						</div>
+					</nav>
+
+					<!-- Newsletter / Contact -->
+					<div class="lg:col-span-3">
+						<h6 class="text-white font-bold mb-3">Stay up to date</h6>
+						<form id="newsletterForm" class="flex gap-2">
+							<input
+								type="email"
+								required
+								placeholder="Your email"
+								class="f-input"
+							/>
+							<button
+								class="px-4 py-2 rounded-md font-extrabold text-black"
+								style="
+									background: var(--accent);
+									box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+								"
+							>
+								Suscribirme
+							</button>
+						</form>
+						<p class="text-white/50 text-xs mt-2">
+							By subscribing you accept our
+							<a href="#" class="hover:text-white underline">Privacy Policy</a>.
+						</p>
+
+						<div class="mt-6 text-white/70 text-sm space-y-1">
+							<p>
+								<i class="fa-solid fa-location-dot text-[var(--accent)]"></i>
+								Monterrey, MX · Houston, US
+							</p>
+							<p>
+								<a href="mailto:hello@landscape.io" class="hover:text-white"
+									><i class="fa-solid fa-envelope text-[var(--accent)]"></i>
+									hello@landscape.io</a
+								>
+							</p>
+							<p>
+								<a href="tel:+528100000000" class="hover:text-white"
+									><i class="fa-solid fa-phone text-[var(--accent)]"></i> +52 81
+									0000 0000</a
+								>
+							</p>
+						</div>
+					</div>
+				</div>
+
+				<!-- Divider -->
+				<div class="my-8 h-px bg-white/10"></div>
+
+				<!-- Bottom bar -->
+				<div
+					class="pb-10 flex flex-col md:flex-row md:items-center md:justify-between gap-4"
+				>
+					<div class="text-white/60 text-sm">
+						© <span id="year"></span> Landscape. All rights reserved.
+					</div>
+
+					<div class="flex items-center gap-4 text-white/60 text-sm">
+						<!-- <a href="#" class="hover:text-white">Sitemap</a>
+						<span class="opacity-30">•</span>
+						<a href="#" class="hover:text-white">Do Not Sell My Info</a>
+						<span class="opacity-30">•</span> -->
+						<button
+							id="backToTop"
+							class="inline-flex items-center gap-2 px-3 py-1.5 rounded-md bg-white/10 text-white hover:bg-white/15 border border-white/10"
+						>
+							<i class="fa-solid fa-arrow-up"></i> Back to top
+						</button>
+					</div>
+				</div>
+			</div>
+
+			<!-- Sutil glow de fondo -->
+			<div
+				class="pointer-events-none absolute inset-0"
+				style="
+					background: radial-gradient(
+						40% 35% at 80% 0%,
+						color-mix(in srgb, var(--brand) 14%, transparent),
+						transparent 60%
+					);
+				"
+			></div>
+		</footer>
+		<!-- ===== STICKY CTA BAR (BOTTOM) ===== -->
+		<div
+			id="cta-bar"
+			class="fixed inset-x-0 bottom-0 z-[90] pointer-events-none"
+		>
+			<div class="mx-auto max-w-7xl px-4 pb-3">
+				<div
+					class="pointer-events-auto rounded-2xl border border-white/10 bg-neutral-900/90 backdrop-blur text-white shadow-[0_12px_40px_rgba(0,0,0,.35)]"
+				>
+					<div
+						class="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:gap-3"
+					>
+						<a
+							href="#find-dealer"
+							class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-extrabold btn-text"
+							style="
+								background: var(--accent);
+								box-shadow: 0 4px 0 rgba(0, 0, 0, 0.25);
+							"
+							data-cta="find-dealer"
+						>
+							Find the nearest dealer <span>🧭</span>
+						</a>
+						<button
+							type="button"
+							class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white/10 text-white hover:bg-white/15 border border-white/10"
+							data-cta="book-consult"
+						>
+							Chat with us <span>💬</span>
+						</button>
+						<a
+							href="assets/pdf/Hello_Landscape.pdf"
+							class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl bg-white text-neutral-900 font-bold"
+							download
+							data-cta="download-whitepaper"
+						>
+							Learn wear-resistance secrets <span>📄</span>
+						</a>
+					</div>
+				</div>
+				<!-- Chat widget -->
+				<div
+					id="chat-widget"
+					class="chat-widget"
+					role="dialog"
+					aria-labelledby="chat-widget-title"
+					aria-modal="false"
+					aria-hidden="true"
+				>
+					<div class="chat-header">
+						<h3 id="chat-widget-title">Landscape Assistant</h3>
+						<button
+							type="button"
+							class="chat-close-btn"
+							aria-label="Cerrar chat"
+						>
+							<i class="fa-solid fa-xmark"></i>
+						</button>
+					</div>
+					<div class="chat-body" role="log" aria-live="polite">
+						<div class="chat-message bot">
+							Hello! I'm Landscape's virtual assistant. How can I help you
+							today?
+						</div>
+					</div>
+					<form class="chat-input" id="chat-widget-form">
+						<label for="chat-widget-message" class="sr-only"
+							>Type your message</label
+						>
+						<input
+							type="text"
+							id="chat-widget-message"
+							name="message"
+							autocomplete="off"
+							placeholder="Type something..."
+							required
+						/>
+						<button type="submit">Ask</button>
+					</form>
+				</div>
+			</div>
+		</div>
+
+		<script>
+			// Mostrar la barra cuando el usuario ha hecho scroll y no está cerca del hero
+			(function () {
+				const bar = document.getElementById("cta-bar");
+				let visible = false;
+				function toggle() {
+					const y = window.scrollY || document.documentElement.scrollTop;
+					const shouldShow = y > 600; // ajusta según tu hero
+					if (shouldShow !== visible) {
+						visible = shouldShow;
+						bar.style.transform = visible
+							? "translateY(0)"
+							: "translateY(120%)";
+						bar.style.transition = "transform .35s cubic-bezier(.22,.61,.36,1)";
+					}
+				}
+				toggle();
+				window.addEventListener("scroll", toggle, { passive: true });
+
+				// Tracking básico
+				document.querySelectorAll("#cta-bar [data-cta]").forEach((el) => {
+					el.addEventListener("click", () => {
+						console.log("CTA click", el.dataset.cta);
+						// TODO: window.gtag?.('event','cta_click',{ label: el.dataset.cta });
+					});
+				});
+
+				const chatWidget = document.getElementById("chat-widget");
+				const chatToggle = document.querySelector("[data-cta='book-consult']");
+				const chatCloseBtn = chatWidget?.querySelector(".chat-close-btn");
+				const chatForm = document.getElementById("chat-widget-form");
+				const chatInput = document.getElementById("chat-widget-message");
+				const chatLog = chatWidget?.querySelector(".chat-body");
+				const cannedResponses = [
+					"Thank you for your message. A specialist will contact you shortly.",
+					"I'm collecting your information. Could you share your city and preferred time?",
+					"If you need immediate assistance, you can also call 1-800-LANDSCAPE.",
+				];
+
+				function appendMessage(role, text) {
+					if (!chatLog) return;
+					const bubble = document.createElement("div");
+					bubble.className = `chat-message ${role}`;
+					bubble.textContent = text;
+					chatLog.appendChild(bubble);
+					chatLog.scrollTop = chatLog.scrollHeight;
+				}
+
+				function openChat() {
+					if (!chatWidget) return;
+					chatWidget.classList.add("is-open");
+					chatWidget.setAttribute("aria-hidden", "false");
+					setTimeout(() => {
+						chatInput?.focus();
+					}, 120);
+				}
+
+				function closeChat() {
+					if (!chatWidget) return;
+					chatWidget.classList.remove("is-open");
+					chatWidget.setAttribute("aria-hidden", "true");
+				}
+
+				chatToggle?.addEventListener("click", () => {
+					openChat();
+				});
+
+				chatCloseBtn?.addEventListener("click", () => {
+					closeChat();
+					chatToggle?.focus();
+				});
+
+				document.addEventListener("keydown", (event) => {
+					if (
+						event.key === "Escape" &&
+						chatWidget?.classList.contains("is-open")
+					) {
+						event.preventDefault();
+						closeChat();
+						chatToggle?.focus();
+					}
+				});
+
+				chatForm?.addEventListener("submit", (event) => {
+					event.preventDefault();
+					const message = chatInput?.value.trim();
+					if (!message) {
+						return;
+					}
+					appendMessage("user", message);
+					if (chatInput) {
+						chatInput.value = "";
+					}
+					setTimeout(() => {
+						const reply =
+							cannedResponses[
+								Math.floor(Math.random() * cannedResponses.length)
+							];
+						appendMessage("bot", reply);
+					}, 450);
+				});
+			})();
+		</script>
+
+		<script>
+			// Mapea hrefs (#id) del nav a secciones
+			const links = [...document.querySelectorAll('header nav a[href^="#"]')];
+			const map = new Map(links.map((a) => [a.getAttribute("href"), a]));
+
+			// Estilo activo: subrayado permanente + color pleno
+			const setActive = (href) => {
+				links.forEach((a) => a.classList.remove("active-nav"));
+				map.get(href)?.classList.add("active-nav");
+			};
+
+			// Observa secciones (usa ids que ya tienes: #finder, #find-dealer, etc.)
+			const sections = [...map.keys()]
+				.map((sel) => document.querySelector(sel))
+				.filter(Boolean);
+
+			const io = new IntersectionObserver(
+				(entries) => {
+					entries.forEach((e) => {
+						if (e.isIntersecting) setActive("#" + e.target.id);
+					});
+				},
+				{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
+			);
+
+			sections.forEach((s) => io.observe(s));
+		</script>
+
+		<script>
+			(function () {
+				const cards = document.querySelectorAll("#company-history .h-card");
+				if (!cards.length) return;
+				const io = new IntersectionObserver(
+					(entries) => {
+						entries.forEach(
+							(e) => (e.target.dataset.active = e.isIntersecting)
+						);
+					},
+					{ rootMargin: "-30% 0px -50% 0px", threshold: 0.2 }
+				);
+				cards.forEach((c) => io.observe(c));
+			})();
+		</script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/TextPlugin.min.js"></script>
+		<!-- <script src="js/main.js"></script> -->
+	</body>
+</html>
