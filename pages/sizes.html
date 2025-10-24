@@ -218,13 +218,17 @@
 			<!-- Contenedor centrado -->
 			<nav class="w-full">
 				<ul
+					id="segmentFilters"
 					class="max-w-6xl mx-auto flex flex-wrap justify-center items-center gap-3 sm:gap-4 md:gap-6 py-4"
 				>
 					<!-- Pill -->
 					<li>
 						<a
 							href="#all"
-							class="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+							data-segment="all"
+							class="filter-pill inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+							role="button"
+							aria-pressed="false"
 						>
 							All
 						</a>
@@ -233,14 +237,18 @@
 					<li>
 						<a
 							href="#passenger-suv"
-							class="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+							data-segment="passenger"
+							class="filter-pill inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+							role="button"
+							aria-pressed="false"
 						>
 							<span class="i-lucide-car"></span>
 							<span class="i-lucide-truck"></span>
 							PASSENGER / SUV &amp; LT
 							<span
-								class="ml-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-purple-600/10 text-purple-700 text-sm font-semibold px-2"
-								>8</span
+								class="filter-pill-count ml-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-purple-600/10 text-purple-700 text-sm font-semibold px-2"
+								data-count-for="passenger"
+								>0</span
 							>
 						</a>
 					</li>
@@ -248,13 +256,17 @@
 					<li>
 						<a
 							href="#tbr"
-							class="inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+							data-segment="tbr"
+							class="filter-pill inline-flex items-center gap-2 rounded-full border border-neutral-200 px-5 sm:px-6 md:px-7 py-2.5 md:py-3 text-sm sm:text-base md:text-lg font-medium text-neutral-700 bg-white shadow-sm hover:shadow-md hover:-translate-y-0.5 transition"
+							role="button"
+							aria-pressed="false"
 						>
 							<span class="i-lucide-bus"></span>
 							TBR / TRUCK &amp; BUS
 							<span
-								class="ml-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-purple-600/10 text-purple-700 text-sm font-semibold px-2"
-								>2</span
+								class="filter-pill-count ml-1 inline-flex h-6 min-w-6 items-center justify-center rounded-full bg-purple-600/10 text-purple-700 text-sm font-semibold px-2"
+								data-count-for="tbr"
+								>0</span
 							>
 						</a>
 					</li>
@@ -304,26 +316,65 @@
 			</style>
 
 			<script>
-				(function () {
-					const chips = document.querySelectorAll("#chipFilters .chip");
-					const groups = document.querySelectorAll("[data-group]");
-					function apply(f) {
-						groups.forEach(
-							(g) =>
-								(g.style.display =
-									f === "all" || g.dataset.group === f ? "" : "none")
-						);
-						chips.forEach((c) =>
-							c.classList.toggle("active", c.dataset.filter === f)
-						);
+				const segmentFilterController = (() => {
+					const container = document.getElementById("segmentFilters");
+					const buttons = container
+						? container.querySelectorAll("[data-segment]")
+						: [];
+					const listeners = new Set();
+					let active = "all";
+
+					function setActive(segment, options = {}) {
+						if (!segment) return;
+						active = segment;
+						buttons.forEach((btn) => {
+							const isActive = btn.dataset.segment === segment;
+							btn.classList.toggle("filter-pill-active", isActive);
+							btn.setAttribute("aria-pressed", String(isActive));
+						});
+						if (options.emit !== false) {
+							listeners.forEach((cb) => cb(active));
+						}
 					}
-					chips.forEach((c) =>
-						c.addEventListener("click", () => apply(c.dataset.filter))
-					);
-					apply("all");
+
+					function onChange(cb) {
+						if (typeof cb === "function") {
+							listeners.add(cb);
+						}
+						return () => listeners.delete(cb);
+					}
+
+					function updateCounts(counts = {}) {
+						container?.querySelectorAll(".filter-pill-count").forEach((el) => {
+							const key = el.dataset.countFor;
+							if (key && Object.prototype.hasOwnProperty.call(counts, key)) {
+								el.textContent = counts[key];
+							}
+						});
+					}
+
+					buttons.forEach((btn) => {
+						btn.addEventListener("click", (event) => {
+							event.preventDefault();
+							const segment = btn.dataset.segment;
+							if (segment && segment !== active) {
+								setActive(segment);
+							}
+						});
+					});
+
+					setActive(active, { emit: false });
+
+					return {
+						onChange,
+						setActive,
+						updateCounts,
+						get active() {
+							return active;
+						},
+					};
 				})();
 			</script>
-
 			<!-- En tu sizes.html, dentro de #catalogo -->
 			<div id="catalogo-dynamic" class="max-w-6xl mx-auto px-4 py-8">
 				<h3 class="mb-4 flex items-end gap-3">
