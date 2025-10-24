@@ -357,7 +357,7 @@
 			<div id="catalogo-dynamic" class="max-w-6xl mx-auto px-4 py-8">
 				<h3 class="mb-4 flex items-end gap-3">
 					<span class="text-2xl font-black tracking-wide text-neutral-700">
-						Catálogo dinámico
+						Our Tires
 					</span>
 					<span class="h-[2px] flex-1 bg-neutral-200"></span>
 				</h3>
@@ -521,6 +521,7 @@
 			}
 
 			/* ====== Boot ====== */
+
 			(async function mountCatalog() {
 				try {
 					const res = await fetch("../assets/info/data_modelos.json", {
@@ -529,7 +530,54 @@
 					const data = await res.json(); // [{modelo, descripcion, medidas_disponibles}, ...]
 					if (!Array.isArray(data)) return;
 
-					data.forEach((item) => {
+					const params = new URLSearchParams(window.location.search);
+					const segment = (params.get("segment") || "").toLowerCase();
+
+					const filtered = data.filter((item) => {
+						const isPassenger = /\(pcr\)/i.test(item?.modelo || "");
+
+						if (segment === "passenger") {
+							return isPassenger;
+						}
+
+						if (segment === "commercial") {
+							return !isPassenger;
+						}
+
+						return true;
+					});
+
+					const results = filtered.length ? filtered : [];
+
+					const containers = document.querySelectorAll(
+						"[data-group], #cards-grid"
+					);
+					containers.forEach((el) => {
+						el.innerHTML = "";
+						if (el instanceof HTMLElement) {
+							el.style.display = "";
+						}
+					});
+
+					const heading = document.querySelector("#catalogo-dynamic .text-2xl");
+					const segmentLabels = {
+						passenger: "PASSENGER / SUV & LT",
+						commercial: "TBR / TRUCK & BUS",
+					};
+					if (heading && segment && segmentLabels[segment]) {
+						heading.innerHTML = `Catálogo dinámico <span class="block text-sm font-semibold tracking-wide text-[var(--brand-ink)]">${segmentLabels[segment]}</span>`;
+					}
+
+					if (!results.length) {
+						const grid = byId("cards-grid");
+						if (grid) {
+							grid.innerHTML =
+								'<p class="col-span-full text-center text-sm text-neutral-500">No se encontraron llantas para esta categoría.</p>';
+						}
+						return;
+					}
+
+					results.forEach((item) => {
 						const target = pickTargetContainer(item);
 						target?.appendChild(renderCard(item));
 					});
