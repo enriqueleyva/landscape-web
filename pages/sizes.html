@@ -407,8 +407,10 @@
 			/* Imagen: intenta derivar un nombre de archivo por modelo; si no existe, usa placeholder */
 			function resolveImageSrc(item) {
 				// si tus assets siguen el esquema "assets/tires/<slug>.png", prueba con el modelo sin paréntesis
-				const base = (item?.modelo || "").replace(/\(.*?\)/g, "").trim();
-				const guess = `assets/tires/${slug(base)}.png`;
+				const base = (item?.imagen || "").replace(/\(.*?\)/g, "").trim();
+				const guess = `../assets/img/tires/${base}.webp`;
+				console.log(guess);
+				// const guess = `assets/tires/${slug(base)}.png`;
 				// no vamos a comprobar existencia; el <img> tiene onerror para caer a placeholder
 				return guess;
 			}
@@ -449,9 +451,7 @@
 
     <!-- info -->
     <div>
-      <div class="flex items-center gap-2">
-        <span class="brand">LANDSCAPE</span>
-      </div>
+
 
       <div class="model text-2xl mt-1">${(item?.modelo || "").replace(
 				/\s*\(.*?\)\s*/,
@@ -461,7 +461,7 @@
       <div class="uppercase text-[11px] tracking-wider text-neutral-500 mt-1">
         ${
 					/\(pcr\)/i.test(item?.modelo || "")
-						? "PASAJERO / SUV & LT"
+						? "PASSENGER / SUV & LT"
 						: "TBR / TRUCK & BUS"
 				}
       </div>
@@ -499,18 +499,6 @@
 					: ``
 			}
 
-      <!-- rating placeholder + CTA -->
-      <div class="rating mt-2 text-[12px]">
-        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-        <i class="fa-regular fa-star"></i>
-        <a href="#" class="ml-2 underline text-neutral-500">Escribe una reseña</a>
-      </div>
-
-      <a href="#"
-         class="mt-3 inline-flex items-center justify-center gap-2 px-4 py-2 rounded-full border text-[12px] font-semibold border-black/40 text-neutral-800 hover:bg-neutral-50">
-         APRENDE MÁS
-      </a>
     </div>
   `;
 
