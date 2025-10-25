@@ -1,6 +1,60 @@
 window.addEventListener("DOMContentLoaded", () => {
 	const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
 
+	const mobileMenu = document.querySelector("[data-menu]");
+	const mobileToggle = document.querySelector("[data-menu-toggle]");
+
+	if (mobileMenu && mobileToggle) {
+		const closeMenu = (focusToggle = false) => {
+			mobileMenu.classList.remove("is-open");
+			mobileToggle.setAttribute("aria-expanded", "false");
+			document.body.classList.remove("mobile-menu-open");
+			if (focusToggle) {
+				mobileToggle.focus();
+			}
+		};
+
+		const openMenu = () => {
+			mobileMenu.classList.add("is-open");
+			mobileToggle.setAttribute("aria-expanded", "true");
+			document.body.classList.add("mobile-menu-open");
+		};
+
+		mobileToggle.addEventListener("click", () => {
+			const expanded = mobileToggle.getAttribute("aria-expanded") === "true";
+			if (expanded) {
+				closeMenu();
+			} else {
+				openMenu();
+			}
+		});
+
+		window.addEventListener("resize", () => {
+			if (window.innerWidth >= 1024) {
+				closeMenu();
+			}
+		});
+
+		mobileMenu.addEventListener("click", (event) => {
+			const target = event.target;
+			if (target instanceof HTMLElement) {
+				const link = target.closest("a");
+				if (link) {
+					closeMenu();
+				}
+			}
+		});
+
+		document.addEventListener("keydown", (event) => {
+			if (
+				event.key === "Escape" &&
+				mobileToggle.getAttribute("aria-expanded") === "true"
+			) {
+				closeMenu(true);
+			}
+		});
+	}
+
 	// Fade-in del hero
 	tl.from("header", { y: -30, opacity: 0, duration: 0.5 })
 		.from("h1", { y: 20, opacity: 0, duration: 0.6 }, "-=.2")
