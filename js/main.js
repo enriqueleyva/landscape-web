@@ -551,7 +551,7 @@ document.getElementById("applyForm").addEventListener("submit", (e) => {
 });
 
 // init
-applyFilters();
+// applyFilters();
 
 // Año automático
 document.getElementById("year").textContent = new Date().getFullYear();
