@@ -766,70 +766,25 @@
 								>Width
 								<select
 									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-								>
-									<option>205</option>
-									<option>215</option>
-									<option>225</option>
-									<option>235</option>
-								</select>
+									id="selWidth"
+								></select>
 							</label>
 							<label class="text-xs text-white/70 md:col-span-2"
 								>Height
 								<select
 									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-								>
-									<option>45</option>
-									<option>50</option>
-									<option>55</option>
-									<option>60</option>
-								</select>
+									id="selHeight"
+								></select>
 							</label>
 							<label class="text-xs text-white/70 md:col-span-2"
 								>Rim
 								<select
 									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-								>
-									<option>R16</option>
-									<option>R17</option>
-									<option>R18</option>
-									<option>R20</option>
-								</select>
+									id="selRim"
+								></select>
 							</label>
-
-							<!-- <label class="text-xs text-white/70 md:col-span-3"
-								>Application
-								<select
-									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-								>
-									<option>Passengers</option>
-									<option>Truck/SUV</option>
-									<option>Performance</option>
-									<option>Off-Road</option>
-								</select>
-							</label>
-							<label class="text-xs text-white/70 md:col-span-3"
-								>Season
-								<select
-									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-								>
-									<option>All-Season</option>
-									<option>All-Weather</option>
-									<option>Summer</option>
-									<option>Winter</option>
-								</select>
-							</label> -->
 
 							<div class="md:col-span-6 flex items-center gap-4">
-								<!-- <label
-									class="inline-flex items-center gap-2 text-white/80 text-sm"
-								>
-									<input type="checkbox" checked /> Envío a domicilio
-								</label>
-								<label
-									class="inline-flex items-center gap-2 text-white/80 text-sm"
-								>
-									<input type="checkbox" /> Recoger en tienda
-								</label> -->
 								<button
 									class="ml-auto inline-flex items-center gap-2 px-5 py-3 rounded-md font-extrabold btn-text"
 									style="
@@ -846,6 +801,200 @@
 							</div>
 						</div>
 					</form>
+					<script>
+						(async function () {
+							// === 1) Cargar data.json ===
+							const res = await fetch("assets/info/data.json", {
+								cache: "no-store",
+							});
+							const sizeToModels = await res.json(); // { "205/55R16": ["..."], ... }
+
+							// === 2) Helpers de parseo (métrico / flotación / comercial) ===
+							const RX = {
+								metric:
+									/^(?:LT|P|ST)?\s*(\d{3})\s*\/\s*(\d{2,3})\s*R?\s*(\d{2}(?:\.\d+)?)$/i,
+								// flotación "33x12.50R20" (usamos 12.50 como width); también claves con dobles slash "12.50//18"
+								floatX:
+									/^\s*\d{2,3}(?:\.\d+)?\s*[xX×]\s*(\d{1,2}(?:\.\d+)?)\s*R?\s*(\d{2}(?:\.\d+)?)\s*$/i,
+								floatSlash:
+									/^\s*(\d{1,2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
+								// comercial: "11R22.5" o con dobles slash "11//22.5" (sin altura)
+								commR: /^\s*(\d{2}(?:\.\d+)?)\s*R\s*(\d{2}(?:\.\d+)?)\s*$/i,
+								commSlash:
+									/^\s*(\d{2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
+							};
+
+							const norm = (s) =>
+								String(s || "")
+									.toUpperCase()
+									.trim()
+									.replace(/–|—/g, "-")
+									.replace(/\s+/g, "");
+
+							function parseSize(key) {
+								const raw = norm(key);
+								// 205/55R16
+								let m = raw.match(RX.metric);
+								if (m)
+									return {
+										width: m[1],
+										height: m[2],
+										rim: m[3],
+										kind: "METRIC",
+									};
+
+								// 33x12.50R20  -> width = 12.50, height = ""
+								m = raw.match(RX.floatX);
+								if (m)
+									return {
+										width: m[1],
+										height: "",
+										rim: m[2],
+										kind: "FLOTATION",
+									};
+
+								// 12.50//18 -> width=12.50, rim=18
+								m = raw.match(RX.floatSlash);
+								if (m)
+									return {
+										width: m[1],
+										height: "",
+										rim: m[2],
+										kind: "FLOTATION",
+									};
+
+								// 11R22.5  (commercial) -> height=""
+								m = raw.match(RX.commR);
+								if (m)
+									return {
+										width: m[1],
+										height: "",
+										rim: m[2],
+										kind: "COMMERCIAL",
+									};
+
+								// 11//22.5 -> commercial
+								m = raw.match(RX.commSlash);
+								if (m)
+									return {
+										width: m[1],
+										height: "",
+										rim: m[2],
+										kind: "COMMERCIAL",
+									};
+
+								return null;
+							}
+
+							// === 3) Construir índice: width -> rim -> Set(heights) y un mapa a modelos ===
+							const index = {}; // { width: { rim: Set([height]) } }
+							const mapModels = {}; // { "width|rim|height": Set(models) }
+
+							for (const [size, models] of Object.entries(sizeToModels)) {
+								const p = parseSize(size);
+								if (!p) continue;
+
+								index[p.width] ??= {};
+								index[p.width][p.rim] ??= new Set();
+								index[p.width][p.rim].add(p.height); // "" si no aplica
+
+								const k = `${p.width}|${p.rim}|${p.height}`;
+								mapModels[k] ??= new Set();
+								models.forEach((m) => mapModels[k].add(m));
+							}
+
+							// === 4) Accesos a DOM ===
+							const selWidth = document.getElementById("selWidth");
+							const selHeight = document.getElementById("selHeight");
+							const selRim = document.getElementById("selRim");
+							const form = document.getElementById("finderBySize");
+							const out = document.getElementById("finderResult");
+
+							function clearOptions(sel) {
+								while (sel.options.length) sel.remove(0);
+							}
+							function addOption(sel, value, label = value) {
+								const opt = document.createElement("option");
+								opt.value = value;
+								opt.textContent = label;
+								sel.appendChild(opt);
+							}
+
+							// === 5) Poblar Width (orden numérico correcto, incluso con decimales) ===
+							const sortNumeric = (a, b) => parseFloat(a) - parseFloat(b);
+							const widths = Object.keys(index).sort(sortNumeric);
+							clearOptions(selWidth);
+							addOption(selWidth, "", "Select width");
+							widths.forEach((w) => addOption(selWidth, w, w));
+
+							// Dependencias: Width -> Rim -> Height
+							function refreshRims() {
+								const w = selWidth.value;
+								clearOptions(selRim);
+								clearOptions(selHeight);
+								addOption(selRim, "", "Select rim");
+								addOption(selHeight, "", "Select height");
+
+								if (!w || !index[w]) return;
+
+								const rims = Object.keys(index[w]).sort(sortNumeric);
+								rims.forEach((r) =>
+									addOption(selRim, r, `R${r.replace(/^R/i, "")}`)
+								); // muestra “R16”, “R22.5”, etc.
+							}
+
+							function refreshHeights() {
+								const w = selWidth.value;
+								const r = selRim.value;
+								clearOptions(selHeight);
+								addOption(selHeight, "", "Select height");
+
+								if (!w || !r || !index[w] || !index[w][r]) return;
+
+								// Deja “—” para tamaños sin altura
+								const heights = [...index[w][r]]
+									.sort(sortNumeric)
+									.map((h) => (h === "" ? "—" : h));
+								heights.forEach((h) =>
+									addOption(selHeight, h === "—" ? "" : h, h)
+								);
+							}
+
+							selWidth.addEventListener("change", refreshRims);
+							selRim.addEventListener("change", refreshHeights);
+
+							// === 6) Submit: mostrar modelos compatibles con la combinación elegida ===
+							form.addEventListener("submit", (e) => {
+								e.preventDefault();
+								const w = selWidth.value;
+								const r = selRim.value;
+								const h = selHeight.value; // "" si “—”
+
+								if (!w || !r) {
+									out && (out.textContent = "Selecciona al menos Width y Rim.");
+									return;
+								}
+
+								const key = `${w}|${r}|${h}`;
+								const models = mapModels[key] ? [...mapModels[key]].sort() : [];
+
+								if (out) {
+									if (models.length) {
+										out.innerHTML = `<b>Modelos disponibles:</b> ${models.join(
+											", "
+										)}`;
+									} else {
+										out.textContent =
+											"No se encontraron modelos para esa combinación.";
+									}
+								}
+							});
+
+							// Tip: Si quieres precargar algún Width por defecto:
+							// selWidth.value = widths.includes("205") ? "205" : "";
+							// refreshRims();
+						})();
+					</script>
 				</div>
 			</div>
 		</section>
@@ -977,7 +1126,7 @@
 						<div class="relative">
 							<!-- imagen/video placeholder -->
 							<img
-								src="assets/img/suvCoverText.png"
+								src="assets/img/gallery/sema_show.webp"
 								alt="Featured"
 								class="w-full h-64 lg:h-full object-cover"
 							/>
