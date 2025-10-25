@@ -732,6 +732,7 @@
 		<!-- ==================== BUSCADOR DE LLANTAS · ALT B ==================== -->
 		<section
 			class="relative py-10 bg-gradient-to-b from-neutral-950 via-neutral-900 to-neutral-950"
+			id="search-tire"
 		>
 			<div class="max-w-7xl mx-auto px-4">
 				<div class="mb-6 flex items-center justify-between">
@@ -969,25 +970,23 @@
 								const w = selWidth.value;
 								const r = selRim.value;
 								const h = selHeight.value; // "" si “—”
+								const hasHeightSelection = selHeight.selectedIndex > 0;
 
 								if (!w || !r) {
 									out && (out.textContent = "Selecciona al menos Width y Rim.");
 									return;
 								}
 
-								const key = `${w}|${r}|${h}`;
-								const models = mapModels[key] ? [...mapModels[key]].sort() : [];
+								const params = new URLSearchParams();
+								params.set("width", w);
+								params.set("rim", r);
 
-								if (out) {
-									if (models.length) {
-										out.innerHTML = `<b>Modelos disponibles:</b> ${models.join(
-											", "
-										)}`;
-									} else {
-										out.textContent =
-											"No se encontraron modelos para esa combinación.";
-									}
+								if (hasHeightSelection) {
+									const normalizedHeight = h || "__none__";
+									params.set("height", normalizedHeight);
 								}
+
+								window.location.href = `pages/sizes.html?${params.toString()}#catalogo`;
 							});
 
 							// Tip: Si quieres precargar algún Width por defecto:
@@ -2289,7 +2288,7 @@
 						class="flex flex-col gap-2 p-3 sm:flex-row sm:items-center sm:gap-3"
 					>
 						<a
-							href="#find-dealer"
+							href="#search-tire"
 							class="flex-1 inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-extrabold btn-text"
 							style="
 								background: var(--accent);
@@ -2297,7 +2296,7 @@
 							"
 							data-cta="find-dealer"
 						>
-							Find the nearest dealer <span>🧭</span>
+							Find the perfect tire <span>🛞</span>
 						</a>
 						<button
 							type="button"

@@ -399,6 +399,73 @@
 
 			const byId = (id) => document.getElementById(id);
 
+			const RX = {
+				metric:
+					/^(?:LT|P|ST)?\s*(\d{3})\s*\/\s*(\d{2,3})\s*R?\s*(\d{2}(?:\.\d+)?)$/i,
+				floatX:
+					/^\s*\d{2,3}(?:\.\d+)?\s*[xX×]\s*(\d{1,2}(?:\.\d+)?)\s*R?\s*(\d{2}(?:\.\d+)?)\s*$/i,
+				floatSlash: /^\s*(\d{1,2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
+				commR: /^\s*(\d{2}(?:\.\d+)?)\s*R\s*(\d{2}(?:\.\d+)?)\s*$/i,
+				commSlash: /^\s*(\d{2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
+			};
+
+			const norm = (s) =>
+				String(s || "")
+					.toUpperCase()
+					.trim()
+					.replace(/–|—/g, "-")
+					.replace(/\s+/g, "");
+
+			function parseSize(key) {
+				const raw = norm(key);
+				let m = raw.match(RX.metric);
+				if (m)
+					return {
+						width: m[1],
+						height: m[2],
+						rim: m[3],
+						kind: "METRIC",
+					};
+
+				m = raw.match(RX.floatX);
+				if (m)
+					return {
+						width: m[1],
+						height: "",
+						rim: m[2],
+						kind: "FLOTATION",
+					};
+
+				m = raw.match(RX.floatSlash);
+				if (m)
+					return {
+						width: m[1],
+						height: "",
+						rim: m[2],
+						kind: "FLOTATION",
+					};
+
+				m = raw.match(RX.commR);
+				if (m)
+					return {
+						width: m[1],
+						height: "",
+						rim: m[2],
+						kind: "COMMERCIAL",
+					};
+
+				m = raw.match(RX.commSlash);
+				if (m)
+					return {
+						width: m[1],
+						height: "",
+						rim: m[2],
+						kind: "COMMERCIAL",
+					};
+
+				return null;
+			}
+
 			/* Heurística para agrupar en contenedores existentes:
    - Si encuentras <div data-group="invierno">, manda Winter/WS allí
    - Si encuentras <div data-group="pasajero">, manda lo (PCR) allí
@@ -553,9 +620,57 @@
 					if (!Array.isArray(data)) return;
 
 					const params = new URLSearchParams(window.location.search);
-					const segment = (params.get("segment") || "").toLowerCase();
+					const rawSegment = (params.get("segment") || "").toLowerCase();
+					const segment = rawSegment === "tbr" ? "commercial" : rawSegment;
 
-					const filtered = data.filter((item) => {
+					const widthFilter = (params.get("width") || "").trim();
+					const rimFilter = (params.get("rim") || "").trim();
+					const hasHeightParam = params.has("height");
+					let heightFilter = hasHeightParam ? params.get("height") : null;
+					if (heightFilter === "__none__") {
+						heightFilter = "";
+					}
+					const sizeFilters = {
+						width: widthFilter,
+						rim: rimFilter,
+						height: hasHeightParam ? heightFilter : null,
+					};
+					const hasSizeFilter = Boolean(sizeFilters.width && sizeFilters.rim);
+
+					const matchesSizeToken = (token) => {
+						if (!hasSizeFilter) return true;
+						const parsed = parseSize(token);
+						if (!parsed) return false;
+						if (sizeFilters.width && parsed.width !== sizeFilters.width)
+							return false;
+						if (sizeFilters.rim && parsed.rim !== sizeFilters.rim) return false;
+						if (sizeFilters.height !== null) {
+							const candidateHeight = parsed.height || "";
+							return candidateHeight === sizeFilters.height;
+						}
+						return true;
+					};
+
+					const sizeFiltered = data.filter((item) => {
+						if (!hasSizeFilter) return true;
+						const measures = Array.isArray(item?.medidas_disponibles)
+							? item.medidas_disponibles
+							: [];
+						return measures.some((token) => matchesSizeToken(token));
+					});
+
+					const segmentCounts = sizeFiltered.reduce(
+						(acc, item) => {
+							const isPassenger = /\(pcr\)/i.test(item?.modelo || "");
+							const key = isPassenger ? "passenger" : "tbr";
+							acc[key] = (acc[key] || 0) + 1;
+							return acc;
+						},
+						{ passenger: 0, tbr: 0 }
+					);
+					segmentFilterController.updateCounts(segmentCounts);
+
+					const filtered = sizeFiltered.filter((item) => {
 						const isPassenger = /\(pcr\)/i.test(item?.modelo || "");
 
 						if (segment === "passenger") {
@@ -569,25 +684,38 @@
 						return true;
 					});
 
-					const results = filtered.length ? filtered : [];
+					const navSegment =
+						segment === "commercial" ? "tbr" : segment || "all";
+					segmentFilterController.setActive(navSegment, { emit: false });
 
-					const containers = document.querySelectorAll(
-						"[data-group], #cards-grid"
-					);
-					containers.forEach((el) => {
-						el.innerHTML = "";
-						if (el instanceof HTMLElement) {
-							el.style.display = "";
-						}
-					});
+					const results = filtered.length ? filtered : [];
 
 					const heading = document.querySelector("#catalogo-dynamic .text-2xl");
 					const segmentLabels = {
 						passenger: "PASSENGER / SUV & LT",
 						commercial: "TBR / TRUCK & BUS",
 					};
-					if (heading && segment && segmentLabels[segment]) {
-						heading.innerHTML = `Catálogo dinámico <span class="block text-sm font-semibold tracking-wide text-[var(--brand-ink)]">${segmentLabels[segment]}</span>`;
+					if (heading) {
+						let headingContent = "Our Tires";
+						if (segment && segmentLabels[segment]) {
+							headingContent = `Catálogo dinámico <span class="block text-sm font-semibold tracking-wide text-[var(--brand-ink)]">${segmentLabels[segment]}</span>`;
+						}
+						if (hasSizeFilter) {
+							const heightLabel =
+								sizeFilters.height === null
+									? null
+									: sizeFilters.height === ""
+									? "—"
+									: sizeFilters.height;
+							const sizeLabel =
+								sizeFilters.height === null
+									? `${sizeFilters.width} · R${sizeFilters.rim}`
+									: `${sizeFilters.width}${
+											heightLabel ? `/${heightLabel}` : ""
+									  } R${sizeFilters.rim}`;
+							headingContent += `<span class="block text-xs md:text-sm font-semibold tracking-wide text-[var(--brand-ink)]/80 mt-1">Size filter: ${sizeLabel}</span>`;
+						}
+						heading.innerHTML = headingContent;
 					}
 
 					if (!results.length) {
