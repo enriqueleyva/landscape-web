@@ -510,6 +510,10 @@
 
 				// badges rápidos a partir de la descripción (opcionales)
 				const isNew = /new\b|nuevo/i.test(item?.descripcion || "");
+				const isPassengerModel = /\(pcr\)/i.test(item?.modelo || "");
+				const segmentLabel = isPassengerModel
+					? "PASSENGER / SUV & LT"
+					: "TBR / TRUCK & BUS";
 
 				// medidas (top 6 visibles, el resto plegables)
 				const medidas = Array.isArray(item?.medidas_disponibles)
@@ -521,6 +525,8 @@
 				const article = document.createElement("article");
 				article.className =
 					"grid grid-cols-[140px,1fr] gap-4 items-start border-b md:border-0 pb-6 md:pb-0";
+				article.dataset.dynamicCard = "true";
+				article.dataset.segment = isPassengerModel ? "passenger" : "tbr";
 
 				article.innerHTML = `
     <!-- imagen -->
@@ -548,11 +554,7 @@
 			)}</div>
 
       <div class="uppercase text-[11px] tracking-wider text-neutral-500 mt-1">
-        ${
-					/\(pcr\)/i.test(item?.modelo || "")
-						? "PASSENGER / SUV & LT"
-						: "TBR / TRUCK & BUS"
-				}
+         ${segmentLabel}
       </div>
 
       <p class="mt-2 text-[12px] leading-5 text-neutral-600 max-w-[46ch]">
@@ -659,10 +661,11 @@
 						return measures.some((token) => matchesSizeToken(token));
 					});
 
+					const isPassengerModel = (item) =>
+						/\(pcr\)/i.test(item?.modelo || "");
 					const segmentCounts = sizeFiltered.reduce(
 						(acc, item) => {
-							const isPassenger = /\(pcr\)/i.test(item?.modelo || "");
-							const key = isPassenger ? "passenger" : "tbr";
+							const key = isPassengerModel(item) ? "passenger" : "tbr";
 							acc[key] = (acc[key] || 0) + 1;
 							return acc;
 						},
@@ -670,36 +673,34 @@
 					);
 					segmentFilterController.updateCounts(segmentCounts);
 
-					const filtered = sizeFiltered.filter((item) => {
-						const isPassenger = /\(pcr\)/i.test(item?.modelo || "");
-
-						if (segment === "passenger") {
-							return isPassenger;
-						}
-
-						if (segment === "commercial") {
-							return !isPassenger;
-						}
-
-						return true;
-					});
-
-					const navSegment =
-						segment === "commercial" ? "tbr" : segment || "all";
-					segmentFilterController.setActive(navSegment, { emit: false });
-
-					const results = filtered.length ? filtered : [];
-
-					const heading = document.querySelector("#catalogo-dynamic .text-2xl");
 					const segmentLabels = {
 						passenger: "PASSENGER / SUV & LT",
 						commercial: "TBR / TRUCK & BUS",
 					};
-					if (heading) {
+
+					const toNormalizedSegment = (navValue) => {
+						if (navValue === "passenger") return "passenger";
+						if (navValue === "tbr") return "commercial";
+						return "all";
+					};
+
+					const toNavSegment = (normalized) => {
+						if (normalized === "passenger") return "passenger";
+						if (normalized === "commercial") return "tbr";
+						return "all";
+					};
+
+					const updateHeading = (normalized) => {
+						const heading = document.querySelector(
+							"#catalogo-dynamic .text-2xl"
+						);
+						if (!heading) return;
+
 						let headingContent = "Our Tires";
-						if (segment && segmentLabels[segment]) {
-							headingContent = `Catálogo dinámico <span class="block text-sm font-semibold tracking-wide text-[var(--brand-ink)]">${segmentLabels[segment]}</span>`;
+						if (normalized && segmentLabels[normalized]) {
+							headingContent = `Catálogo dinámico <span class="block text-sm font-semibold tracking-wide text-[var(--brand-ink)]">${segmentLabels[normalized]}</span>`;
 						}
+
 						if (hasSizeFilter) {
 							const heightLabel =
 								sizeFilters.height === null
@@ -715,21 +716,73 @@
 									  } R${sizeFilters.rim}`;
 							headingContent += `<span class="block text-xs md:text-sm font-semibold tracking-wide text-[var(--brand-ink)]/80 mt-1">Size filter: ${sizeLabel}</span>`;
 						}
-						heading.innerHTML = headingContent;
-					}
 
-					if (!results.length) {
+						heading.innerHTML = headingContent;
+					};
+
+					const renderForSegment = (normalized) => {
+						const results = sizeFiltered.filter((item) => {
+							if (normalized === "passenger") {
+								return isPassengerModel(item);
+							}
+							if (normalized === "commercial") {
+								return !isPassengerModel(item);
+							}
+							return true;
+						});
+
+						document
+							.querySelectorAll("[data-dynamic-card]")
+							.forEach((el) => el.remove());
+
 						const grid = byId("cards-grid");
 						if (grid) {
-							grid.innerHTML =
-								'<p class="col-span-full text-center text-sm text-neutral-500">No se encontraron llantas para esta categoría.</p>';
+							grid.innerHTML = "";
 						}
-						return;
-					}
 
-					results.forEach((item) => {
-						const target = pickTargetContainer(item);
-						target?.appendChild(renderCard(item));
+						if (!results.length) {
+							if (grid) {
+								grid.innerHTML =
+									'<p class="col-span-full text-center text-sm text-neutral-500">No se encontraron llantas para esta categoría.</p>';
+							}
+							updateHeading(normalized);
+							return;
+						}
+
+						results.forEach((item) => {
+							const target = pickTargetContainer(item);
+							target?.appendChild(renderCard(item));
+						});
+
+						updateHeading(normalized);
+					};
+
+					const initialSegment =
+						segment === "passenger" || segment === "commercial"
+							? segment
+							: "all";
+					const navSegment = toNavSegment(initialSegment);
+					segmentFilterController.setActive(navSegment, { emit: false });
+					renderForSegment(initialSegment);
+
+					segmentFilterController.onChange((navValue) => {
+						const normalized = toNormalizedSegment(navValue);
+						renderForSegment(normalized);
+
+						const paramsForUrl = new URLSearchParams(window.location.search);
+						if (normalized === "all") {
+							paramsForUrl.delete("segment");
+						} else if (normalized === "commercial") {
+							paramsForUrl.set("segment", "tbr");
+						} else {
+							paramsForUrl.set("segment", normalized);
+						}
+
+						const searchString = paramsForUrl.toString();
+						const newUrl = `${window.location.pathname}${
+							searchString ? `?${searchString}` : ""
+						}${window.location.hash}`;
+						window.history.replaceState({}, "", newUrl);
 					});
 				} catch (err) {
 					console.error("No se pudo cargar data_modelos.json", err);
