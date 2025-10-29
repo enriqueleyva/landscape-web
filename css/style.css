@@ -256,9 +256,11 @@ header.ribbon .text-white\/60 {
     }
 
     header.ribbon {
-        position: relative;
-        z-index: 50;
         position: sticky;
+        /* o position: fixed si lo quieres totalmente fijo */
+        top: calc(var(--brand-bar-h) + var(--top-strip-h));
+        /* ajusta según tus alturas reales */
+        z-index: 90;
     }
 
     .mobile-nav {
