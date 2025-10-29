@@ -258,6 +258,7 @@ header.ribbon .text-white\/60 {
     header.ribbon {
         position: relative;
         z-index: 50;
+        position: sticky;
     }
 
     .mobile-nav {
