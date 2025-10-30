@@ -6,6 +6,11 @@
     --purple-3: #820099;
     /* claro */
 
+    --fixedbar-h: 0px;
+    --brand-bar-h: 0px;
+    --top-strip-h: 0px;
+    --nav-stack-h: 80px;
+
 }
 
 /* ===========================
@@ -155,13 +160,20 @@
   ============================*/
 .top-strip {
     background: #fafafa;
+    position: sticky;
+    top: var(--fixedbar-h, 0px);
+    z-index: 90;
 }
 
 /* ===========================
      HEADER PURPLE RIBBON
   ============================*/
 .ribbon {
-    position: relative;
+    position: sticky;
+    top: calc(var(--fixedbar-h, 0px) + var(--top-strip-h, 0px));
+    left: 0;
+    right: 0;
+    z-index: 85;
     overflow: hidden;
     background: radial-gradient(180% 80% at 50% -20%,
             rgba(255, 255, 255, 0.08),
@@ -256,11 +268,10 @@ header.ribbon .text-white\/60 {
     }
 
     header.ribbon {
+        top: calc(var(--brand-bar-h, var(--fixedbar-h, 0px)) + var(--top-strip-h, 0px));
+        position: relative;
+        z-index: 50;
         position: sticky;
-        /* o position: fixed si lo quieres totalmente fijo */
-        top: calc(var(--brand-bar-h) + var(--top-strip-h));
-        /* ajusta según tus alturas reales */
-        z-index: 90;
     }
 
     .mobile-nav {

@@ -698,16 +698,28 @@ reset();
 goTo(0); // ya llama a pause/play internamente
 
 (function () {
+	const root = document.documentElement;
 	const bar = document.getElementById("brand-fixed");
+	const topStrip = document.querySelector(".top-strip");
+	const ribbon = document.querySelector("header.ribbon");
 	function applyOffset() {
 		// Altura total del banner (incluye safe-area)
-		const h = bar.offsetHeight;
+		const brandHeight = bar?.offsetHeight ?? 0;
+		const topStripHeight = topStrip?.offsetHeight ?? 0;
+		const ribbonHeight = ribbon?.offsetHeight ?? 0;
 		// Empuja el documento hacia abajo para que nada quede tapado
-		document.body.style.paddingTop = h + "px";
+		document.body.style.paddingTop = brandHeight + "px";
 		// Útil si quieres posicionar algo relativo a esta barra:
-		document.documentElement.style.setProperty("--fixedbar-h", h + "px");
+		root.style.setProperty("--fixedbar-h", brandHeight + "px");
+		root.style.setProperty("--brand-bar-h", brandHeight + "px");
+		root.style.setProperty("--top-strip-h", topStripHeight + "px");
+		root.style.setProperty(
+			"--nav-stack-h",
+			brandHeight + topStripHeight + ribbonHeight + "px"
+		);
 	}
 	// Aplicar al cargar y al redimensionar
 	window.addEventListener("load", applyOffset);
 	window.addEventListener("resize", () => requestAnimationFrame(applyOffset));
+	applyOffset();
 })();
