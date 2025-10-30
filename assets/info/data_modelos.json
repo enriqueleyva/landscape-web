@@ -226,7 +226,7 @@
 			"LT315/70R17"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "TerraMaster-AT-30"
+		"imagen": "atterramaster"
 	},
 	{
 		"modelo": "A/T Terra Master T2 (PCR)",
@@ -365,7 +365,7 @@
 			"235/55R20"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "TerraGrip-HT-30"
+		"imagen": "TerraGrip HT-30"
 	},
 	{
 		"modelo": "Touring Grand Tour A/S (PCR)",
@@ -450,6 +450,6 @@
 			"255/45R19"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "Ultra-Sport-F1-30"
+		"imagen": "Ultra Sport F1-30"
 	}
 ]
