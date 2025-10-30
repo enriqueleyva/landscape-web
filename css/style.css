@@ -614,6 +614,14 @@ footer {
             var(--bg-1)) !important;
 }
 
+#recruitment {
+    background: var(--bg-1) !important;
+}
+
+#recruitment .rec-card {
+    background: var(--bg-1) !important;
+}
+
 /* Tarjetas de “tire-hero” (cabecera de cada card) */
 .tire-hero {
     background: radial-gradient(100% 80% at 60% 20%,

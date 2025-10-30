@@ -552,10 +552,10 @@ chips1.forEach((ch) => {
 	});
 });
 
-form1.addEventListener("submit", (e) => {
-	e.preventDefault();
-	applyFilters();
-});
+// form1.addEventListener("submit", (e) => {
+// 	e.preventDefault();
+// 	applyFilters();
+// });
 
 function applyFilters() {
 	const dept = fDept.value,

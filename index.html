@@ -1192,14 +1192,159 @@
 				<!-- Featured -->
 				<article class="news-card mb-6">
 					<div class="grid lg:grid-cols-2">
-						<div class="relative">
-							<!-- imagen/video placeholder -->
-							<img
-								src="assets/img/gallery/sema_show.webp"
-								alt="Featured"
-								class="w-full h-64 lg:h-full object-cover"
-							/>
+						<!-- Carrusel destacado -->
+						<div
+							id="newsFeaturedCarousel"
+							class="relative"
+							aria-roledescription="carousel"
+						>
+							<!-- Track -->
+							<div class="overflow-hidden bg-black/5">
+								<div
+									class="flex transition-transform duration-500 ease-out"
+									data-track
+									style="transform: translateX(0)"
+								>
+									<!-- Slide 1 -->
+									<figure class="min-w-full h-64 lg:h-full">
+										<img
+											src="assets/img/gallery/sema_1.webp"
+											alt="SEMA Show — Booth preview"
+											class="w-full h-full object-cover"
+										/>
+									</figure>
+									<!-- Slide 2 (puedes cambiar por otra del evento) -->
+									<figure class="min-w-full h-64 lg:h-full">
+										<img
+											src="assets/img/gallery/sema_2.webp"
+											alt="Landscape booth render"
+											class="w-full h-full object-cover"
+										/>
+									</figure>
+									<!-- Slide 3 -->
+									<figure class="min-w-full h-64 lg:h-full">
+										<img
+											src="assets/img/gallery/sema_3.webp"
+											alt="Product close-up"
+											class="w-full h-full object-cover"
+										/>
+									</figure>
+								</div>
+							</div>
 						</div>
+						<style>
+							/* Mismo marco para TODAS las diapositivas */
+							#newsFeaturedCarousel {
+								/* alto consistente; ajusta a lo que te funcione */
+								aspect-ratio: 1 / 1;
+							}
+							@media (max-width: 768px) {
+								#newsFeaturedCarousel {
+									aspect-ratio: 4 / 3;
+								}
+							}
+
+							/* El “visor” ocupa todo ese marco */
+							#newsFeaturedCarousel .overflow-hidden,
+							#newsFeaturedCarousel [data-track] {
+								height: 100%;
+							}
+
+							/* Cada slide llena el visor y no deja “huecos” */
+							#newsFeaturedCarousel [data-track] > figure {
+								min-width: 100%;
+								height: 100%;
+								margin: 0;
+								line-height: 0; /* evita el gap por línea base */
+								overflow: hidden;
+								background: #0b0b0b; /* gris de fondo opcional */
+							}
+
+							/* La imagen se recorta suavemente para llenar */
+							#newsFeaturedCarousel img {
+								width: 100%;
+								height: 100%;
+								display: block; /* quita el hueco inferior */
+								object-fit: cover; /* adapta al área visible */
+								object-position: center;
+							}
+						</style>
+
+						<script>
+							(() => {
+								const root = document.getElementById("newsFeaturedCarousel");
+								if (!root) return;
+
+								const track = root.querySelector("[data-track]");
+								const slides = Array.from(track.children);
+								const btnPrev = root.querySelector("[data-prev]");
+								const btnNext = root.querySelector("[data-next]");
+								const dots = Array.from(root.querySelectorAll("[data-dot]"));
+
+								let index = 0,
+									timer;
+
+								const goTo = (i) => {
+									index = (i + slides.length) % slides.length;
+									track.style.transform = `translateX(-${index * 100}%)`;
+									dots.forEach((d, n) =>
+										d.classList.toggle("is-active", n === index)
+									);
+								};
+
+								const next = () => goTo(index + 1);
+								const prev = () => goTo(index - 1);
+
+								// Click controles
+								btnPrev?.addEventListener("click", prev);
+								btnNext?.addEventListener("click", next);
+
+								// Dots
+								dots.forEach((d) =>
+									d.addEventListener("click", () => goTo(+d.dataset.dot))
+								);
+
+								// Auto-play
+								const start = () => (timer = setInterval(next, 5000));
+								const stop = () => timer && clearInterval(timer);
+								start();
+
+								// Pausar en hover / focus para accesibilidad
+								root.addEventListener("mouseenter", stop);
+								root.addEventListener("mouseleave", start);
+								root.addEventListener("focusin", stop);
+								root.addEventListener("focusout", start);
+
+								// Teclado
+								root.setAttribute("tabindex", "0");
+								root.addEventListener("keydown", (e) => {
+									if (e.key === "ArrowRight") next();
+									if (e.key === "ArrowLeft") prev();
+								});
+
+								// Swipe táctil
+								let x0 = null;
+								root.addEventListener(
+									"touchstart",
+									(e) => (x0 = e.touches[0].clientX),
+									{ passive: true }
+								);
+								root.addEventListener(
+									"touchend",
+									(e) => {
+										if (x0 === null) return;
+										const dx = e.changedTouches[0].clientX - x0;
+										if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
+										x0 = null;
+									},
+									{ passive: true }
+								);
+
+								// Recalcular en resize
+								window.addEventListener("resize", () => goTo(index));
+							})();
+						</script>
+
 						<div class="p-5 md:p-7">
 							<div class="meta">
 								Press Release ·
@@ -1374,10 +1519,13 @@
 				<!-- Pitch + Perks -->
 				<div class="grid lg:grid-cols-3 gap-5">
 					<article class="rec-card lg:col-span-1">
-						<h4 class="text-white font-bold text-lg">Our culture</h4>
+						<h4 class="text-white font-bold text-lg">Why join us?</h4>
 						<p class="text-white/70 text-sm mt-2">
-							Rigorous engineering, customer obsession, and binational teamwork
-							(MX & USA) with a real impact on mobility.
+							Join a fast-rising U.S. brand redefining tire durability. Work
+							with advanced materials, testing systems, and high-performance
+							teams. We offer competitive compensation, clear career paths, and
+							a culture that rewards initiative and integrity. <br /><br />
+							Less Wear, More Miles — for both our tires and your career.
 						</p>
 						<div class="mt-4 grid grid-cols-2 gap-3 text-white/85 text-sm">
 							<div class="flex items-center gap-3">
@@ -1402,7 +1550,7 @@
 					<!-- Filtros + Vacantes -->
 					<div class="lg:col-span-2">
 						<!-- Filtros -->
-						<form id="jobsFilter" class="rec-card mb-5">
+						<!-- <form id="jobsFilter" class="rec-card mb-5">
 							<div class="grid md:grid-cols-4 gap-3">
 								<label class="text-xs text-white/70"
 									>Area
@@ -1436,7 +1584,7 @@
 								<span class="chip" data-tag="urgent">Urgent</span>
 								<span class="chip" data-tag="senior">Senior</span>
 							</div>
-						</form>
+						</form> -->
 
 						<!-- Lista de vacantes -->
 						<div id="jobsList" class="space-y-3">
@@ -1451,7 +1599,7 @@
 								<div class="flex flex-wrap items-center gap-3">
 									<span
 										class="text-xs px-2 py-1 rounded bg-white/10 border border-white/10 text-white/70"
-										>Marketing</span
+										>Sales</span
 									>
 									<h5 class="text-white font-bold text-lg">
 										Tire Sales Representative – U.S. Market
@@ -1562,8 +1710,8 @@
 											cover letter highlighting relevant tire sales experience
 											to
 											<strong
-												><a href="mailto:1375187565@qq.com"
-													>1375187565@qq.com</a
+												><a href="mailto:christina@landscapetires.com"
+													>christina@landscapetires.com</a
 												> </strong
 											>with the subject line: “Application – Tire Sales
 											Representative”.
@@ -1701,8 +1849,8 @@
 											cover letter highlighting relevant tire sales experience
 											to
 											<strong
-												><a href="mailto:1375187565@qq.com"
-													>1375187565@qq.com</a
+												><a href="mailto:christina@landscapetires.com"
+													>christina@landscapetires.com</a
 												> </strong
 											>with the subject line: “Application – Tire Sales
 											Representative”.
@@ -2003,22 +2151,6 @@
 									/>
 								</figure>
 							</div>
-
-							<!-- Controles
-							<button
-								type="button"
-								aria-label="Anterior"
-								class="abs-btn left-3"
-							>
-								<i class="fa-solid fa-chevron-left"></i>
-							</button>
-							<button
-								type="button"
-								aria-label="Siguiente"
-								class="abs-btn right-3"
-							>
-								<i class="fa-solid fa-chevron-right"></i>
-							</button> -->
 
 							<!-- Indicadores -->
 							<div
