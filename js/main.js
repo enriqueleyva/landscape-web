@@ -298,7 +298,7 @@ const ACCENT_COLOR =
 const filtersActive = { install: false, open: false, 247: false };
 let lastOrigin = null;
 let lastDealers = [];
-let leafletMap = null;
+
 let markersLayer = null;
 // filtros chips
 document.querySelectorAll(".chip[data-filter]").forEach((ch) => {
