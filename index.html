@@ -13,46 +13,6 @@
 		<link rel="stylesheet" href="css/style.css" />
 		<!-- Tailwind CDN (prototipo). Compílalo en prod. -->
 		<script src="https://cdn.tailwindcss.com"></script>
-
-		<style>
-			/* subrayado solo al pasar el mouse */
-			header nav a {
-				position: relative;
-			}
-			header nav a::after {
-				content: "";
-				position: absolute;
-				left: 50%;
-				transform: translateX(-50%);
-				bottom: -4px;
-				height: 2px;
-				width: 0;
-				border-radius: 9999px;
-				background: rgba(255, 255, 255, 0.9);
-				transition: width 0.25s ease;
-			}
-			header nav a:hover::after {
-				width: 24px;
-			}
-			@media (max-width: 1023px) {
-				header nav a {
-					text-align: left;
-				}
-				header nav a::after {
-					left: 0;
-					transform: translateX(0);
-				}
-			}
-		</style>
-		<style>
-			html {
-				scroll-behavior: smooth;
-			}
-			/* si ya expusiste la altura en --fixedbar-h, úsala; si no, pon 80px aprox */
-			[id] {
-				scroll-margin-top: var(--nav-stack-h, 80px);
-			}
-		</style>
 	</head>
 	<body class="bg-white text-neutral-900 antialiased">
 		<!-- Fixed Brand Positioning Bar -->
@@ -1242,43 +1202,6 @@
 								</div>
 							</div>
 						</div>
-						<style>
-							/* Mismo marco para TODAS las diapositivas */
-							#newsFeaturedCarousel {
-								/* alto consistente; ajusta a lo que te funcione */
-								aspect-ratio: 1 / 1;
-							}
-							@media (max-width: 768px) {
-								#newsFeaturedCarousel {
-									aspect-ratio: 4 / 3;
-								}
-							}
-
-							/* El “visor” ocupa todo ese marco */
-							#newsFeaturedCarousel .overflow-hidden,
-							#newsFeaturedCarousel [data-track] {
-								height: 100%;
-							}
-
-							/* Cada slide llena el visor y no deja “huecos” */
-							#newsFeaturedCarousel [data-track] > figure {
-								min-width: 100%;
-								height: 100%;
-								margin: 0;
-								line-height: 0; /* evita el gap por línea base */
-								overflow: hidden;
-								background: #0b0b0b; /* gris de fondo opcional */
-							}
-
-							/* La imagen se recorta suavemente para llenar */
-							#newsFeaturedCarousel img {
-								width: 100%;
-								height: 100%;
-								display: block; /* quita el hueco inferior */
-								object-fit: cover; /* adapta al área visible */
-								object-position: center;
-							}
-						</style>
 
 						<script>
 							(() => {
@@ -2282,24 +2205,6 @@
 				</div>
 			</div>
 		</section>
-
-		<!-- ===== Estilos mínimos para los controles del carrusel ===== -->
-		<style>
-			#about .abs-btn {
-				@apply absolute top-1/2 -translate-y-1/2 z-10 grid place-items-center
-           h-10 w-10 rounded-full bg-black/45 text-white
-           border border-white/10 backdrop-blur;
-			}
-			#about .abs-btn:hover {
-				@apply bg-black/60;
-			}
-			#about .dot {
-				@apply h-2.5 w-2.5 rounded-full bg-white/35 hover:bg-white/60 transition;
-			}
-			#about .dot.is-active {
-				background: color-mix(in srgb, var(--brand) 80%, #fff);
-			}
-		</style>
 
 		<!-- ===== JS del carrusel (sin dependencias) ===== -->
 		<script>
