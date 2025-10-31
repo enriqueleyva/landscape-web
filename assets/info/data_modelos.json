@@ -264,7 +264,7 @@
 			"LT315/70R17"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "TerraMasterATT2"
+		"imagen": "TerraMaster-AT-T2"
 	},
 	{
 		"modelo": "A/T Terra Master T3 (PCR)",
@@ -302,7 +302,7 @@
 			"LT315/70R17"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "TerraMasterATT3"
+		"imagen": "TerraMaster-AT-T3"
 	},
 	{
 		"modelo": "R/T TerraForce (PCR)",
@@ -324,7 +324,7 @@
 			"35X12.50R24LT"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "TerraForceRT"
+		"imagen": "TerraForce-RT"
 	},
 	{
 		"modelo": "M/T TerraBeast (PCR)",
@@ -337,7 +337,7 @@
 			"33X12.50R22LT"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "20250521160939_613"
+		"imagen": "TerraBeast-MT"
 	},
 	{
 		"modelo": "H/T TerraGrip (PCR)",
@@ -424,7 +424,7 @@
 			"275/60R20"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "QuietCross AS-30"
+		"imagen": "QuietCross-AS"
 	},
 	{
 		"modelo": "UHP Ultra Sport F1 (PCR)",
