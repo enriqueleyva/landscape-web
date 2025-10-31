@@ -1,27 +1,27 @@
 [
 	{
-		"modelo": "LS11 (Long Haul)",
+		"modelo": "LA11 (Long Haul)",
 		"descripcion": "Wide base super single tire applicable for both steer and trailer service. Computer designed tread structure provide even wear with less pressure on the road. Long life tread compound with less heating enhance the original tread life. Strong steel belt improves the casing durability and promote multiple retreads.",
 		"medidas_disponibles": ["445/50R22.5"],
 		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "LS11"
 	},
 	{
-		"modelo": "LS21 (Long Haul)",
+		"modelo": "LD21 (Long Haul)",
 		"descripcion": "Five ribs with four wide, straight grooves for precise handling and outstanding traction. Decoupling tread design suitable for long-distance travel. Applicable for steer and free-rolling wheel position. Premium wide base drive tire suitable for long haul application. Robust tread blocks offer outstanding traction on both wet and dry road condition. Enhanced tire carcass guarantees lateral stability, longer mileage and easy retreadablity.",
 		"medidas_disponibles": ["11R22.5", "295/75R22.5", "11R24.5", "285/75R24.5"],
 		"tipo": "TBR / TRUCK & BUS",
-		"imagen": "LS21"
+		"imagen": "LD21"
 	},
 	{
-		"modelo": "LS23 (Long Haul)",
+		"modelo": "LD23 (Long Haul)",
 		"descripcion": "Wide and deep tread helps to promote even wear and long tread life resulting in low cost per mile. Solid close shoulder ribs help to improve even wear. Three deep grooves evacuate water efficiently for traction. Strong casing resists cuts and punctures for enhanced toughness and long casing life.",
 		"medidas_disponibles": ["11R22.5", "295/75R22.5", "11R24.5", "285/75R24.5"],
 		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "LS23"
 	},
 	{
-		"modelo": "LS31 (Long Haul)",
+		"modelo": "LT31 (Long Haul)",
 		"descripcion": "Cool-running compound construction reduces the energy generated within the tread for low rolling resistance. Shallow tread depth promotes low rolling resistance for fuel economy and long even wear. Four wide grooves provide all-seaon performance on wet and dry roads. Five ribs with four wide, straight grooves for precise handling and outstanding traction. Stone rejector platforms prevent stones from lodging in grooves and drilling into belts. Shallower tread depth helps to resist tread squirm and irregular wear forces for exceptionally long mileage.",
 		"medidas_disponibles": [
 			"11R22.5",
@@ -41,14 +41,66 @@
 		"imagen": "LS31"
 	},
 	{
-		"modelo": "LS22 (Long Haul)",
+		"modelo": "LA13 (Long Haul)",
+		"descripcion": "Five ribs with four wide, straight grooves for precise handling and outstanding traction. Stone rejector platforms prevent stones from lodging in grooves and drilling into belts. Shallower tread depth helps to resist tread squirm and irregular wear forces for exceptionally long mileage.",
+		"medidas_disponibles": ["11R22.5", "295/75R22.5"],
+		"tipo": "TBR / TRUCK & BUS",
+		"imagen": "LA13"
+	},
+	{
+		"modelo": "LT32 (Long Haul)",
+		"descripcion": "Five ribs with four wide, straight grooves for precise handling and outstanding traction. Stone rejector platforms prevent stones from lodging in grooves and drilling into belts. Shallower tread depth helps to resist tread squirm and irregular wear forces for exceptionally long mileage.",
+		"medidas_disponibles": [
+			"255/70R22.5",
+			"275/70R22.5",
+			"275/80R22.5",
+			"385/65R22.5",
+			"425/65R22.5",
+			"445/65R22.5",
+			"11R22.5",
+			"12R22.5",
+			"295/80R22.5",
+			"10.00R20",
+			"11.00R20"
+		],
+		"tipo": "TBR / TRUCK & BUS",
+		"imagen": "LT32"
+	},
+	{
+		"modelo": "LT32 (Long Haul)",
+		"descripcion": "Five ribs with four wide, straight grooves for precise handling and outstanding traction. Stone rejector platforms prevent stones from lodging in grooves and drilling into belts. Shallower tread depth helps to resist tread squirm and irregular wear forces for exceptionally long mileage.",
+		"medidas_disponibles": [
+			"255/70R22.5",
+			"275/70R22.5",
+			"275/80R22.5",
+			"385/65R22.5",
+			"425/65R22.5",
+			"445/65R22.5",
+			"11R22.5",
+			"12R22.5",
+			"295/80R22.5",
+			"10.00R20",
+			"11.00R20"
+		],
+		"tipo": "TBR / TRUCK & BUS",
+		"imagen": "LT32"
+	},
+	{
+		"modelo": "LD22 (Long Haul)",
 		"descripcion": "4 zig-zag grooves provides improved traction in dry and wet conditions. Optimized block design prevents retaining objects for improved damage resistance. Wide shoulders provides stability and better performance for even wear. Improved Shoulder lugs for optimal performance against wandering and reduces tread temperature.",
 		"medidas_disponibles": ["11R22.5", "295/75R22.5", "11R24.5", "285/75R24.5"],
-		"tipo": "",
+		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "LS22"
 	},
 	{
-		"modelo": "RA61 (Regional)",
+		"modelo": "LA12 (Long Haul)",
+		"descripcion": "Premium wide base drive tire suitable for long haul application. Robust tread blocks offer outstanding traction on both wet and dry road condition. Enhanced tire carcass guarantees lateral stability, longer mileage and easy retreadablity.",
+		"medidas_disponibles": ["11R22.5", "295/75R22.5", "11R24.5", "285/75R24.5"],
+		"tipo": "TBR / TRUCK & BUS",
+		"imagen": "LA12"
+	},
+	{
+		"modelo": "LA15 (Regional)",
 		"descripcion": "Strong computer designed tire casing guarantees outstanding capacity for heavy loads and highway. Special sipes alongside tread ribs help to minimize heating for high speed running with heavy loads. Special tread compound provides higher fuel efficiency with lower rolling resistance without sacrificing tire mileage.",
 		"medidas_disponibles": [
 			"11R22.5",
@@ -67,7 +119,7 @@
 		"imagen": "RA61"
 	},
 	{
-		"modelo": "RA63 (Regional)",
+		"modelo": "LA17 (Regional)",
 		"descripcion": "Improved close shoulder helps to improve even wear resulting in long tread life. Straight simple rib pattern improves even wearing and efficient water evacuation for excellent wet traction and handling. Cross rib sipes slice through water for solid control on wet roads.",
 		"medidas_disponibles": [
 			"205/65R17.5",
@@ -81,7 +133,7 @@
 		"imagen": "RA63"
 	},
 	{
-		"modelo": "RA62 (Regional)",
+		"modelo": "LA16 (Regional)",
 		"descripcion": "Four wide tread grooves allows excellent water drainage. Multi siping provides outstanding traction on both dry and wet road surfaces. Computer designed tire casing assures excellent footprint for extended tire life.",
 		"medidas_disponibles": [
 			"215/75R17.5",
@@ -100,42 +152,42 @@
 		"imagen": "RA62"
 	},
 	{
-		"modelo": "RD71 (Regional)",
+		"modelo": "LD25 (Regional)",
 		"descripcion": "Zigzag grooves and open shoulder provides ideal performance for traction. Optimized block size prevents irregular wear. Deeper groove and wider tread provide longer tread life in all weather conditions. Unique tread design decreases stone retention.",
 		"medidas_disponibles": ["11R22.5", "295/75R22.5", "11R24.5"],
 		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "RD71"
 	},
 	{
-		"modelo": "RD72 (Regional)",
+		"modelo": "LD26 (Regional)",
 		"descripcion": "Wide and deep tread enhances cost per mileage, driving stability and traction on highway application. Aggressive traction blocks helps to increase wet traction. Strong open shoulder produces powerful traction. Suitable for single axle vehicles.",
 		"medidas_disponibles": ["11R22.5", "295/75R22.5", "11R24.5", "285/75R24.5"],
 		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "RD72"
 	},
 	{
-		"modelo": "RD74 (Regional)",
+		"modelo": "LD28 (Regional)",
 		"descripcion": "Special drive pattern with open shoulder provides good traction in wet and dry roads. Durable tire casing enhances tire life.",
 		"medidas_disponibles": ["10.00R20", "11R22.5"],
 		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "RD74"
 	},
 	{
-		"modelo": "RD73 (Regional)",
+		"modelo": "LD27 (Regional)",
 		"descripcion": "Traction block tread design for high drive wheel efficiency in all seasons. Aggressive blading helps provide road-gripping traction. Open shoulder produces powerful traction on wet and dry roads.",
 		"medidas_disponibles": ["10.00R20", "12R22.5"],
 		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "RD73"
 	},
 	{
-		"modelo": "RD75 (Regional)",
+		"modelo": "LD29 (Regional)",
 		"descripcion": "Wide and deep tread enhances cost per mileage, driving stability and traction on highway application. Open shoulder blocks improve traction on dry and wet road surface. High blade density of tread design helps to provide even wearing. Suitable for single axle vehicles.",
 		"medidas_disponibles": ["10.00R20", "12R22.5"],
 		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "RD75"
 	},
 	{
-		"modelo": "RD76 (Regional)",
+		"modelo": "LD30 (Regional)",
 		"descripcion": "6-interlocking tread blocks and a symmetrical design engineered to promote even wear throughout the tire's life. Tapered lateral grooves make the 5737 a performer in all-weather applications. Integrated tie bars reduce irregular wear and supports increased stability. Angled lug and siping design improves overall traction and wet grip.",
 		"medidas_disponibles": ["225/70R19.5", "245/70R19.5"],
 		"tipo": "TBR / TRUCK & BUS",
@@ -156,19 +208,18 @@
 		"imagen": "AM82"
 	},
 	{
-		"modelo": "AM83 (Mixed Service / Winter)",
-		"descripcion": "Aggressive multi-service, all position tread pattern promises excellent traction in ON/OFF road service. Outstanding self-cleaning tread design ensures long-life service in ON/OFF road conditions. Robust tread blocks and rugged casing allows for heavy loads and resist casing penetration and damage. Aggressive lug design with large blocks at tread center provides excellent traction and braking on rough roads with mud or gravel and is self-cleaning for ease of maintenance. Applicable in mining, logging, construction or rock and quarry operations with some very short on high-way use possible. Special tread compounds resist chipping and chunking in rugged off-road conditions.",
-		"medidas_disponibles": [
-			"255/70R22.5",
-			"275/70R22.5",
-			"385/65R22.5",
-			"425/65R22.5",
-			"445/65R22.5",
-			"11R22.5",
-			"11R24.5"
-		],
+		"modelo": "AM87 (Mixed Service / Winter)",
+		"descripcion": "Wide tread provide stability while improving handling on wet and snowy road. Extra deep tread depth provide long original tread life. Open shoulder grooves deliver additional traction without compromising tread life. 3D siping provide excellent traction and braking",
+		"medidas_disponibles": ["11R22.5", "11R24.5"],
 		"tipo": "TBR / TRUCK & BUS",
-		"imagen": "AM83"
+		"imagen": "AM87"
+	},
+	{
+		"modelo": "AM86 (Mixed Service / Winter)",
+		"descripcion": "Strong biting edges guarantee excellent traction on dry and slippery road surface, especially in winter. Specific tread compound offer good mileage without sacrificing wet traction. Wide open shoulder deliver additional traction without compromising tread life.",
+		"medidas_disponibles": ["11R22.5", "11R24.5"],
+		"tipo": "TBR / TRUCK & BUS",
+		"imagen": "AM86"
 	},
 	{
 		"modelo": "AM85/B/D (Mixed Service)",
