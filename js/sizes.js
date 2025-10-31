@@ -819,31 +819,31 @@ document.addEventListener("visibilitychange", () => {
 	});
 })();
 
-// Mapea hrefs (#id) del nav a secciones
-const links = [...document.querySelectorAll('header nav a[href^="#"]')];
-const map = new Map(links.map((a) => [a.getAttribute("href"), a]));
+// // Mapea hrefs (#id) del nav a secciones
+// const links = [...document.querySelectorAll('header nav a[href^="#"]')];
+// const map = new Map(links.map((a) => [a.getAttribute("href"), a]));
 
-// Estilo activo: subrayado permanente + color pleno
-const setActive = (href) => {
-	links.forEach((a) => a.classList.remove("active-nav"));
-	map.get(href)?.classList.add("active-nav");
-};
+// // Estilo activo: subrayado permanente + color pleno
+// const setActive = (href) => {
+// 	links.forEach((a) => a.classList.remove("active-nav"));
+// 	map.get(href)?.classList.add("active-nav");
+// };
 
-// Observa secciones (usa ids que ya tienes: #finder, #find-dealer, etc.)
-const sections = [...map.keys()]
-	.map((sel) => document.querySelector(sel))
-	.filter(Boolean);
+// // Observa secciones (usa ids que ya tienes: #finder, #find-dealer, etc.)
+// const sections = [...map.keys()]
+// 	.map((sel) => document.querySelector(sel))
+// 	.filter(Boolean);
 
-const io = new IntersectionObserver(
-	(entries) => {
-		entries.forEach((e) => {
-			if (e.isIntersecting) setActive("#" + e.target.id);
-		});
-	},
-	{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
-);
+// const io = new IntersectionObserver(
+// 	(entries) => {
+// 		entries.forEach((e) => {
+// 			if (e.isIntersecting) setActive("#" + e.target.id);
+// 		});
+// 	},
+// 	{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
+// );
 
-sections.forEach((s) => io.observe(s));
+// sections.forEach((s) => io.observe(s));
 
 (function () {
 	const cards = document.querySelectorAll("#company-history .h-card");
@@ -898,4 +898,588 @@ sections.forEach((s) => io.observe(s));
 	window.addEventListener("resize", () =>
 		root.scrollTo({ left: i * root.clientWidth })
 	);
+})();
+
+const segmentFilterController = (() => {
+	const container = document.getElementById("segmentFilters");
+	const buttons = container ? container.querySelectorAll("[data-segment]") : [];
+	const listeners = new Set();
+	let active = "all";
+
+	function setActive(segment, options = {}) {
+		if (!segment) return;
+		active = segment;
+		buttons.forEach((btn) => {
+			const isActive = btn.dataset.segment === segment;
+			btn.classList.toggle("filter-pill-active", isActive);
+			btn.setAttribute("aria-pressed", String(isActive));
+		});
+		if (options.emit !== false) {
+			listeners.forEach((cb) => cb(active));
+		}
+	}
+
+	function onChange(cb) {
+		if (typeof cb === "function") {
+			listeners.add(cb);
+		}
+		return () => listeners.delete(cb);
+	}
+
+	function updateCounts(counts = {}) {
+		container?.querySelectorAll(".filter-pill-count").forEach((el) => {
+			const key = el.dataset.countFor;
+			if (key && Object.prototype.hasOwnProperty.call(counts, key)) {
+				el.textContent = counts[key];
+			}
+		});
+	}
+
+	buttons.forEach((btn) => {
+		btn.addEventListener("click", (event) => {
+			event.preventDefault();
+			const segment = btn.dataset.segment;
+			if (segment && segment !== active) {
+				setActive(segment);
+			}
+		});
+	});
+
+	setActive(active, { emit: false });
+
+	return {
+		onChange,
+		setActive,
+		updateCounts,
+		get active() {
+			return active;
+		},
+	};
+})();
+
+/* ====== Utils ====== */
+const slug = (s) =>
+	String(s || "")
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "")
+		.toLowerCase()
+		.replace(/[^a-z0-9]+/g, "-")
+		.replace(/(^-|-$)/g, "");
+
+const byId = (id) => document.getElementById(id);
+
+const RX = {
+	metric: /^(?:LT|P|ST)?\s*(\d{3})\s*\/\s*(\d{2,3})\s*R?\s*(\d{2}(?:\.\d+)?)$/i,
+	floatX:
+		/^\s*\d{2,3}(?:\.\d+)?\s*[xX×]\s*(\d{1,2}(?:\.\d+)?)\s*R?\s*(\d{2}(?:\.\d+)?)\s*$/i,
+	floatSlash: /^\s*(\d{1,2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
+	commR: /^\s*(\d{2}(?:\.\d+)?)\s*R\s*(\d{2}(?:\.\d+)?)\s*$/i,
+	commSlash: /^\s*(\d{2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
+};
+
+const norm = (s) =>
+	String(s || "")
+		.toUpperCase()
+		.trim()
+		.replace(/–|—/g, "-")
+		.replace(/\s+/g, "");
+
+function parseSize(key) {
+	const raw = norm(key);
+	let m = raw.match(RX.metric);
+	if (m)
+		return {
+			width: m[1],
+			height: m[2],
+			rim: m[3],
+			kind: "METRIC",
+		};
+
+	m = raw.match(RX.floatX);
+	if (m)
+		return {
+			width: m[1],
+			height: "",
+			rim: m[2],
+			kind: "FLOTATION",
+		};
+
+	m = raw.match(RX.floatSlash);
+	if (m)
+		return {
+			width: m[1],
+			height: "",
+			rim: m[2],
+			kind: "FLOTATION",
+		};
+
+	m = raw.match(RX.commR);
+	if (m)
+		return {
+			width: m[1],
+			height: "",
+			rim: m[2],
+			kind: "COMMERCIAL",
+		};
+
+	m = raw.match(RX.commSlash);
+	if (m)
+		return {
+			width: m[1],
+			height: "",
+			rim: m[2],
+			kind: "COMMERCIAL",
+		};
+
+	return null;
+}
+
+/* Heurística para agrupar en contenedores existentes:
+   - Si encuentras <div data-group="invierno">, manda Winter/WS allí
+   - Si encuentras <div data-group="pasajero">, manda lo (PCR) allí
+   - Si no hay, cae al #cards-grid (A) */
+function pickTargetContainer(item) {
+	const name = (item?.modelo || "").toLowerCase();
+	const has = (sel) => document.querySelector(sel);
+
+	// 1) invierno: por palabra o por prefijo WSxx
+	if (
+		/(winter|invierno)/i.test(item?.descripcion || "") ||
+		/^ws\d+/i.test(item?.modelo || "")
+	) {
+		const el = has('[data-group="invierno"]');
+		if (el) return el;
+	}
+
+	// 2) pasajero: si trae (PCR)
+	if (/\(pcr\)/i.test(item?.modelo || "")) {
+		const el = has('[data-group="pasajero"]');
+		if (el) return el;
+	}
+
+	// fallback: grid dinámico
+	return byId("cards-grid") || has("[data-group]") || document.body;
+}
+
+/* Imagen: intenta derivar un nombre de archivo por modelo; si no existe, usa placeholder */
+function resolveImageSrc(item) {
+	// si tus assets siguen el esquema "assets/tires/<slug>.png", prueba con el modelo sin paréntesis
+	const base = (item?.imagen || "").replace(/\(.*?\)/g, "").trim();
+	const guess = `../assets/img/tires/${base}.webp`;
+	console.log(guess);
+	// const guess = `assets/tires/${slug(base)}.png`;
+	// no vamos a comprobar existencia; el <img> tiene onerror para caer a placeholder
+	return guess;
+}
+
+/* Render de una card de producto (estructura compatible con tu HTML) */
+function renderCard(item) {
+	const imgSrc = resolveImageSrc(item);
+
+	// badges rápidos a partir de la descripción (opcionales)
+	const isNew = /new\b|nuevo/i.test(item?.descripcion || "");
+	const isPassengerModel = /\(pcr\)/i.test(item?.modelo || "");
+	const segmentLabel = isPassengerModel
+		? "PASSENGER / SUV & LT"
+		: "TBR / TRUCK & BUS";
+
+	// medidas (top 6 visibles, el resto plegables)
+	const medidas = Array.isArray(item?.medidas_disponibles)
+		? item.medidas_disponibles
+		: [];
+	const visibles = medidas.slice(0, 6);
+	const restantes = medidas.slice(6);
+
+	const article = document.createElement("article");
+	article.className =
+		"grid grid-cols-[140px,1fr] gap-4 items-start border-b md:border-0 pb-6 md:pb-0";
+	article.dataset.dynamicCard = "true";
+	article.dataset.segment = isPassengerModel ? "passenger" : "tbr";
+
+	article.innerHTML = `
+    <!-- imagen -->
+    <div class="relative">
+      <div class="tire-frame relative">
+        <img src="${imgSrc}" alt="${item?.modelo || ""}"
+             class="absolute inset-0 w-full h-full object-contain drop-shadow-2xl select-none"
+             draggable="false"
+             onerror="this.onerror=null;this.src='assets/tires/placeholder.png';"/>
+      </div>
+      ${
+				isNew
+					? `<span class="absolute -bottom-1 right-2 new-badge">NEW</span>`
+					: ``
+			}
+    </div>
+
+    <!-- info -->
+    <div>
+
+
+      <div class="model text-2xl mt-1">${(item?.modelo || "").replace(
+				/\s*\(.*?\)\s*/,
+				""
+			)}</div>
+
+      <div class="uppercase text-[11px] tracking-wider text-neutral-500 mt-1">
+         ${segmentLabel}
+      </div>
+
+      <p class="mt-2 text-[12px] leading-5 text-neutral-600 max-w-[46ch]">
+        ${item?.descripcion || ""}
+      </p>
+
+      <!-- Medidas disponibles -->
+      ${
+				medidas.length
+					? `
+          <div class="mt-3">
+            <div class="text-[11px] uppercase tracking-wider text-neutral-500 mb-1">SIZES</div>
+            <div class="flex flex-wrap gap-2">
+              ${visibles
+								.map(
+									(m) => `
+                <span class="chip">
+                  <i class="fa-solid fa-circle-notch"></i>
+                  <span>${m}</span>
+                </span>`
+								)
+								.join("")}
+              ${
+								restantes.length
+									? `<button type="button" class="chip" data-more>
+                     +${restantes.length} más
+                   </button>`
+									: ``
+							}
+            </div>
+          </div>
+        `
+					: ``
+			}
+
+    </div>
+  `;
+
+	// comportamiento del botón "+N más"
+	const btnMore = article.querySelector("[data-more]");
+	if (btnMore && restantes.length) {
+		btnMore.addEventListener("click", () => {
+			const wrap = btnMore.parentElement;
+			restantes.forEach((m) =>
+				wrap.insertAdjacentHTML(
+					"beforeend",
+					`<span class="chip"><i class="fa-solid fa-circle-notch"></i><span>${m}</span></span>`
+				)
+			);
+			btnMore.remove();
+		});
+	}
+
+	return article;
+}
+
+/* ====== Boot ====== */
+
+(async function mountCatalog() {
+	try {
+		const res = await fetch("../assets/info/data_modelos.json", {
+			cache: "no-store",
+		});
+		const data = await res.json(); // [{modelo, descripcion, medidas_disponibles}, ...]
+		if (!Array.isArray(data)) return;
+
+		const params = new URLSearchParams(window.location.search);
+		const rawSegment = (params.get("segment") || "").toLowerCase();
+		const segment = rawSegment === "tbr" ? "commercial" : rawSegment;
+
+		const widthFilter = (params.get("width") || "").trim();
+		const rimFilter = (params.get("rim") || "").trim();
+		const hasHeightParam = params.has("height");
+		let heightFilter = hasHeightParam ? params.get("height") : null;
+		if (heightFilter === "__none__") {
+			heightFilter = "";
+		}
+		const sizeFilters = {
+			width: widthFilter,
+			rim: rimFilter,
+			height: hasHeightParam ? heightFilter : null,
+		};
+		const hasSizeFilter = Boolean(sizeFilters.width && sizeFilters.rim);
+
+		const matchesSizeToken = (token) => {
+			if (!hasSizeFilter) return true;
+			const parsed = parseSize(token);
+			if (!parsed) return false;
+			if (sizeFilters.width && parsed.width !== sizeFilters.width) return false;
+			if (sizeFilters.rim && parsed.rim !== sizeFilters.rim) return false;
+			if (sizeFilters.height !== null) {
+				const candidateHeight = parsed.height || "";
+				return candidateHeight === sizeFilters.height;
+			}
+			return true;
+		};
+
+		const sizeFiltered = data.filter((item) => {
+			if (!hasSizeFilter) return true;
+			const measures = Array.isArray(item?.medidas_disponibles)
+				? item.medidas_disponibles
+				: [];
+			return measures.some((token) => matchesSizeToken(token));
+		});
+
+		const isPassengerModel = (item) => /\(pcr\)/i.test(item?.modelo || "");
+		const segmentCounts = sizeFiltered.reduce(
+			(acc, item) => {
+				const key = isPassengerModel(item) ? "passenger" : "tbr";
+				acc[key] = (acc[key] || 0) + 1;
+				return acc;
+			},
+			{ passenger: 0, tbr: 0 }
+		);
+		segmentFilterController.updateCounts(segmentCounts);
+
+		const segmentLabels = {
+			passenger: "PASSENGER / SUV & LT",
+			commercial: "TBR / TRUCK & BUS",
+		};
+
+		const toNormalizedSegment = (navValue) => {
+			if (navValue === "passenger") return "passenger";
+			if (navValue === "tbr") return "commercial";
+			return "all";
+		};
+
+		const toNavSegment = (normalized) => {
+			if (normalized === "passenger") return "passenger";
+			if (normalized === "commercial") return "tbr";
+			return "all";
+		};
+
+		const updateHeading = (normalized) => {
+			const heading = document.querySelector("#catalogo-dynamic .text-2xl");
+			if (!heading) return;
+
+			let headingContent = "Our Tires";
+			if (normalized && segmentLabels[normalized]) {
+				headingContent = `Our Tires <span class="block text-sm font-semibold tracking-wide text-[var(--brand-ink)]">${segmentLabels[normalized]}</span>`;
+			}
+
+			if (hasSizeFilter) {
+				const heightLabel =
+					sizeFilters.height === null
+						? null
+						: sizeFilters.height === ""
+						? "—"
+						: sizeFilters.height;
+				const sizeLabel =
+					sizeFilters.height === null
+						? `${sizeFilters.width} · R${sizeFilters.rim}`
+						: `${sizeFilters.width}${heightLabel ? `/${heightLabel}` : ""} R${
+								sizeFilters.rim
+						  }`;
+				headingContent += `<span class="block text-xs md:text-sm font-semibold tracking-wide text-[var(--brand-ink)]/80 mt-1">Size filter: ${sizeLabel}</span>`;
+			}
+
+			heading.innerHTML = headingContent;
+		};
+
+		const renderForSegment = (normalized) => {
+			const results = sizeFiltered.filter((item) => {
+				if (normalized === "passenger") {
+					return isPassengerModel(item);
+				}
+				if (normalized === "commercial") {
+					return !isPassengerModel(item);
+				}
+				return true;
+			});
+
+			document
+				.querySelectorAll("[data-dynamic-card]")
+				.forEach((el) => el.remove());
+
+			const grid = byId("cards-grid");
+			if (grid) {
+				grid.innerHTML = "";
+			}
+
+			if (!results.length) {
+				if (grid) {
+					grid.innerHTML =
+						'<p class="col-span-full text-center text-sm text-neutral-500">No results found</p>';
+				}
+				updateHeading(normalized);
+				return;
+			}
+
+			results.forEach((item) => {
+				const target = pickTargetContainer(item);
+				target?.appendChild(renderCard(item));
+			});
+
+			updateHeading(normalized);
+		};
+
+		const initialSegment =
+			segment === "passenger" || segment === "commercial" ? segment : "all";
+		const navSegment = toNavSegment(initialSegment);
+		segmentFilterController.setActive(navSegment, { emit: false });
+		renderForSegment(initialSegment);
+
+		segmentFilterController.onChange((navValue) => {
+			const normalized = toNormalizedSegment(navValue);
+			renderForSegment(normalized);
+
+			const paramsForUrl = new URLSearchParams(window.location.search);
+			if (normalized === "all") {
+				paramsForUrl.delete("segment");
+			} else if (normalized === "commercial") {
+				paramsForUrl.set("segment", "tbr");
+			} else {
+				paramsForUrl.set("segment", normalized);
+			}
+
+			const searchString = paramsForUrl.toString();
+			const newUrl = `${window.location.pathname}${
+				searchString ? `?${searchString}` : ""
+			}${window.location.hash}`;
+			window.history.replaceState({}, "", newUrl);
+		});
+	} catch (err) {
+		console.error("No se pudo cargar data_modelos.json", err);
+	}
+})();
+
+// Mostrar la barra cuando el usuario ha hecho scroll y no está cerca del hero
+(function () {
+	const bar = document.getElementById("cta-bar");
+	let visible = false;
+	function toggle() {
+		const y = window.scrollY || document.documentElement.scrollTop;
+		const shouldShow = y > 600; // ajusta según tu hero
+		if (shouldShow !== visible) {
+			visible = shouldShow;
+			bar.style.transform = visible ? "translateY(0)" : "translateY(120%)";
+			bar.style.transition = "transform .35s cubic-bezier(.22,.61,.36,1)";
+		}
+	}
+	toggle();
+	window.addEventListener("scroll", toggle, { passive: true });
+
+	// Tracking básico
+	document.querySelectorAll("#cta-bar [data-cta]").forEach((el) => {
+		el.addEventListener("click", () => {
+			console.log("CTA click", el.dataset.cta);
+			// TODO: window.gtag?.('event','cta_click',{ label: el.dataset.cta });
+		});
+	});
+
+	const chatWidget = document.getElementById("chat-widget");
+	const chatToggle = document.querySelector("[data-cta='book-consult']");
+	const chatCloseBtn = chatWidget?.querySelector(".chat-close-btn");
+	const chatForm = document.getElementById("chat-widget-form");
+	const chatInput = document.getElementById("chat-widget-message");
+	const chatLog = chatWidget?.querySelector(".chat-body");
+	const cannedResponses = [
+		"Thank you for your message. A specialist will contact you shortly.",
+		"I'm collecting your information. Could you share your city and preferred time?",
+		"If you need immediate assistance, you can also call 1-800-LANDSCAPE.",
+	];
+
+	function appendMessage(role, text) {
+		if (!chatLog) return;
+		const bubble = document.createElement("div");
+		bubble.className = `chat-message ${role}`;
+		bubble.textContent = text;
+		chatLog.appendChild(bubble);
+		chatLog.scrollTop = chatLog.scrollHeight;
+	}
+
+	function openChat() {
+		if (!chatWidget) return;
+		chatWidget.classList.add("is-open");
+		chatWidget.setAttribute("aria-hidden", "false");
+		setTimeout(() => {
+			chatInput?.focus();
+		}, 120);
+	}
+
+	function closeChat() {
+		if (!chatWidget) return;
+		chatWidget.classList.remove("is-open");
+		chatWidget.setAttribute("aria-hidden", "true");
+	}
+
+	chatToggle?.addEventListener("click", () => {
+		openChat();
+	});
+
+	chatCloseBtn?.addEventListener("click", () => {
+		closeChat();
+		chatToggle?.focus();
+	});
+
+	document.addEventListener("keydown", (event) => {
+		if (event.key === "Escape" && chatWidget?.classList.contains("is-open")) {
+			event.preventDefault();
+			closeChat();
+			chatToggle?.focus();
+		}
+	});
+
+	chatForm?.addEventListener("submit", (event) => {
+		event.preventDefault();
+		const message = chatInput?.value.trim();
+		if (!message) {
+			return;
+		}
+		appendMessage("user", message);
+		if (chatInput) {
+			chatInput.value = "";
+		}
+		setTimeout(() => {
+			const reply =
+				cannedResponses[Math.floor(Math.random() * cannedResponses.length)];
+			appendMessage("bot", reply);
+		}, 450);
+	});
+})();
+
+// Mapea hrefs (#id) del nav a secciones
+const links = [...document.querySelectorAll('header nav a[href^="#"]')];
+const map = new Map(links.map((a) => [a.getAttribute("href"), a]));
+
+// Estilo activo: subrayado permanente + color pleno
+const setActive = (href) => {
+	links.forEach((a) => a.classList.remove("active-nav"));
+	map.get(href)?.classList.add("active-nav");
+};
+
+// Observa secciones (usa ids que ya tienes: #finder, #find-dealer, etc.)
+const sections = [...map.keys()]
+	.map((sel) => document.querySelector(sel))
+	.filter(Boolean);
+
+const io = new IntersectionObserver(
+	(entries) => {
+		entries.forEach((e) => {
+			if (e.isIntersecting) setActive("#" + e.target.id);
+		});
+	},
+	{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
+);
+
+sections.forEach((s) => io.observe(s));
+
+(function () {
+	const cards = document.querySelectorAll("#company-history .h-card");
+	if (!cards.length) return;
+	const io = new IntersectionObserver(
+		(entries) => {
+			entries.forEach((e) => (e.target.dataset.active = e.isIntersecting));
+		},
+		{ rootMargin: "-30% 0px -50% 0px", threshold: 0.2 }
+	);
+	cards.forEach((c) => io.observe(c));
 })();

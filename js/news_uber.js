@@ -480,43 +480,43 @@ function closeModal() {
 // 	if (e.target === modal) closeModal();
 // });
 
-document.querySelectorAll("[data-open]").forEach((btn) => {
-	btn.addEventListener("click", () => {
-		const id = btn.getAttribute("data-open");
-		// contenido demo por id
-		const content = {
-			n1: {
-				title: "NVH Test Center",
-				body: "<p>Instalación con cámaras anecoicas y dinamómetros para validar QuietWave y compuestos ColdFlex™.</p>",
-			},
-			n2: {
-				title: "Resultados Q2",
-				body: "<p>Ingreso +12% A/A; margen +180 bps; capex enfocado en expansión MX.</p>",
-			},
-			n3: {
-				title: "Urban Series",
-				body: "<p>MultiContour-X, surcos profundos y compuesto DryGrip+™. Disponible en 16–20”.</p>",
-			},
-			n4: {
-				title: "Reciclaje 2M",
-				body: "<p>Programa de economía circular con partners regionales. -CO₂ y reutilización de materiales.</p>",
-			},
-			n5: {
-				title: "Nueva planta MX",
-				body: "<p>Automatización, ahorro energético y capacidad +35% para líneas All-Season.</p>",
-			},
-			n6: {
-				title: "ColdFlex™ 2.0",
-				body: "<p>Mejor elasticidad a baja temperatura; menor cristalización; más agarre invernal.</p>",
-			},
-			n7: {
-				title: "Bono verde",
-				body: "<p>Emisión por $120M destinada a proyectos ESG certificados.</p>",
-			},
-		}[id] || { title: "News", body: "<p>Content not found.</p>" };
-		openModal(content);
-	});
-});
+// document.querySelectorAll("[data-open]").forEach((btn) => {
+// 	btn.addEventListener("click", () => {
+// 		const id = btn.getAttribute("data-open");
+// 		// contenido demo por id
+// 		const content = {
+// 			n1: {
+// 				title: "NVH Test Center",
+// 				body: "<p>Instalación con cámaras anecoicas y dinamómetros para validar QuietWave y compuestos ColdFlex™.</p>",
+// 			},
+// 			n2: {
+// 				title: "Resultados Q2",
+// 				body: "<p>Ingreso +12% A/A; margen +180 bps; capex enfocado en expansión MX.</p>",
+// 			},
+// 			n3: {
+// 				title: "Urban Series",
+// 				body: "<p>MultiContour-X, surcos profundos y compuesto DryGrip+™. Disponible en 16–20”.</p>",
+// 			},
+// 			n4: {
+// 				title: "Reciclaje 2M",
+// 				body: "<p>Programa de economía circular con partners regionales. -CO₂ y reutilización de materiales.</p>",
+// 			},
+// 			n5: {
+// 				title: "Nueva planta MX",
+// 				body: "<p>Automatización, ahorro energético y capacidad +35% para líneas All-Season.</p>",
+// 			},
+// 			n6: {
+// 				title: "ColdFlex™ 2.0",
+// 				body: "<p>Mejor elasticidad a baja temperatura; menor cristalización; más agarre invernal.</p>",
+// 			},
+// 			n7: {
+// 				title: "Bono verde",
+// 				body: "<p>Emisión por $120M destinada a proyectos ESG certificados.</p>",
+// 			},
+// 		}[id] || { title: "News", body: "<p>Content not found.</p>" };
+// 		openModal(content);
+// 	});
+// });
 
 // -------- Load more (demo) --------
 // document.getElementById("loadMoreNews").addEventListener("click", () => {
@@ -583,16 +583,16 @@ document.querySelectorAll(".applyBtn").forEach((btn) => {
 		document.body.style.overflow = "hidden";
 	});
 });
-function closeModal() {
-	modal1.classList.add("hidden");
-	document.body.style.overflow = "";
-}
+// function closeModal() {
+// 	modal1.classList.add("hidden");
+// 	document.body.style.overflow = "";
+// }
 // modalClose.addEventListener("click", closeModal);
 // modal1.addEventListener("click", (e) => {
 // 	if (e.target === modal1) closeModal();
 // });
 
-// Demo submit
+// // Demo submit
 // document.getElementById("applyForm").addEventListener("submit", (e) => {
 // 	e.preventDefault();
 // 	const fd = new FormData(e.target);
@@ -623,7 +623,7 @@ document.getElementById("newsletterForm").addEventListener("submit", (e) => {
 	e.target.reset();
 });
 
-const track = document.querySelector("#track");
+// const track = document.querySelector("#track");
 // const slides = [...track.children];
 // const dotsRow = slides.map((s) => s.querySelector("[data-dots]"));
 
@@ -658,8 +658,8 @@ function playVideosInSlide(i) {
 	});
 }
 
-let current = 0,
-	timer;
+// let current = 0,
+// 	timer;
 
 // function goTo(i) {
 // 	current = (i + slides.length) % slides.length;
@@ -722,180 +722,4 @@ document.addEventListener("visibilitychange", () => {
 	window.addEventListener("load", applyOffset);
 	window.addEventListener("resize", () => requestAnimationFrame(applyOffset));
 	applyOffset();
-})();
-
-// Mostrar la barra cuando el usuario ha hecho scroll y no está cerca del hero
-(function () {
-	const bar = document.getElementById("cta-bar");
-	let visible = false;
-	function toggle() {
-		const y = window.scrollY || document.documentElement.scrollTop;
-		const shouldShow = y > 600; // ajusta según tu hero
-		if (shouldShow !== visible) {
-			visible = shouldShow;
-			bar.style.transform = visible ? "translateY(0)" : "translateY(120%)";
-			bar.style.transition = "transform .35s cubic-bezier(.22,.61,.36,1)";
-		}
-	}
-	toggle();
-	window.addEventListener("scroll", toggle, { passive: true });
-
-	// Tracking básico
-	document.querySelectorAll("#cta-bar [data-cta]").forEach((el) => {
-		el.addEventListener("click", () => {
-			console.log("CTA click", el.dataset.cta);
-			// TODO: window.gtag?.('event','cta_click',{ label: el.dataset.cta });
-		});
-	});
-
-	const chatWidget = document.getElementById("chat-widget");
-	const chatToggle = document.querySelector("[data-cta='book-consult']");
-	const chatCloseBtn = chatWidget?.querySelector(".chat-close-btn");
-	const chatForm = document.getElementById("chat-widget-form");
-	const chatInput = document.getElementById("chat-widget-message");
-	const chatLog = chatWidget?.querySelector(".chat-body");
-	const cannedResponses = [
-		"Thank you for your message. A specialist will contact you shortly.",
-		"I'm collecting your information. Could you share your city and preferred time?",
-		"If you need immediate assistance, you can also call 1-800-LANDSCAPE.",
-	];
-
-	function appendMessage(role, text) {
-		if (!chatLog) return;
-		const bubble = document.createElement("div");
-		bubble.className = `chat-message ${role}`;
-		bubble.textContent = text;
-		chatLog.appendChild(bubble);
-		chatLog.scrollTop = chatLog.scrollHeight;
-	}
-
-	function openChat() {
-		if (!chatWidget) return;
-		chatWidget.classList.add("is-open");
-		chatWidget.setAttribute("aria-hidden", "false");
-		setTimeout(() => {
-			chatInput?.focus();
-		}, 120);
-	}
-
-	function closeChat() {
-		if (!chatWidget) return;
-		chatWidget.classList.remove("is-open");
-		chatWidget.setAttribute("aria-hidden", "true");
-	}
-
-	chatToggle?.addEventListener("click", () => {
-		openChat();
-	});
-
-	chatCloseBtn?.addEventListener("click", () => {
-		closeChat();
-		chatToggle?.focus();
-	});
-
-	document.addEventListener("keydown", (event) => {
-		if (event.key === "Escape" && chatWidget?.classList.contains("is-open")) {
-			event.preventDefault();
-			closeChat();
-			chatToggle?.focus();
-		}
-	});
-
-	chatForm?.addEventListener("submit", (event) => {
-		event.preventDefault();
-		const message = chatInput?.value.trim();
-		if (!message) {
-			return;
-		}
-		appendMessage("user", message);
-		if (chatInput) {
-			chatInput.value = "";
-		}
-		setTimeout(() => {
-			const reply =
-				cannedResponses[Math.floor(Math.random() * cannedResponses.length)];
-			appendMessage("bot", reply);
-		}, 450);
-	});
-})();
-
-// Mapea hrefs (#id) del nav a secciones
-const links = [...document.querySelectorAll('header nav a[href^="#"]')];
-const map = new Map(links.map((a) => [a.getAttribute("href"), a]));
-
-// Estilo activo: subrayado permanente + color pleno
-const setActive = (href) => {
-	links.forEach((a) => a.classList.remove("active-nav"));
-	map.get(href)?.classList.add("active-nav");
-};
-
-// Observa secciones (usa ids que ya tienes: #finder, #find-dealer, etc.)
-const sections = [...map.keys()]
-	.map((sel) => document.querySelector(sel))
-	.filter(Boolean);
-
-const io = new IntersectionObserver(
-	(entries) => {
-		entries.forEach((e) => {
-			if (e.isIntersecting) setActive("#" + e.target.id);
-		});
-	},
-	{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
-);
-
-sections.forEach((s) => io.observe(s));
-
-(function () {
-	const cards = document.querySelectorAll("#company-history .h-card");
-	if (!cards.length) return;
-	const io = new IntersectionObserver(
-		(entries) => {
-			entries.forEach((e) => (e.target.dataset.active = e.isIntersecting));
-		},
-		{ rootMargin: "-30% 0px -50% 0px", threshold: 0.2 }
-	);
-	cards.forEach((c) => io.observe(c));
-})();
-
-// Simple slider a clic (si quieres auto-play añade un setInterval)
-(function () {
-	const track = document.querySelector(".carousel-track");
-	if (!track) return;
-	const slides = track.children.length;
-	let i = 0;
-	const dots = document.querySelectorAll(".dot");
-	function go(n) {
-		i = (n + slides) % slides;
-		track.style.transform = `translateX(-${i * 100}%)`;
-		dots.forEach(
-			(d, idx) =>
-				(d.style.background =
-					idx === i ? "rgba(255,255,255,.9)" : "rgba(255,255,255,.4)")
-		);
-	}
-	dots.forEach((d, idx) => d.addEventListener("click", () => go(idx)));
-	go(0);
-})();
-
-(function () {
-	const root = document.querySelector("#carousel .snap-x");
-	if (!root) return;
-	let i = 0,
-		slides = root.children.length;
-	let timer = setInterval(() => {
-		i = (i + 1) % slides;
-		root.scrollTo({ left: i * root.clientWidth, behavior: "smooth" });
-	}, 5000);
-	root.addEventListener("mouseenter", () => clearInterval(timer));
-	root.addEventListener(
-		"mouseleave",
-		() =>
-			(timer = setInterval(() => {
-				i = (i + 1) % slides;
-				root.scrollTo({ left: i * root.clientWidth, behavior: "smooth" });
-			}, 5000))
-	);
-	window.addEventListener("resize", () =>
-		root.scrollTo({ left: i * root.clientWidth })
-	);
 })();
