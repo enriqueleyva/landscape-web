@@ -277,7 +277,7 @@
 			"LT315/70R17"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "atterramaster"
+		"imagen": "AT Terramaster"
 	},
 	{
 		"modelo": "A/T Terra Master T2 (PCR)",
@@ -416,7 +416,7 @@
 			"235/55R20"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "TerraGrip HT-30"
+		"imagen": "HT Terragrip"
 	},
 	{
 		"modelo": "Touring Grand Tour A/S (PCR)",
@@ -444,7 +444,7 @@
 			"215/55R17"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "Grand Tour AS-30"
+		"imagen": "touring grand tour AS"
 	},
 	{
 		"modelo": "CUV QuietCross A/S (PCR)",
@@ -501,6 +501,6 @@
 			"255/45R19"
 		],
 		"tipo": "PASSENGER / SUV & LT",
-		"imagen": "Ultra Sport F1-30"
+		"imagen": "UHP Ultra sport F1"
 	}
 ]
