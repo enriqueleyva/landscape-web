@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html lang="es">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Landscape | N5000 Platinum</title>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+		/>
+		<link rel="stylesheet" href="../css/style.css" />
+		<script src="https://cdn.tailwindcss.com"></script>
+	</head>
+	<body class="bg-white text-neutral-900 antialiased">
+		<!-- Fixed Brand Positioning Bar -->
+		<div
+			id="brand-fixed"
+			class="fixed inset-x-0 top-0 z-[100]"
+			style="background-color: var(--purple-1)"
+		>
+			<div
+				class="border-b border-white/10 bg-neutral-900/90 text-white backdrop-blur"
+			>
+				<div style="padding-top: env(safe-area-inset-top)"></div>
+				<div class="mx-auto max-w-7xl">
+					<div class="h-10 sm:h-11 md:h-12 grid place-items-center px-4">
+						<div class="flex items-center gap-3">
+							<a href="../index.html">
+								<img
+									src="../assets/img/landscape-durable_new.png"
+									alt="Landscape"
+									class="h-6 sm:h-7 md:h-8 w-auto drop-shadow"
+								/>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- TOP ICON STRIP -->
+		<div class="top-strip">
+			<div class="max-w-7xl mx-auto px-4">
+				<div
+					class="flex flex-col gap-3 py-3 sm:h-12 sm:flex-row sm:items-center sm:justify-between"
+				>
+					<div
+						class="inline-flex rounded-full border border-black/10 overflow-hidden self-center sm:self-auto"
+					>
+						<button
+							type="button"
+							data-lang="en"
+							class="flex items-center gap-2 px-3 py-1 text-sm font-medium hover:bg-black/5 btn-flag"
+							aria-pressed="false"
+							aria-label="Switch to English (USA)"
+						>
+							<img src="../assets/img/flags/us.svg" alt="" class="w-5 h-5" />
+							<span>EN</span>
+						</button>
+						<button
+							type="button"
+							data-lang="es"
+							class="flex items-center gap-2 px-3 py-1 text-sm font-medium hover:bg-black/5"
+							aria-pressed="false"
+							aria-label="Cambiar a Español (México)"
+						>
+							<img src="../assets/img/flags/mx.svg" alt="" class="w-5 h-3" />
+							<span>ES</span>
+						</button>
+					</div>
+
+					<div
+						class="flex items-center justify-center gap-5 text-[var(--purple-1)] sm:justify-end"
+					>
+						<a
+							href="https://www.facebook.com/landscape.durable.tires/"
+							aria-label="Facebook"
+							class="hover:opacity-80"
+							target="_blank"
+							><i class="fa-brands fa-facebook-f text-xl"></i
+						></a>
+						<a
+							href="https://www.instagram.com/landscape_durable_tires/"
+							aria-label="Instagram"
+							class="hover:opacity-80"
+							target="_blank"
+							><i class="fa-brands fa-instagram text-xl"></i
+						></a>
+						<a
+							href="https://x.com/Landscape_D_T"
+							aria-label="X/Twitter"
+							class="hover:opacity-80"
+							target="_blank"
+							><i class="fa-brands fa-x-twitter text-xl"></i
+						></a>
+						<a
+							href="https://www.youtube.com/@Landscape_Durable_Tires"
+							aria-label="YouTube"
+							class="hover:opacity-80"
+							target="_blank"
+							><i class="fa-brands fa-youtube text-xl"></i
+						></a>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<!-- PURPLE RIBBON: logo centrado + menú -->
+		<header class="ribbon text-white">
+			<div class="max-w-7xl mx-auto px-4">
+				<div
+					class="py-5 flex items-center justify-between gap-4 lg:justify-center"
+				>
+					<a href="../index.html">
+						<img
+							src="../assets/img/logo_new.png"
+							alt="Brand"
+							class="h-12 md:h-14 w-auto"
+						/>
+					</a>
+					<button
+						type="button"
+						class="mobile-nav-toggle lg:hidden"
+						data-menu-toggle
+						aria-controls="siteMenu"
+						aria-expanded="false"
+					>
+						<span class="sr-only">Abrir menú</span>
+						<svg
+							class="icon-open"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<line x1="3" y1="6" x2="21" y2="6"></line>
+							<line x1="3" y1="12" x2="21" y2="12"></line>
+							<line x1="3" y1="18" x2="21" y2="18"></line>
+						</svg>
+						<svg
+							class="icon-close"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 24 24"
+							fill="none"
+							stroke="currentColor"
+							stroke-width="1.8"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+							<line x1="18" y1="6" x2="6" y2="18"></line>
+							<line x1="6" y1="6" x2="18" y2="18"></line>
+						</svg>
+					</button>
+				</div>
+				<nav
+					id="siteMenu"
+					aria-label="Menú principal"
+					class="mobile-nav font-semibold tracking-wide uppercase text-sm lg:grid lg:grid-cols-5 lg:gap-x-12 lg:gap-y-4 lg:justify-items-center lg:pb-4"
+					data-menu
+				>
+					<a
+						href="../index.html#search-tire"
+						class="relative block max-w-none text-left leading-tight after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 after:transition-all after:duration-300 hover:after:w-8 lg:text-center lg:max-w-[16ch] lg:after:left-1/2 lg:after:-translate-x-1/2"
+						>Find Your Perfect Tire</a
+					>
+					<a
+						href="../index.html#tire-lineup"
+						class="relative block max-w-none text-left leading-tight after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 after:transition-all after:duration-300 hover:after:w-8 lg:text-center lg:max-w-[16ch] lg:after:left-1/2 lg:after:-translate-x-1/2"
+						>Tire Lineup</a
+					>
+					<a
+						href="../index.html#about"
+						class="relative block max-w-none text-left leading-tight after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 after:transition-all after:duration-300 hover:after:w-8 lg:text-center lg:max-w-[16ch] lg:after:left-1/2 lg:after:-translate-x-1/2"
+						>About us</a
+					>
+					<a
+						href="../index.html#corporate-news"
+						class="relative block max-w-none text-left leading-tight after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 after:transition-all after:duration-300 hover:after:w-8 lg:text-center lg:max-w-[16ch] lg:after:left-1/2 lg:after:-translate-x-1/2"
+						>News</a
+					>
+					<a
+						href="../index.html#recruitment"
+						class="relative block max-w-none text-left leading-tight after:absolute after:left-0 after:-bottom-1 after:h-[2px] after:w-0 after:rounded-full after:bg-white/80 after:transition-all after:duration-300 hover:after:w-8 lg:text-center lg:max-w-[16ch] lg:after:left-1/2 lg:after:-translate-x-1/2"
+						>Join Landscape</a
+					>
+				</nav>
+			</div>
+		</header>
+
+		<main class="specs-page">
+			<section class="specs-hero">
+				<div class="max-w-6xl mx-auto px-4">
+					<div class="specs-hero-grid">
+						<div>
+							<div class="specs-tire-frame">
+								<img
+									src="../assets/img/tires/UHP Ultra sport F1.webp"
+									alt="N5000 Platinum"
+									class="mx-auto"
+								/>
+							</div>
+						</div>
+						<div>
+							<p class="specs-subtitle">Grand Touring All Season</p>
+							<h1 class="specs-title">N5000 Platinum</h1>
+							<p class="specs-text">
+								Disfruta de un manejo suave a lo largo de la vida útil del
+								neumático. El N5000 Platinum combina rendimiento en seco y
+								húmedo con la comodidad, agarre y control que un gran turismo
+								debe ofrecer. Su diseño simétrico ofrece la tracción que tu
+								familia necesita y su compuesto avanzado reduce el ruido de
+								rodado.
+							</p>
+							<div class="specs-attributes">
+								<div class="specs-attribute">
+									<i class="fa-solid fa-droplet"></i>
+									<span>Confianza en mojado</span>
+								</div>
+								<div class="specs-attribute">
+									<i class="fa-solid fa-road"></i>
+									<span>Conducción silenciosa</span>
+								</div>
+								<div class="specs-attribute">
+									<i class="fa-solid fa-shield-heart"></i>
+									<span>Control y seguridad</span>
+								</div>
+							</div>
+							<div class="specs-rating">
+								<div
+									class="specs-stars"
+									aria-label="Calificación de 5 estrellas"
+								>
+									<i class="fa-solid fa-star"></i>
+									<i class="fa-solid fa-star"></i>
+									<i class="fa-solid fa-star"></i>
+									<i class="fa-solid fa-star"></i>
+									<i class="fa-solid fa-star"></i>
+								</div>
+								<div class="specs-meta">
+									<span>Certificación DOT W</span>
+									<span>Rendimiento en seco 10/10</span>
+									<span>Desgaste 8.8/10</span>
+								</div>
+							</div>
+							<div class="specs-chip-row">
+								<span class="specs-chip">UTQG 500 A A</span>
+								<span class="specs-chip">Tracción AA</span>
+								<span class="specs-chip">Garantía 70,000 millas</span>
+							</div>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			<hr class="specs-divider" />
+
+			<section class="max-w-5xl mx-auto px-4">
+				<p class="specs-banner">THIS TIRE WAS DESIGNED TO PERFORM...</p>
+			</section>
+
+			<section class="specs-size-section">
+				<div class="max-w-6xl mx-auto px-4">
+					<div class="specs-size-header">
+						<h2>Size and Specs</h2>
+						<div class="specs-range">Sizes: 15" ~ 22"</div>
+					</div>
+					<div class="specs-accordion">
+						<details open>
+							<summary>SIZE 15" - 17"</summary>
+							<div class="specs-table">
+								<div class="specs-row header">
+									<span>Size</span>
+									<span>Weight</span>
+									<span>Load/Speed</span>
+									<span>Max Load</span>
+									<span>Load Index / Speed Rate</span>
+								</div>
+								<div class="specs-row">
+									<span>195/65R15</span>
+									<span class="muted">19.4 lbs</span>
+									<span class="muted">99V</span>
+									<span class="muted">1709 lbs</span>
+									<span class="muted">99V</span>
+								</div>
+								<div class="specs-row">
+									<span>205/55R16</span>
+									<span class="muted">21.7 lbs</span>
+									<span class="muted">91H</span>
+									<span class="muted">1356 lbs</span>
+									<span class="muted">91H</span>
+								</div>
+								<div class="specs-row">
+									<span>215/45R17</span>
+									<span class="muted">22.5 lbs</span>
+									<span class="muted">91W</span>
+									<span class="muted">1356 lbs</span>
+									<span class="muted">91W</span>
+								</div>
+							</div>
+						</details>
+						<details>
+							<summary>SIZE 18" - 19"</summary>
+							<div class="specs-table">
+								<div class="specs-row header">
+									<span>Size</span>
+									<span>Weight</span>
+									<span>Load/Speed</span>
+									<span>Max Load</span>
+									<span>Load Index / Speed Rate</span>
+								</div>
+								<div class="specs-row">
+									<span>225/45R18</span>
+									<span class="muted">24.1 lbs</span>
+									<span class="muted">95W</span>
+									<span class="muted">1521 lbs</span>
+									<span class="muted">95W</span>
+								</div>
+								<div class="specs-row">
+									<span>235/40R18</span>
+									<span class="muted">24.6 lbs</span>
+									<span class="muted">95W</span>
+									<span class="muted">1521 lbs</span>
+									<span class="muted">95W</span>
+								</div>
+								<div class="specs-row">
+									<span>245/45R19</span>
+									<span class="muted">26.7 lbs</span>
+									<span class="muted">98V</span>
+									<span class="muted">1653 lbs</span>
+									<span class="muted">98V</span>
+								</div>
+							</div>
+						</details>
+						<details>
+							<summary>SIZE 20" - 22"</summary>
+							<div class="specs-table">
+								<div class="specs-row header">
+									<span>Size</span>
+									<span>Weight</span>
+									<span>Load/Speed</span>
+									<span>Max Load</span>
+									<span>Load Index / Speed Rate</span>
+								</div>
+								<div class="specs-row">
+									<span>255/45R20</span>
+									<span class="muted">28.9 lbs</span>
+									<span class="muted">105V</span>
+									<span class="muted">2039 lbs</span>
+									<span class="muted">105V</span>
+								</div>
+								<div class="specs-row">
+									<span>265/40R21</span>
+									<span class="muted">29.5 lbs</span>
+									<span class="muted">105W</span>
+									<span class="muted">2039 lbs</span>
+									<span class="muted">105W</span>
+								</div>
+								<div class="specs-row">
+									<span>285/35R22</span>
+									<span class="muted">31.7 lbs</span>
+									<span class="muted">106W</span>
+									<span class="muted">2094 lbs</span>
+									<span class="muted">106W</span>
+								</div>
+							</div>
+						</details>
+					</div>
+				</div>
+			</section>
+		</main>
+
+		<script src="../js/specs.js"></script>
+		<style>
+			/* ===========================
+			   SPECS PAGE
+			============================*/
+			.specs-hero {
+				margin-top: clamp(8rem, 10vw, 11rem);
+				padding: clamp(1.5rem, 4vw, 3.25rem) 0 clamp(2rem, 6vw, 3.5rem);
+				background: linear-gradient(180deg, #faf7fb 0%, #ffffff 100%);
+			}
+
+			.specs-hero-grid {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+				gap: clamp(1.5rem, 3vw, 3rem);
+				align-items: center;
+			}
+
+			.specs-tire-frame {
+				background: #ffffff;
+				border-radius: 22px;
+				padding: clamp(1rem, 3vw, 2rem);
+				box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+				border: 1px solid rgba(0, 0, 0, 0.04);
+				display: grid;
+				place-items: center;
+			}
+
+			.specs-tire-frame img {
+				width: min(420px, 100%);
+				height: auto;
+			}
+
+			.specs-360 {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.75rem;
+				margin-top: 0.75rem;
+				font-weight: 700;
+				color: #6c2a75;
+				text-transform: uppercase;
+				letter-spacing: 0.02em;
+			}
+
+			.specs-360-icon {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 2.75rem;
+				height: 2.75rem;
+				border-radius: 50%;
+				background: linear-gradient(135deg, #6f2670, #8b46a5);
+				color: #fff;
+				font-weight: 800;
+				box-shadow: 0 10px 25px rgba(111, 38, 112, 0.35);
+			}
+
+			.specs-subtitle {
+				font-size: 0.95rem;
+				font-weight: 800;
+				letter-spacing: 0.08em;
+				color: #5d1f67;
+				text-transform: uppercase;
+				margin-bottom: 0.25rem;
+			}
+
+			.specs-title {
+				font-size: clamp(2rem, 4vw, 2.8rem);
+				font-weight: 900;
+				letter-spacing: 0.04em;
+				color: #1f1b2d;
+				margin-bottom: 0.75rem;
+			}
+
+			.specs-text {
+				color: #3f394f;
+				line-height: 1.6;
+				margin-bottom: 1.25rem;
+			}
+
+			.specs-attributes {
+				display: grid;
+				grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+				gap: 0.75rem;
+				margin-bottom: 1rem;
+			}
+
+			.specs-attribute {
+				display: flex;
+				align-items: center;
+				gap: 0.65rem;
+				padding: 0.65rem 0.85rem;
+				border-radius: 12px;
+				background: rgba(130, 0, 153, 0.06);
+				color: #4b234f;
+				font-weight: 700;
+			}
+
+			.specs-attribute i {
+				color: #6f2670;
+			}
+
+			.specs-rating {
+				display: flex;
+				align-items: center;
+				gap: 1rem;
+				flex-wrap: wrap;
+				margin: 0.75rem 0 1.25rem;
+			}
+
+			.specs-stars {
+				color: #6f2670;
+				font-size: 1.05rem;
+			}
+
+			.specs-meta {
+				display: flex;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+				color: #4c3e61;
+				font-weight: 700;
+			}
+
+			.specs-meta span {
+				padding: 0.45rem 0.7rem;
+				border-radius: 10px;
+				background: rgba(111, 38, 112, 0.08);
+			}
+
+			.specs-chip-row {
+				display: flex;
+				gap: 0.75rem;
+				flex-wrap: wrap;
+				margin-top: 0.5rem;
+			}
+
+			.specs-chip {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				padding: 0.5rem 0.9rem;
+				border-radius: 999px;
+				background: #f3e9f7;
+				color: #3f1f4a;
+				font-weight: 800;
+				letter-spacing: 0.01em;
+			}
+
+			.specs-divider {
+				border: 0;
+				height: 1px;
+				background: linear-gradient(
+					90deg,
+					transparent,
+					rgba(111, 38, 112, 0.45),
+					transparent
+				);
+				margin: clamp(1.5rem, 5vw, 3.5rem) 0;
+			}
+
+			.specs-banner {
+				text-align: center;
+				color: #65246c;
+				font-weight: 800;
+				letter-spacing: 0.07em;
+			}
+
+			.specs-size-section {
+				padding: 0 0 clamp(3rem, 6vw, 4.5rem);
+			}
+
+			.specs-size-header {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: space-between;
+				align-items: baseline;
+				gap: 0.75rem;
+				margin-bottom: 1rem;
+				color: #2e253d;
+			}
+
+			.specs-size-header h2 {
+				font-size: clamp(1.6rem, 3vw, 2rem);
+				font-weight: 900;
+				letter-spacing: 0.04em;
+			}
+
+			.specs-size-header .specs-range {
+				font-weight: 700;
+				color: #6f2670;
+			}
+
+			.specs-accordion {
+				border-top: 3px solid rgba(111, 38, 112, 0.3);
+				border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+			}
+
+			.specs-accordion details {
+				border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+				padding: 0.25rem 0;
+			}
+
+			.specs-accordion summary {
+				cursor: pointer;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+				padding: 0.9rem 0;
+				list-style: none;
+				font-weight: 800;
+				letter-spacing: 0.02em;
+				color: #5a215f;
+			}
+
+			.specs-accordion summary::-webkit-details-marker {
+				display: none;
+			}
+
+			.specs-accordion summary::after {
+				content: "+";
+				font-size: 1.2rem;
+				font-weight: 900;
+				color: #5a215f;
+				transition: transform 0.2s ease;
+			}
+
+			.specs-accordion details[open] summary::after {
+				transform: rotate(45deg);
+			}
+
+			.specs-table {
+				padding: 0 0 1rem;
+				display: grid;
+				gap: 0.35rem;
+			}
+
+			.specs-row {
+				display: grid;
+				grid-template-columns: 1.3fr repeat(4, 1fr);
+				gap: 0.5rem;
+				align-items: center;
+				padding: 0.55rem 0.35rem;
+				border-radius: 12px;
+				color: #2c2437;
+				background: rgba(111, 38, 112, 0.03);
+			}
+
+			.specs-row.header {
+				background: transparent;
+				color: #5a215f;
+				font-weight: 800;
+				text-transform: uppercase;
+				letter-spacing: 0.04em;
+			}
+
+			.specs-row .muted {
+				color: #6b5b79;
+				font-size: 0.95rem;
+			}
+
+			@media (max-width: 780px) {
+				.specs-row {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+					padding: 0.75rem;
+				}
+
+				.specs-row.header {
+					display: none;
+				}
+
+				.specs-row span:nth-child(odd) {
+					font-weight: 800;
+				}
+			}
+
+			@media (max-width: 520px) {
+				.specs-hero {
+					margin-top: 7rem;
+				}
+
+				.specs-hero-grid {
+					gap: 1rem;
+				}
+
+				.specs-attribute {
+					flex-direction: row;
+				}
+			}
+		</style>
+	</body>
+</html>

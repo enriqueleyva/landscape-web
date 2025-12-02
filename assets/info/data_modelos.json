@@ -209,10 +209,17 @@
 	},
 	{
 		"modelo": "AM87 (Mixed Service / Winter)",
-		"descripcion": "Wide tread provide stability while improving handling on wet and snowy road. Extra deep tread depth provide long original tread life. Open shoulder grooves deliver additional traction without compromising tread life. 3D siping provide excellent traction and braking",
+		"descripcion": "Strong biting edges guarantee excellent traction on dry and slippery road surface, especially in winter. Specific tread compound offer good mileage without sacrificing wet traction. Wide open shoulder deliver additional traction without compromising tread life.",
 		"medidas_disponibles": ["11R22.5", "11R24.5"],
 		"tipo": "TBR / TRUCK & BUS",
 		"imagen": "AM87"
+	},
+	{
+		"modelo": "AM88 (Mixed Service / Winter)",
+		"descripcion": "Wide tread provide stability while improving handling on wet and snowy road. Extra deep tread depth provide long original tread life. Open shoulder grooves deliver additional traction without compromising tread life. 3D siping provide excellent traction and braking",
+		"medidas_disponibles": ["11R22.5", "11R24.5"],
+		"tipo": "TBR / TRUCK & BUS",
+		"imagen": "AM88"
 	},
 	{
 		"modelo": "AM86 (Mixed Service / Winter)",
