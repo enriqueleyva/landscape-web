@@ -968,7 +968,18 @@
 							addOption(selWidth, "", "Select width");
 							widths.forEach((w) => addOption(selWidth, w, w));
 
-							// Dependencias: Width -> Rim -> Height
+							// Dependencias: Width -> (Rim + Height) y Rim -> Height
+							function getHeightsForWidth(width) {
+								if (!width || !index[width]) return [];
+
+								const heights = new Set();
+								Object.values(index[width]).forEach((heightSet) => {
+									heightSet.forEach((height) => heights.add(height));
+								});
+
+								return [...heights].sort(sortNumeric);
+							}
+
 							function refreshRims() {
 								const w = selWidth.value;
 								clearOptions(selRim);
@@ -982,6 +993,13 @@
 								rims.forEach((r) =>
 									addOption(selRim, r, `R${r.replace(/^R/i, "")}`)
 								); // muestra “R16”, “R22.5”, etc.
+
+								const heights = getHeightsForWidth(w).map((h) =>
+									h === "" ? "—" : h
+								);
+								heights.forEach((h) =>
+									addOption(selHeight, h === "—" ? "" : h, h)
+								);
 							}
 
 							function refreshHeights() {
@@ -990,7 +1008,19 @@
 								clearOptions(selHeight);
 								addOption(selHeight, "", "Select height");
 
-								if (!w || !r || !index[w] || !index[w][r]) return;
+								if (!w || !index[w]) return;
+
+								if (!r) {
+									const allHeights = getHeightsForWidth(w).map((h) =>
+										h === "" ? "—" : h
+									);
+									allHeights.forEach((h) =>
+										addOption(selHeight, h === "—" ? "" : h, h)
+									);
+									return;
+								}
+
+								if (!index[w][r]) return;
 
 								// Deja “—” para tamaños sin altura
 								const heights = [...index[w][r]]
