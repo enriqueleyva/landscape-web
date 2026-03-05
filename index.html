@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
@@ -845,9 +845,12 @@
 					<script>
 						(async function () {
 							// === 1) Cargar data.json ===
-							const res = await fetch("assets/info/data.json", {
-								cache: "no-store",
-							});
+							const res = await fetch(
+								"assets/info/landscape_sizes_patterns.json",
+								{
+									cache: "no-store",
+								},
+							);
 							const sizeToModels = await res.json(); // { "205/55R16": ["..."], ... }
 
 							// === 2) Helpers de parseo (métrico / flotación / comercial) ===
@@ -980,7 +983,7 @@
 
 								const rims = Object.keys(index[w]).sort(sortNumeric);
 								rims.forEach((r) =>
-									addOption(selRim, r, `R${r.replace(/^R/i, "")}`)
+									addOption(selRim, r, `R${r.replace(/^R/i, "")}`),
 								); // muestra “R16”, “R22.5”, etc.
 							}
 
@@ -997,7 +1000,7 @@
 									.sort(sortNumeric)
 									.map((h) => (h === "" ? "—" : h));
 								heights.forEach((h) =>
-									addOption(selHeight, h === "—" ? "" : h, h)
+									addOption(selHeight, h === "—" ? "" : h, h),
 								);
 							}
 
@@ -1220,7 +1223,7 @@
 									index = (i + slides.length) % slides.length;
 									track.style.transform = `translateX(-${index * 100}%)`;
 									dots.forEach((d, n) =>
-										d.classList.toggle("is-active", n === index)
+										d.classList.toggle("is-active", n === index),
 									);
 								};
 
@@ -1233,7 +1236,7 @@
 
 								// Dots
 								dots.forEach((d) =>
-									d.addEventListener("click", () => goTo(+d.dataset.dot))
+									d.addEventListener("click", () => goTo(+d.dataset.dot)),
 								);
 
 								// Auto-play
@@ -1259,7 +1262,7 @@
 								root.addEventListener(
 									"touchstart",
 									(e) => (x0 = e.touches[0].clientX),
-									{ passive: true }
+									{ passive: true },
 								);
 								root.addEventListener(
 									"touchend",
@@ -1269,7 +1272,7 @@
 										if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
 										x0 = null;
 									},
-									{ passive: true }
+									{ passive: true },
 								);
 
 								// Recalcular en resize
@@ -2272,7 +2275,7 @@
 				root.addEventListener("mouseenter", () => clearInterval(timer));
 				root.addEventListener(
 					"mouseleave",
-					() => (timer = setInterval(() => goTo(index + 1), 5000))
+					() => (timer = setInterval(() => goTo(index + 1), 5000)),
 				);
 
 				// Responsivo: recalcula al cambiar tamaño (por si el contenedor cambia)
@@ -2691,7 +2694,7 @@
 						if (e.isIntersecting) setActive("#" + e.target.id);
 					});
 				},
-				{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
+				{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 },
 			);
 
 			sections.forEach((s) => io.observe(s));
@@ -2704,10 +2707,10 @@
 				const io = new IntersectionObserver(
 					(entries) => {
 						entries.forEach(
-							(e) => (e.target.dataset.active = e.isIntersecting)
+							(e) => (e.target.dataset.active = e.isIntersecting),
 						);
 					},
-					{ rootMargin: "-30% 0px -50% 0px", threshold: 0.2 }
+					{ rootMargin: "-30% 0px -50% 0px", threshold: 0.2 },
 				);
 				cards.forEach((c) => io.observe(c));
 			})();
