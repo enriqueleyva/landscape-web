@@ -1,0 +1,338 @@
+{
+  "185/60R15": [
+    "Grand Tour A/S"
+  ],
+  "185/65R14": [
+    "Grand Tour A/S"
+  ],
+  "185/65R15": [
+    "Grand Tour A/S"
+  ],
+  "195/60R15": [
+    "Grand Tour A/S"
+  ],
+  "195/65R15": [
+    "Grand Tour A/S"
+  ],
+  "205/55R16": [
+    "Grand Tour A/S"
+  ],
+  "205/60R16": [
+    "Grand Tour A/S"
+  ],
+  "205/65R15": [
+    "Grand Tour A/S"
+  ],
+  "205/65R16": [
+    "Grand Tour A/S"
+  ],
+  "205/70R15": [
+    "Grand Tour A/S"
+  ],
+  "215/50R17": [
+    "Grand Tour A/S"
+  ],
+  "215/55R16": [
+    "Grand Tour A/S"
+  ],
+  "215/55R17": [
+    "Grand Tour A/S"
+  ],
+  "215/60R16": [
+    "Grand Tour A/S"
+  ],
+  "215/60R17": [
+    "Quiet Cross A/S"
+  ],
+  "215/65R16": [
+    "Grand Tour A/S"
+  ],
+  "215/65R17": [
+    "Quiet Cross A/S"
+  ],
+  "215/70R15": [
+    "Grand Tour A/S"
+  ],
+  "215/70R16": [
+    "Quiet Cross A/S"
+  ],
+  "225/45R17": [
+    "Ultra Sport F1"
+  ],
+  "225/50R17": [
+    "Grand Tour A/S"
+  ],
+  "225/50R18": [
+    "Ultra Sport F1"
+  ],
+  "225/55R17": [
+    "Grand Tour A/S"
+  ],
+  "225/55R18": [
+    "Quiet Cross A/S"
+  ],
+  "225/55R19": [
+    "Quiet Cross A/S"
+  ],
+  "225/60R16": [
+    "Grand Tour A/S"
+  ],
+  "225/60R17": [
+    "Quiet Cross A/S"
+  ],
+  "225/60R18": [
+    "Quiet Cross A/S"
+  ],
+  "225/65R17": [
+    "Quiet Cross A/S"
+  ],
+  "225/70R16": [
+    "Quiet Cross A/S"
+  ],
+  "235/40R19": [
+    "Ultra Sport F1"
+  ],
+  "235/50R17": [
+    "Ultra Sport F1"
+  ],
+  "235/55R17": [
+    "Grand Tour A/S"
+  ],
+  "235/55R18": [
+    "Ultra Sport F1"
+  ],
+  "235/55R19": [
+    "Ultra Sport F1"
+  ],
+  "235/55R20": [
+    "Terra Grip H/T"
+  ],
+  "235/60R18": [
+    "Quiet Cross A/S"
+  ],
+  "235/65R16": [
+    "Quiet Cross A/S"
+  ],
+  "235/65R17": [
+    "Quiet Cross A/S"
+  ],
+  "235/65R18": [
+    "Quiet Cross A/S"
+  ],
+  "235/70R16": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "235/75R15": [
+    "Terra Master A/T T3"
+  ],
+  "245/50R20": [
+    "Quiet Cross A/S"
+  ],
+  "245/55R19": [
+    "Quiet Cross A/S"
+  ],
+  "245/60R18": [
+    "Quiet Cross A/S"
+  ],
+  "245/65R17": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "245/70R16": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "245/70R17": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "245/75R16": [
+    "Terra Master A/T T3"
+  ],
+  "255/45R19": [
+    "Ultra Sport F1"
+  ],
+  "255/50R20": [
+    "Quiet Cross A/S"
+  ],
+  "255/55R20": [
+    "Quiet Cross A/S"
+  ],
+  "255/65R18": [
+    "Quiet Cross A/S"
+  ],
+  "255/70R16": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "265/50R20": [
+    "Quiet Cross A/S"
+  ],
+  "265/60R18": [
+    "Terra Grip H/T"
+  ],
+  "265/65R18": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "265/70R16": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "265/70R17": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "265/75R16": [
+    "Terra Master A/T T3"
+  ],
+  "275/55R20": [
+    "Terra Master A/T T3",
+    "Quiet Cross A/S"
+  ],
+  "275/60R20": [
+    "Terra Master A/T T3",
+    "Quiet Cross A/S"
+  ],
+  "275/65R18": [
+    "Terra Master A/T T3"
+  ],
+  "285/45R22": [
+    "Quiet Cross A/S"
+  ],
+  "235/65R16C": [
+    "Terra Grip H/T"
+  ],
+  "215/45ZR17": [
+    "Ultra Sport F1"
+  ],
+  "225/40ZR18": [
+    "Ultra Sport F1"
+  ],
+  "225/45ZR18": [
+    "Ultra Sport F1"
+  ],
+  "235/45ZR18": [
+    "Ultra Sport F1"
+  ],
+  "235/50ZR18": [
+    "Ultra Sport F1"
+  ],
+  "245/40ZR18": [
+    "Ultra Sport F1"
+  ],
+  "245/45ZR18": [
+    "Ultra Sport F1"
+  ],
+  "245/45ZR19": [
+    "Ultra Sport F1"
+  ],
+  "245/45ZR20": [
+    "Ultra Sport F1"
+  ],
+  "255/45ZR20": [
+    "Ultra Sport F1"
+  ],
+  "275/40ZR20": [
+    "Ultra Sport F1"
+  ],
+  "LT215/85R16": [
+    "Terra Grip H/T"
+  ],
+  "LT225/75R16": [
+    "Terra Master A/T",
+    "Terra Grip H/T"
+  ],
+  "LT235/80R17": [
+    "Terra Grip H/T"
+  ],
+  "LT235/85R16": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "LT245/75R16": [
+    "Terra Master A/T",
+    "Terra Grip H/T"
+  ],
+  "LT245/75R17": [
+    "Terra Master A/T",
+    "Terra Grip H/T"
+  ],
+  "LT265/70R17": [
+    "Terra Master A/T",
+    "Terra Force R/T",
+    "Terra Grip H/T"
+  ],
+  "LT265/70R18": [
+    "Terra Master A/T T3",
+    "Terra Grip H/T"
+  ],
+  "LT265/75R16": [
+    "Terra Master A/T",
+    "Terra Grip H/T"
+  ],
+  "LT275/65R18": [
+    "Terra Master A/T"
+  ],
+  "LT275/65R20": [
+    "Terra Master A/T",
+    "Terra Force R/T"
+  ],
+  "LT275/70R18": [
+    "Terra Master A/T",
+    "Terra Force R/T"
+  ],
+  "LT285/55R20": [
+    "Terra Force R/T"
+  ],
+  "LT285/70R17": [
+    "Terra Master A/T",
+    "Terra Force R/T"
+  ],
+  "LT285/75R16": [
+    "Terra Master A/T T3",
+    "Terra Force R/T"
+  ],
+  "LT315/70R17": [
+    "Terra Master A/T T3"
+  ],
+  "P285/70R17": [
+    "Terra Master A/T T3"
+  ],
+  "31X10.50R15LT": [
+    "Terra Master A/T T3"
+  ],
+  "33X12.50R18LT": [
+    "Terra Master A/T",
+    "Terra Beast M/T"
+  ],
+  "33X12.50R20LT": [
+    "Terra Force R/T",
+    "Terra Beast M/T"
+  ],
+  "33X12.50R22LT": [
+    "Terra Force R/T",
+    "Terra Beast M/T"
+  ],
+  "33X12.50R24LT": [
+    "Terra Force R/T"
+  ],
+  "35X12.50R17LT": [
+    "Terra Force R/T"
+  ],
+  "35X12.50R18LT": [
+    "Terra Force R/T",
+    "Terra Beast M/T"
+  ],
+  "35X12.50R20LT": [
+    "Terra Force R/T",
+    "Terra Beast M/T"
+  ],
+  "35X12.50R22LT": [
+    "Terra Force R/T"
+  ],
+  "35X12.50R24LT": [
+    "Terra Force R/T"
+  ]
+}
