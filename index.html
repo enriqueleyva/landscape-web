@@ -810,11 +810,18 @@
 									id="selPattern"
 								></select>
 							</label>
-							<label class="text-xs text-white/70 md:col-span-3"
-								>Size
+							<label class="text-xs text-white/70 md:col-span-2"
+								>Aspect ratio
 								<select
 									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-									id="selMeasure"
+									id="selAspect"
+								></select>
+							</label>
+							<label class="text-xs text-white/70 md:col-span-2"
+								>Rim
+								<select
+									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
+									id="selRim"
 								></select>
 							</label>
 
@@ -845,25 +852,9 @@
 							);
 							const sizeToModels = await response.json();
 
-							const tirePairs = [];
-							for (const [size, models] of Object.entries(sizeToModels)) {
-								models.forEach((pattern) => {
-									tirePairs.push({
-										pattern: String(pattern || "").trim(),
-										size: String(size || "").trim(),
-									});
-								});
-							}
-
-							const byPattern = {};
-							tirePairs.forEach(({ pattern, size }) => {
-								if (!pattern || !size) return;
-								byPattern[pattern] ??= new Set();
-								byPattern[pattern].add(size);
-							});
-
-							const selPattern = document.getElementById("selPattern");
-							const selMeasure = document.getElementById("selMeasure");
+							const selWidth = document.getElementById("selWidth");
+							const selAspect = document.getElementById("selAspect");
+							const selRim = document.getElementById("selRim");
 							const form = document.getElementById("finderBySize");
 
 							const normalize = (value) =>
@@ -919,36 +910,50 @@
 								addOption(selPattern, pattern, pattern),
 							);
 
-							const refreshMeasures = () => {
-								clearOptions(selMeasure);
-								addOption(selMeasure, "", "Select size");
+							const sortNumeric = (a, b) => {
+								if (a === "" && b === "") return 0;
+								if (a === "") return 1;
+								if (b === "") return -1;
+								return parseFloat(a) - parseFloat(b);
+							};
+							const widths = Object.keys(index).sort(sortNumeric);
 
-								const selectedPattern = selPattern.value;
-								if (!selectedPattern || !byPattern[selectedPattern]) return;
+							clearOptions(selWidth);
+							addOption(selWidth, "", "Select width");
+							widths.forEach((width) => addOption(selWidth, width, width));
 
-								const sizes = [...byPattern[selectedPattern]].sort((a, b) =>
-									a.localeCompare(b, undefined, { numeric: true }),
-								);
-								sizes.forEach((size) => addOption(selMeasure, size, size));
+							const sizes = [...byPattern[selectedPattern]].sort((a, b) =>
+								a.localeCompare(b, undefined, { numeric: true }),
+							);
+
+							const refreshRims = () => {
+								clearOptions(selRim);
+								addOption(selRim, "", "Select rim");
+
+								const width = selWidth.value;
+								const aspect = selAspect.value;
+								if (!width || !index[width] || !(aspect in index[width]))
+									return;
+
+								const rims = [...index[width][aspect]].sort(sortNumeric);
+								rims.forEach((rim) => addOption(selRim, rim, `R${rim}`));
 							};
 
-							selPattern.addEventListener("change", refreshMeasures);
+							selWidth.addEventListener("change", refreshAspects);
+							selAspect.addEventListener("change", refreshRims);
 
 							form.addEventListener("submit", (event) => {
 								event.preventDefault();
-								const selectedPattern = selPattern.value;
-								const selectedSize = selMeasure.value;
-								if (!selectedPattern || !selectedSize) return;
-
-								const parsed = parseSize(selectedSize);
-								if (!parsed) return;
+								const width = selWidth.value;
+								const aspect = selAspect.value;
+								const rim = selRim.value;
+								if (!width || !rim) return;
 
 								const params = new URLSearchParams();
-								params.set("width", parsed.width);
-								params.set("rim", parsed.rim);
-								params.set("pattern", selectedPattern);
-								if (parsed.height) {
-									params.set("height", parsed.height);
+								params.set("width", width);
+								params.set("rim", rim);
+								if (aspect) {
+									params.set("height", aspect);
 								} else {
 									params.set("height", "__none__");
 								}
@@ -956,7 +961,7 @@
 								window.location.href = `pages/sizes.html?${params.toString()}#catalogo`;
 							});
 
-							refreshMeasures();
+							refreshAspects();
 						})();
 					</script>
 				</div>
