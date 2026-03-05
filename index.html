@@ -803,25 +803,18 @@
 						class="md:col-span-2 rounded-2xl bg-white/5 border border-white/10 p-5"
 					>
 						<div class="grid md:grid-cols-6 gap-4">
-							<label class="text-xs text-white/70 md:col-span-2"
-								>Width
+							<label class="text-xs text-white/70 md:col-span-3"
+								>Pattern name
 								<select
 									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-									id="selWidth"
+									id="selPattern"
 								></select>
 							</label>
-							<label class="text-xs text-white/70 md:col-span-2"
-								>Height
+							<label class="text-xs text-white/70 md:col-span-3"
+								>Size
 								<select
 									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-									id="selHeight"
-								></select>
-							</label>
-							<label class="text-xs text-white/70 md:col-span-2"
-								>Rim
-								<select
-									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-									id="selRim"
+									id="selMeasure"
 								></select>
 							</label>
 
@@ -844,194 +837,115 @@
 					</form>
 					<script>
 						(async function () {
-							// === 1) Cargar data.json ===
-							const res = await fetch("assets/info/data.json", {
+							const response = await fetch("assets/info/data.json", {
 								cache: "no-store",
 							});
-							const sizeToModels = await res.json(); // { "205/55R16": ["..."], ... }
+							const sizeToModels = await response.json();
 
-							// === 2) Helpers de parseo (métrico / flotación / comercial) ===
-							const RX = {
-								metric:
-									/^(?:LT|P|ST)?\s*(\d{3})\s*\/\s*(\d{2,3})\s*R?\s*(\d{2}(?:\.\d+)?)$/i,
-								// flotación "33x12.50R20" (usamos 12.50 como width); también claves con dobles slash "12.50//18"
-								floatX:
-									/^\s*\d{2,3}(?:\.\d+)?\s*[xX×]\s*(\d{1,2}(?:\.\d+)?)\s*R?\s*(\d{2}(?:\.\d+)?)\s*$/i,
-								floatSlash:
-									/^\s*(\d{1,2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
-								// comercial: "11R22.5" o con dobles slash "11//22.5" (sin altura)
-								commR: /^\s*(\d{2}(?:\.\d+)?)\s*R\s*(\d{2}(?:\.\d+)?)\s*$/i,
-								commSlash:
-									/^\s*(\d{2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
-							};
+							const tirePairs = [];
+							for (const [size, models] of Object.entries(sizeToModels)) {
+								models.forEach((pattern) => {
+									tirePairs.push({
+										pattern: String(pattern || "").trim(),
+										size: String(size || "").trim(),
+									});
+								});
+							}
 
-							const norm = (s) =>
-								String(s || "")
+							const byPattern = {};
+							tirePairs.forEach(({ pattern, size }) => {
+								if (!pattern || !size) return;
+								byPattern[pattern] ??= new Set();
+								byPattern[pattern].add(size);
+							});
+
+							const selPattern = document.getElementById("selPattern");
+							const selMeasure = document.getElementById("selMeasure");
+							const form = document.getElementById("finderBySize");
+
+							const normalize = (value) =>
+								String(value || "")
 									.toUpperCase()
-									.trim()
-									.replace(/–|—/g, "-")
-									.replace(/\s+/g, "");
+									.replace(/\s+/g, "")
+									.replace(/–|—/g, "-");
 
-							function parseSize(key) {
-								const raw = norm(key);
-								// 205/55R16
-								let m = raw.match(RX.metric);
-								if (m)
-									return {
-										width: m[1],
-										height: m[2],
-										rim: m[3],
-										kind: "METRIC",
-									};
+							const parseSize = (value) => {
+								const size = normalize(value);
+								let match = size.match(
+									/^(?:LT|P|ST)?(\d{3})\/(\d{2,3})R?(\d{2}(?:\.\d+)?)$/i
+								);
+								if (match) return { width: match[1], height: match[2], rim: match[3] };
 
-								// 33x12.50R20  -> width = 12.50, height = ""
-								m = raw.match(RX.floatX);
-								if (m)
-									return {
-										width: m[1],
-										height: "",
-										rim: m[2],
-										kind: "FLOTATION",
-									};
+								match = size.match(
+									/^\d{2,3}(?:\.\d+)?[xX×](\d{1,2}(?:\.\d+)?)R?(\d{2}(?:\.\d+)?)$/i
+								);
+								if (match) return { width: match[1], height: "", rim: match[2] };
 
-								// 12.50//18 -> width=12.50, rim=18
-								m = raw.match(RX.floatSlash);
-								if (m)
-									return {
-										width: m[1],
-										height: "",
-										rim: m[2],
-										kind: "FLOTATION",
-									};
+								match = size.match(/^(\d{1,2}(?:\.\d+)?)\/\/(\d{2}(?:\.\d+)?)$/i);
+								if (match) return { width: match[1], height: "", rim: match[2] };
 
-								// 11R22.5  (commercial) -> height=""
-								m = raw.match(RX.commR);
-								if (m)
-									return {
-										width: m[1],
-										height: "",
-										rim: m[2],
-										kind: "COMMERCIAL",
-									};
-
-								// 11//22.5 -> commercial
-								m = raw.match(RX.commSlash);
-								if (m)
-									return {
-										width: m[1],
-										height: "",
-										rim: m[2],
-										kind: "COMMERCIAL",
-									};
+								match = size.match(/^(\d{2}(?:\.\d+)?)R(\d{2}(?:\.\d+)?)$/i);
+								if (match) return { width: match[1], height: "", rim: match[2] };
 
 								return null;
-							}
+							};
 
-							// === 3) Construir índice: width -> rim -> Set(heights) y un mapa a modelos ===
-							const index = {}; // { width: { rim: Set([height]) } }
-							const mapModels = {}; // { "width|rim|height": Set(models) }
+							const clearOptions = (select) => {
+								while (select.options.length) select.remove(0);
+							};
+							const addOption = (select, value, label = value) => {
+								const option = document.createElement("option");
+								option.value = value;
+								option.textContent = label;
+								select.appendChild(option);
+							};
 
-							for (const [size, models] of Object.entries(sizeToModels)) {
-								const p = parseSize(size);
-								if (!p) continue;
+							const patterns = Object.keys(byPattern).sort((a, b) =>
+								a.localeCompare(b)
+							);
 
-								index[p.width] ??= {};
-								index[p.width][p.rim] ??= new Set();
-								index[p.width][p.rim].add(p.height); // "" si no aplica
+							clearOptions(selPattern);
+							addOption(selPattern, "", "Select pattern");
+							patterns.forEach((pattern) => addOption(selPattern, pattern, pattern));
 
-								const k = `${p.width}|${p.rim}|${p.height}`;
-								mapModels[k] ??= new Set();
-								models.forEach((m) => mapModels[k].add(m));
-							}
+							const refreshMeasures = () => {
+								clearOptions(selMeasure);
+								addOption(selMeasure, "", "Select size");
 
-							// === 4) Accesos a DOM ===
-							const selWidth = document.getElementById("selWidth");
-							const selHeight = document.getElementById("selHeight");
-							const selRim = document.getElementById("selRim");
-							const form = document.getElementById("finderBySize");
-							const out = document.getElementById("finderResult");
+								const selectedPattern = selPattern.value;
+								if (!selectedPattern || !byPattern[selectedPattern]) return;
 
-							function clearOptions(sel) {
-								while (sel.options.length) sel.remove(0);
-							}
-							function addOption(sel, value, label = value) {
-								const opt = document.createElement("option");
-								opt.value = value;
-								opt.textContent = label;
-								sel.appendChild(opt);
-							}
-
-							// === 5) Poblar Width (orden numérico correcto, incluso con decimales) ===
-							const sortNumeric = (a, b) => parseFloat(a) - parseFloat(b);
-							const widths = Object.keys(index).sort(sortNumeric);
-							clearOptions(selWidth);
-							addOption(selWidth, "", "Select width");
-							widths.forEach((w) => addOption(selWidth, w, w));
-
-							// Dependencias: Width -> Rim -> Height
-							function refreshRims() {
-								const w = selWidth.value;
-								clearOptions(selRim);
-								clearOptions(selHeight);
-								addOption(selRim, "", "Select rim");
-								addOption(selHeight, "", "Select height");
-
-								if (!w || !index[w]) return;
-
-								const rims = Object.keys(index[w]).sort(sortNumeric);
-								rims.forEach((r) =>
-									addOption(selRim, r, `R${r.replace(/^R/i, "")}`)
-								); // muestra “R16”, “R22.5”, etc.
-							}
-
-							function refreshHeights() {
-								const w = selWidth.value;
-								const r = selRim.value;
-								clearOptions(selHeight);
-								addOption(selHeight, "", "Select height");
-
-								if (!w || !r || !index[w] || !index[w][r]) return;
-
-								// Deja “—” para tamaños sin altura
-								const heights = [...index[w][r]]
-									.sort(sortNumeric)
-									.map((h) => (h === "" ? "—" : h));
-								heights.forEach((h) =>
-									addOption(selHeight, h === "—" ? "" : h, h)
+								const sizes = [...byPattern[selectedPattern]].sort((a, b) =>
+									a.localeCompare(b, undefined, { numeric: true })
 								);
-							}
+								sizes.forEach((size) => addOption(selMeasure, size, size));
+							};
 
-							selWidth.addEventListener("change", refreshRims);
-							selRim.addEventListener("change", refreshHeights);
+							selPattern.addEventListener("change", refreshMeasures);
 
-							// === 6) Submit: mostrar modelos compatibles con la combinación elegida ===
-							form.addEventListener("submit", (e) => {
-								e.preventDefault();
-								const w = selWidth.value;
-								const r = selRim.value;
-								const h = selHeight.value; // "" si “—”
-								const hasHeightSelection = selHeight.selectedIndex > 0;
+							form.addEventListener("submit", (event) => {
+								event.preventDefault();
+								const selectedPattern = selPattern.value;
+								const selectedSize = selMeasure.value;
+								if (!selectedPattern || !selectedSize) return;
 
-								if (!w || !r) {
-									out && (out.textContent = "Selecciona al menos Width y Rim.");
-									return;
-								}
+								const parsed = parseSize(selectedSize);
+								if (!parsed) return;
 
 								const params = new URLSearchParams();
-								params.set("width", w);
-								params.set("rim", r);
-
-								if (hasHeightSelection) {
-									const normalizedHeight = h || "__none__";
-									params.set("height", normalizedHeight);
+								params.set("width", parsed.width);
+								params.set("rim", parsed.rim);
+								params.set("pattern", selectedPattern);
+								if (parsed.height) {
+									params.set("height", parsed.height);
+								} else {
+									params.set("height", "__none__");
 								}
 
 								window.location.href = `pages/sizes.html?${params.toString()}#catalogo`;
 							});
 
-							// Tip: Si quieres precargar algún Width por defecto:
-							// selWidth.value = widths.includes("205") ? "205" : "";
-							// refreshRims();
+							refreshMeasures();
 						})();
 					</script>
 				</div>
