@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
 	<head>
 		<meta charset="utf-8" />
@@ -803,18 +803,18 @@
 						class="md:col-span-2 rounded-2xl bg-white/5 border border-white/10 p-5"
 					>
 						<div class="grid md:grid-cols-6 gap-4">
-							<label class="text-xs text-white/70 md:col-span-3"
-								>Pattern name
+							<label class="text-xs text-white/70 md:col-span-2"
+								>Width
 								<select
 									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-									id="selPattern"
+									id="selWidth"
 								></select>
 							</label>
 							<label class="text-xs text-white/70 md:col-span-2"
-								>Aspect ratio
+								>Height
 								<select
 									class="mt-1 w-full bg-white/95 text-neutral-800 rounded-md px-3 py-2"
-									id="selAspect"
+									id="selHeight"
 								></select>
 							</label>
 							<label class="text-xs text-white/70 md:col-span-2"
@@ -844,124 +844,194 @@
 					</form>
 					<script>
 						(async function () {
-							const response = await fetch(
-								"assets/info/landscape_sizes_patterns.json",
-								{
-									cache: "no-store",
-								},
-							);
-							const sizeToModels = await response.json();
+							// === 1) Cargar data.json ===
+							const res = await fetch("assets/info/data.json", {
+								cache: "no-store",
+							});
+							const sizeToModels = await res.json(); // { "205/55R16": ["..."], ... }
 
-							const selWidth = document.getElementById("selWidth");
-							const selAspect = document.getElementById("selAspect");
-							const selRim = document.getElementById("selRim");
-							const form = document.getElementById("finderBySize");
+							// === 2) Helpers de parseo (métrico / flotación / comercial) ===
+							const RX = {
+								metric:
+									/^(?:LT|P|ST)?\s*(\d{3})\s*\/\s*(\d{2,3})\s*R?\s*(\d{2}(?:\.\d+)?)$/i,
+								// flotación "33x12.50R20" (usamos 12.50 como width); también claves con dobles slash "12.50//18"
+								floatX:
+									/^\s*\d{2,3}(?:\.\d+)?\s*[xX×]\s*(\d{1,2}(?:\.\d+)?)\s*R?\s*(\d{2}(?:\.\d+)?)\s*$/i,
+								floatSlash:
+									/^\s*(\d{1,2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
+								// comercial: "11R22.5" o con dobles slash "11//22.5" (sin altura)
+								commR: /^\s*(\d{2}(?:\.\d+)?)\s*R\s*(\d{2}(?:\.\d+)?)\s*$/i,
+								commSlash:
+									/^\s*(\d{2}(?:\.\d+)?)\s*\/\/\s*(\d{2}(?:\.\d+)?)\s*$/i,
+							};
 
-							const normalize = (value) =>
-								String(value || "")
+							const norm = (s) =>
+								String(s || "")
 									.toUpperCase()
-									.replace(/\s+/g, "")
-									.replace(/–|—/g, "-");
+									.trim()
+									.replace(/–|—/g, "-")
+									.replace(/\s+/g, "");
 
-							const parseSize = (value) => {
-								const size = normalize(value);
-								let match = size.match(
-									/^(?:LT|P|ST)?(\d{3})\/(\d{2,3})R?(\d{2}(?:\.\d+)?)$/i,
-								);
-								if (match)
-									return { width: match[1], height: match[2], rim: match[3] };
+							function parseSize(key) {
+								const raw = norm(key);
+								// 205/55R16
+								let m = raw.match(RX.metric);
+								if (m)
+									return {
+										width: m[1],
+										height: m[2],
+										rim: m[3],
+										kind: "METRIC",
+									};
 
-								match = size.match(
-									/^\d{2,3}(?:\.\d+)?[xX×](\d{1,2}(?:\.\d+)?)R?(\d{2}(?:\.\d+)?)$/i,
-								);
-								if (match)
-									return { width: match[1], height: "", rim: match[2] };
+								// 33x12.50R20  -> width = 12.50, height = ""
+								m = raw.match(RX.floatX);
+								if (m)
+									return {
+										width: m[1],
+										height: "",
+										rim: m[2],
+										kind: "FLOTATION",
+									};
 
-								match = size.match(
-									/^(\d{1,2}(?:\.\d+)?)\/\/(\d{2}(?:\.\d+)?)$/i,
-								);
-								if (match)
-									return { width: match[1], height: "", rim: match[2] };
+								// 12.50//18 -> width=12.50, rim=18
+								m = raw.match(RX.floatSlash);
+								if (m)
+									return {
+										width: m[1],
+										height: "",
+										rim: m[2],
+										kind: "FLOTATION",
+									};
 
-								match = size.match(/^(\d{2}(?:\.\d+)?)R(\d{2}(?:\.\d+)?)$/i);
-								if (match)
-									return { width: match[1], height: "", rim: match[2] };
+								// 11R22.5  (commercial) -> height=""
+								m = raw.match(RX.commR);
+								if (m)
+									return {
+										width: m[1],
+										height: "",
+										rim: m[2],
+										kind: "COMMERCIAL",
+									};
+
+								// 11//22.5 -> commercial
+								m = raw.match(RX.commSlash);
+								if (m)
+									return {
+										width: m[1],
+										height: "",
+										rim: m[2],
+										kind: "COMMERCIAL",
+									};
 
 								return null;
-							};
+							}
 
-							const clearOptions = (select) => {
-								while (select.options.length) select.remove(0);
-							};
-							const addOption = (select, value, label = value) => {
-								const option = document.createElement("option");
-								option.value = value;
-								option.textContent = label;
-								select.appendChild(option);
-							};
+							// === 3) Construir índice: width -> rim -> Set(heights) y un mapa a modelos ===
+							const index = {}; // { width: { rim: Set([height]) } }
+							const mapModels = {}; // { "width|rim|height": Set(models) }
 
-							const patterns = Object.keys(byPattern).sort((a, b) =>
-								a.localeCompare(b),
-							);
+							for (const [size, models] of Object.entries(sizeToModels)) {
+								const p = parseSize(size);
+								if (!p) continue;
 
-							clearOptions(selPattern);
-							addOption(selPattern, "", "Select pattern");
-							patterns.forEach((pattern) =>
-								addOption(selPattern, pattern, pattern),
-							);
+								index[p.width] ??= {};
+								index[p.width][p.rim] ??= new Set();
+								index[p.width][p.rim].add(p.height); // "" si no aplica
 
-							const sortNumeric = (a, b) => {
-								if (a === "" && b === "") return 0;
-								if (a === "") return 1;
-								if (b === "") return -1;
-								return parseFloat(a) - parseFloat(b);
-							};
+								const k = `${p.width}|${p.rim}|${p.height}`;
+								mapModels[k] ??= new Set();
+								models.forEach((m) => mapModels[k].add(m));
+							}
+
+							// === 4) Accesos a DOM ===
+							const selWidth = document.getElementById("selWidth");
+							const selHeight = document.getElementById("selHeight");
+							const selRim = document.getElementById("selRim");
+							const form = document.getElementById("finderBySize");
+							const out = document.getElementById("finderResult");
+
+							function clearOptions(sel) {
+								while (sel.options.length) sel.remove(0);
+							}
+							function addOption(sel, value, label = value) {
+								const opt = document.createElement("option");
+								opt.value = value;
+								opt.textContent = label;
+								sel.appendChild(opt);
+							}
+
+							// === 5) Poblar Width (orden numérico correcto, incluso con decimales) ===
+							const sortNumeric = (a, b) => parseFloat(a) - parseFloat(b);
 							const widths = Object.keys(index).sort(sortNumeric);
-
 							clearOptions(selWidth);
 							addOption(selWidth, "", "Select width");
-							widths.forEach((width) => addOption(selWidth, width, width));
+							widths.forEach((w) => addOption(selWidth, w, w));
 
-							const sizes = [...byPattern[selectedPattern]].sort((a, b) =>
-								a.localeCompare(b, undefined, { numeric: true }),
-							);
-
-							const refreshRims = () => {
+							// Dependencias: Width -> Rim -> Height
+							function refreshRims() {
+								const w = selWidth.value;
 								clearOptions(selRim);
+								clearOptions(selHeight);
 								addOption(selRim, "", "Select rim");
+								addOption(selHeight, "", "Select height");
 
-								const width = selWidth.value;
-								const aspect = selAspect.value;
-								if (!width || !index[width] || !(aspect in index[width]))
+								if (!w || !index[w]) return;
+
+								const rims = Object.keys(index[w]).sort(sortNumeric);
+								rims.forEach((r) =>
+									addOption(selRim, r, `R${r.replace(/^R/i, "")}`)
+								); // muestra “R16”, “R22.5”, etc.
+							}
+
+							function refreshHeights() {
+								const w = selWidth.value;
+								const r = selRim.value;
+								clearOptions(selHeight);
+								addOption(selHeight, "", "Select height");
+
+								if (!w || !r || !index[w] || !index[w][r]) return;
+
+								// Deja “—” para tamaños sin altura
+								const heights = [...index[w][r]]
+									.sort(sortNumeric)
+									.map((h) => (h === "" ? "—" : h));
+								heights.forEach((h) =>
+									addOption(selHeight, h === "—" ? "" : h, h)
+								);
+							}
+
+							selWidth.addEventListener("change", refreshRims);
+							selRim.addEventListener("change", refreshHeights);
+
+							// === 6) Submit: mostrar modelos compatibles con la combinación elegida ===
+							form.addEventListener("submit", (e) => {
+								e.preventDefault();
+								const w = selWidth.value;
+								const r = selRim.value;
+								const h = selHeight.value; // "" si “—”
+								const hasHeightSelection = selHeight.selectedIndex > 0;
+
+								if (!w || !r) {
+									out && (out.textContent = "Selecciona al menos Width y Rim.");
 									return;
-
-								const rims = [...index[width][aspect]].sort(sortNumeric);
-								rims.forEach((rim) => addOption(selRim, rim, `R${rim}`));
-							};
-
-							selWidth.addEventListener("change", refreshAspects);
-							selAspect.addEventListener("change", refreshRims);
-
-							form.addEventListener("submit", (event) => {
-								event.preventDefault();
-								const width = selWidth.value;
-								const aspect = selAspect.value;
-								const rim = selRim.value;
-								if (!width || !rim) return;
+								}
 
 								const params = new URLSearchParams();
-								params.set("width", width);
-								params.set("rim", rim);
-								if (aspect) {
-									params.set("height", aspect);
-								} else {
-									params.set("height", "__none__");
+								params.set("width", w);
+								params.set("rim", r);
+
+								if (hasHeightSelection) {
+									const normalizedHeight = h || "__none__";
+									params.set("height", normalizedHeight);
 								}
 
 								window.location.href = `pages/sizes.html?${params.toString()}#catalogo`;
 							});
 
-							refreshAspects();
+							// Tip: Si quieres precargar algún Width por defecto:
+							// selWidth.value = widths.includes("205") ? "205" : "";
+							// refreshRims();
 						})();
 					</script>
 				</div>
@@ -1150,7 +1220,7 @@
 									index = (i + slides.length) % slides.length;
 									track.style.transform = `translateX(-${index * 100}%)`;
 									dots.forEach((d, n) =>
-										d.classList.toggle("is-active", n === index),
+										d.classList.toggle("is-active", n === index)
 									);
 								};
 
@@ -1163,7 +1233,7 @@
 
 								// Dots
 								dots.forEach((d) =>
-									d.addEventListener("click", () => goTo(+d.dataset.dot)),
+									d.addEventListener("click", () => goTo(+d.dataset.dot))
 								);
 
 								// Auto-play
@@ -1189,7 +1259,7 @@
 								root.addEventListener(
 									"touchstart",
 									(e) => (x0 = e.touches[0].clientX),
-									{ passive: true },
+									{ passive: true }
 								);
 								root.addEventListener(
 									"touchend",
@@ -1199,7 +1269,7 @@
 										if (Math.abs(dx) > 40) dx < 0 ? next() : prev();
 										x0 = null;
 									},
-									{ passive: true },
+									{ passive: true }
 								);
 
 								// Recalcular en resize
@@ -2202,7 +2272,7 @@
 				root.addEventListener("mouseenter", () => clearInterval(timer));
 				root.addEventListener(
 					"mouseleave",
-					() => (timer = setInterval(() => goTo(index + 1), 5000)),
+					() => (timer = setInterval(() => goTo(index + 1), 5000))
 				);
 
 				// Responsivo: recalcula al cambiar tamaño (por si el contenedor cambia)
@@ -2621,7 +2691,7 @@
 						if (e.isIntersecting) setActive("#" + e.target.id);
 					});
 				},
-				{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 },
+				{ rootMargin: "-35% 0px -60% 0px", threshold: 0.01 }
 			);
 
 			sections.forEach((s) => io.observe(s));
@@ -2634,10 +2704,10 @@
 				const io = new IntersectionObserver(
 					(entries) => {
 						entries.forEach(
-							(e) => (e.target.dataset.active = e.isIntersecting),
+							(e) => (e.target.dataset.active = e.isIntersecting)
 						);
 					},
-					{ rootMargin: "-30% 0px -50% 0px", threshold: 0.2 },
+					{ rootMargin: "-30% 0px -50% 0px", threshold: 0.2 }
 				);
 				cards.forEach((c) => io.observe(c));
 			})();
